@@ -1,0 +1,12 @@
+body {
+  background-color: black;
+  color: white;
+}
+
+.main {
+  display: flex;
+}
+
+.main form {
+  margin-right: 50px;
+}

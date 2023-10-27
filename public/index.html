@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CryptoSniper</title>
+    <link rel="stylesheet" href="index.css" />
+  </head>
+  <body>
+    <h1>幣安U本位合約篩選器</h1>
+    <div class="main">
+      <form name="filterForm" onsubmit="return false">
+        <!-- 第一组參數 -->
+        <div class="filter-group">
+          <label for="time-interval-1">時間週期：</label>
+          <select id="time-interval-1" name="time-interval-1">
+            <!--
+            <option value="1m">1分鐘</option>
+            <option value="3m">3分鐘</option> 
+            -->
+            <option value="5m">5分鐘</option>
+            <option value="15m" selected>15分鐘</option>
+            <option value="30m">30分鐘</option>
+            <option value="1h">1小時</option>
+            <option value="2h">2小時</option>
+            <option value="4h">4小時</option>
+            <option value="6h">6小時</option>
+            <option value="8h">8小時</option>
+            <option value="12h">12小時</option>
+            <option value="1d">1天</option>
+            <option value="3d">3天</option>
+            <option value="1w">1周</option>
+            <option value="1M">1個月</option></select
+          ><br />
+
+          <input
+            type="text"
+            id="MA1-1"
+            name="MA1-1"
+            placeholder="MA參數一"
+            value="25"
+          />
+
+          <label for="comparison-operator-1-1"></label>
+          <select id="comparison-operator-1-1" name="comparison-operator-1-1">
+            <option value=">">大於</option>
+            <option value="<">小於</option>
+            <option value="==">等於</option>
+            <option value=">=">大於等於</option>
+            <option value="<=">小於等於</option>
+            <option value="!==">不等於</option>
+          </select>
+
+          <input
+            type="text"
+            id="MA1-2"
+            name="MA1-2"
+            placeholder="MA參數二"
+            value="99"
+          /><br />
+
+          <label for="logical-operator-1"></label>
+          <select id="logical-operator-1" name="logical-operator-1">
+            <option value="and">且</option>
+            <option value="or">或</option></select
+          ><br />
+
+          <input type="text" id="MA1-3" name="MA1-3" placeholder="MA參數三" />
+
+          <label for="comparison-operator-1-2"></label>
+          <select id="comparison-operator-1-2" name="comparison-operator-1-2">
+            <option value=">">大於</option>
+            <option value="<">小於</option>
+            <option value="==">等於</option>
+            <option value=">=">大於等於</option>
+            <option value="<=">小於等於</option>
+            <option value="!==">不等於</option>
+          </select>
+
+          <input type="text" id="MA1-4" name="MA1-4" placeholder="MA參數四" />
+        </div>
+        <br />
+        <!-- 第二组參數 -->
+        <div class="filter-group">
+          <label for="time-interval-2">時間週期：</label>
+          <select id="time-interval-2" name="time-interval-2">
+            <!--
+            <option value="1m">1分鐘</option>
+            <option value="3m">3分鐘</option> 
+            -->
+            <option value="5m">5分鐘</option>
+            <option value="15m">15分鐘</option>
+            <option value="30m">30分鐘</option>
+            <option value="1h" selected>1小時</option>
+            <option value="2h">2小時</option>
+            <option value="4h">4小時</option>
+            <option value="6h">6小時</option>
+            <option value="8h">8小時</option>
+            <option value="12h">12小時</option>
+            <option value="1d">1天</option>
+            <option value="3d">3天</option>
+            <option value="1w">1周</option>
+            <option value="1M">1個月</option></select
+          ><br />
+
+          <input type="text" id="MA2-1" name="MA2-1" placeholder="MA參數一" />
+
+          <label for="comparison-operator-2-1"></label>
+          <select id="comparison-operator-2-1" name="comparison-operator-2-1">
+            <option value=">">大於</option>
+            <option value="<">小於</option>
+            <option value="==">等於</option>
+            <option value=">=">大於等於</option>
+            <option value="<=">小於等於</option>
+            <option value="!==">不等於</option>
+          </select>
+
+          <input
+            type="text"
+            id="MA2-2"
+            name="MA2-2"
+            placeholder="MA參數二"
+          /><br />
+
+          <label for="logical-operator-2"></label>
+          <select id="logical-operator-2" name="logical-operator-2">
+            <option value="and">且</option>
+            <option value="or">或</option></select
+          ><br />
+
+          <input type="text" id="MA2-3" name="MA2-3" placeholder="MA參數三" />
+
+          <label for="comparison-operator-2-2"></label>
+          <select id="comparison-operator-2-2" name="comparison-operator-2-2">
+            <option value=">">大於</option>
+            <option value="<">小於</option>
+            <option value="==">等於</option>
+            <option value=">=">大於等於</option>
+            <option value="<=">小於等於</option>
+            <option value="!==">不等於</option>
+          </select>
+
+          <input type="text" id="MA2-4" name="MA2-4" placeholder="MA參數四" />
+        </div>
+        <br />
+        <!-- 第三组參數 -->
+        <div class="filter-group">
+          <label for="time-interval-3">時間週期：</label>
+          <select id="time-interval-3" name="time-interval-3">
+            <!--
+            <option value="1m">1分鐘</option>
+            <option value="3m">3分鐘</option> 
+            -->
+            <option value="5m">5分鐘</option>
+            <option value="15m">15分鐘</option>
+            <option value="30m">30分鐘</option>
+            <option value="1h">1小時</option>
+            <option value="2h">2小時</option>
+            <option value="4h" selected>4小時</option>
+            <option value="6h">6小時</option>
+            <option value="8h">8小時</option>
+            <option value="12h">12小時</option>
+            <option value="1d">1天</option>
+            <option value="3d">3天</option>
+            <option value="1w">1周</option>
+            <option value="1M">1個月</option></select
+          ><br />
+
+          <input type="text" id="MA3-1" name="MA3-1" placeholder="MA參數一" />
+
+          <label for="comparison-operator-3-1"></label>
+          <select id="comparison-operator-3-1" name="comparison-operator-3-1">
+            <option value=">">大於</option>
+            <option value="<">小於</option>
+            <option value="==">等於</option>
+            <option value=">=">大於等於</option>
+            <option value="<=">小於等於</option>
+            <option value="!==">不等於</option>
+          </select>
+
+          <input
+            type="text"
+            id="MA3-2"
+            name="MA3-2"
+            placeholder="MA參數二"
+          /><br />
+
+          <label for="logical-operator-3"></label>
+          <select id="logical-operator-3" name="logical-operator-3">
+            <option value="and">且</option>
+            <option value="or">或</option></select
+          ><br />
+
+          <input type="text" id="MA3-3" name="MA3-3" placeholder="MA參數三" />
+
+          <label for="comparison-operator-3-2"></label>
+          <select id="comparison-operator-3-2" name="comparison-operator-3-2">
+            <option value=">">大於</option>
+            <option value="<">小於</option>
+            <option value="==">等於</option>
+            <option value=">=">大於等於</option>
+            <option value="<=">小於等於</option>
+            <option value="!==">不等於</option>
+          </select>
+
+          <input type="text" id="MA3-4" name="MA3-4" placeholder="MA參數四" />
+        </div>
+        <br />
+        <!-- 第四组參數 -->
+        <div class="filter-group">
+          <label for="time-interval-4">時間週期：</label>
+          <select id="time-interval-4" name="time-interval-4">
+            <!--
+            <option value="1m">1分鐘</option>
+            <option value="3m">3分鐘</option> 
+            -->
+            <option value="5m">5分鐘</option>
+            <option value="15m">15分鐘</option>
+            <option value="30m">30分鐘</option>
+            <option value="1h">1小時</option>
+            <option value="2h">2小時</option>
+            <option value="4h">4小時</option>
+            <option value="6h">6小時</option>
+            <option value="8h">8小時</option>
+            <option value="12h">12小時</option>
+            <option value="1d" selected>1天</option>
+            <option value="3d">3天</option>
+            <option value="1w">1周</option>
+            <option value="1M">1個月</option></select
+          ><br />
+
+          <input type="text" id="MA4-1" name="MA4-1" placeholder="MA參數一" />
+
+          <label for="comparison-operator-4-1"></label>
+          <select id="comparison-operator-4-1" name="comparison-operator-4-1">
+            <option value=">">大於</option>
+            <option value="<">小於</option>
+            <option value="==">等於</option>
+            <option value=">=">大於等於</option>
+            <option value="<=">小於等於</option>
+            <option value="!==">不等於</option>
+          </select>
+
+          <input
+            type="text"
+            id="MA4-2"
+            name="MA4-2"
+            placeholder="MA參數二"
+          /><br />
+
+          <label for="logical-operator-4"></label>
+          <select id="logical-operator-4" name="logical-operator-4">
+            <option value="and">且</option>
+            <option value="or">或</option></select
+          ><br />
+
+          <input type="text" id="MA4-3" name="MA4-3" placeholder="MA參數三" />
+
+          <label for="comparison-operator-4-2"></label>
+          <select id="comparison-operator-4-2" name="comparison-operator-4-2">
+            <option value=">">大於</option>
+            <option value="<">小於</option>
+            <option value="==">等於</option>
+            <option value=">=">大於等於</option>
+            <option value="<=">小於等於</option>
+            <option value="!==">不等於</option>
+          </select>
+
+          <input type="text" id="MA4-4" name="MA4-4" placeholder="MA參數四" />
+        </div>
+
+        <br />
+        <button class="filterForm" onclick="processForm()">開始篩選</button>
+      </form>
+
+      <br />
+      <!-- TradingView Widget BEGIN -->
+      <div class="tradingview-widget-container">
+        <div id="tradingview_0aab0"></div>
+        <script
+          type="text/javascript"
+          src="https://s3.tradingview.com/tv.js"
+        ></script>
+        <script type="text/javascript">
+          new TradingView.widget({
+            width: 850,
+            height: 550,
+            symbol: "BINANCE:BTCUSDT.P",
+            interval: "15", //15 60 240
+            timezone: "Asia/Taipei",
+            theme: "dark",
+            style: "1",
+            locale: "zh_TW",
+            enable_publishing: false, //禁用發布圖表功能
+            allow_symbol_change: true, //啟用更改交易對功能
+            container_id: "tradingview_0aab0", //圖表容器ID
+            studies: [
+              {
+                name: "Moving Average 25",
+                id: "MASimple@tv-basicstudies",
+                type: "moving_average",
+                inputs: {
+                  length: 25,
+                },
+              },
+              {
+                name: "Moving Average 60",
+                id: "MASimple@tv-basicstudies",
+                type: "moving_average",
+                inputs: {
+                  length: 60,
+                },
+              },
+              {
+                name: "Moving Average 99",
+                id: "MASimple@tv-basicstudies",
+                type: "moving_average",
+                inputs: {
+                  length: 99,
+                },
+              },
+            ],
+          });
+        </script>
+      </div>
+      <!-- TradingView Widget END -->
+    </div>
+    <div id="message"></div>
+
+    <script src="index.js"></script>
+  </body>
+</html>
