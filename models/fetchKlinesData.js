@@ -1,11 +1,11 @@
+// models/fetchKlinesData.js
+
 const axios = require("axios");
 const { loadDataFromRedis, saveKlinesDataToRedis } = require("./redisModel");
 const schedule = require("node-schedule");
 
 // 時框（用質數，避免同時間呼叫）
 const timeIntervals = {
-  "1m": 1,
-  "3m": 3,
   "5m": 5,
   "15m": 13,
   "30m": 29,

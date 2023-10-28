@@ -7,8 +7,8 @@ const REDIS_PORT = 6379; // Redis 伺服器端口
 const redis = new Redis(REDIS_PORT, REDIS_HOST);
 
 const time_intervals = {
-  "1m": 1,
-  "3m": 3,
+  // "1m": 1,
+  // "3m": 3,
   "5m": 5,
   "15m": 15,
   "30m": 30,
