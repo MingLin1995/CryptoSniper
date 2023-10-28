@@ -7,8 +7,8 @@ const REDIS_PORT = 6379; // Redis 伺服器端口
 const redis = new Redis(REDIS_PORT, REDIS_HOST);
 
 const time_intervals = {
-  // "1m": 1,
-  // "3m": 3,
+  "1m": 1,
+  "3m": 3,
   "5m": 5,
   "15m": 15,
   "30m": 30,
@@ -42,14 +42,14 @@ function loadDataFromRedis() {
 }
 
 function saveKlinesDataToRedis(data, timeInterval) {
-  const key = `kilne_data_${timeInterval}`;
+  const key = `kline_data_${timeInterval}`;
   const expirationTime = time_intervals[timeInterval];
   const serializedData = JSON.stringify(data);
   return redis.set(key, serializedData, "EX", expirationTime * 60 + 60 * 30); // 過期時間動態調整
 }
 
 function loadKlinesDataFromRedis(timeInterval) {
-  const key = `kilne_data_${timeInterval}`;
+  const key = `kline_data_${timeInterval}`;
   return redis.get(key).then((cachedData) => {
     if (cachedData) {
       return JSON.parse(cachedData);
