@@ -42,14 +42,14 @@ function loadDataFromRedis() {
 }
 
 function saveKlinesDataToRedis(data, timeInterval) {
-  const key = `kilne_data_${timeInterval}`;
+  const key = `kline_data_${timeInterval}`;
   const expirationTime = time_intervals[timeInterval];
   const serializedData = JSON.stringify(data);
   return redis.set(key, serializedData, "EX", expirationTime * 60 + 60 * 30); // 過期時間動態調整
 }
 
 function loadKlinesDataFromRedis(timeInterval) {
-  const key = `kilne_data_${timeInterval}`;
+  const key = `kline_data_${timeInterval}`;
   return redis.get(key).then((cachedData) => {
     if (cachedData) {
       return JSON.parse(cachedData);
