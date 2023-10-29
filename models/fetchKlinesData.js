@@ -4,21 +4,23 @@ const axios = require("axios");
 const { loadDataFromRedis, saveKlinesDataToRedis } = require("./redisModel");
 const schedule = require("node-schedule");
 
-// 時框（用質數，避免同時間呼叫）
+// 時框
 const timeIntervals = {
+  // "1m": 1,
+  // "3m": 2,
   "5m": 5,
-  "15m": 13,
-  "30m": 29,
-  "1h": 59,
-  "2h": 113,
-  "4h": 239,
-  "6h": 359,
-  "8h": 479,
-  "12h": 719,
-  "1d": 1091,
-  "3d": 1103,
-  "1w": 1123,
-  "1M": 1117,
+  "15m": 6,
+  "30m": 7,
+  "1h": 8,
+  "2h": 9,
+  "4h": 10,
+  "6h": 11,
+  "8h": 12,
+  "12h": 13,
+  "1d": 14,
+  "3d": 15,
+  "1w": 16,
+  "1M": 17,
 };
 
 // 更新K線數據
@@ -48,6 +50,11 @@ async function updateSymbolKlinesData(timeInterval) {
   }
 }
 
+// 异步函数，用于等待一段时间
+function sleep(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
 // 取得K線數據
 async function getSymbolKlinesData(symbolQuoteVolumeData, timeInterval) {
   console.log(
@@ -62,6 +69,8 @@ async function getSymbolKlinesData(symbolQuoteVolumeData, timeInterval) {
     if (data !== null) {
       results.push(data);
     }
+    // 增加每個標的之間的時間間隔，避免大量呼叫API
+    await sleep(500); // 500毫秒，每個時間框架處理時間約3分半
   }
 
   return results;
@@ -104,39 +113,14 @@ async function fetchKlinesData(symbol, timeInterval) {
 // 主函数
 async function main() {
   for (const timeInterval in timeIntervals) {
-    // 安排任務
-    await job(timeInterval);
-    const updateFrequency = timeIntervals[timeInterval];
-    schedule.scheduleJob(`*/${updateFrequency} * * * *`, async () => {
-      await job(timeInterval);
-    });
-  }
-}
-
-// 追蹤執行狀態
-const taskStatus = {};
-
-// 延遲執行函式
-function delay(ms) {
-  return new Promise((resolve) => setTimeout(resolve, ms));
-}
-
-// 執行任務
-async function job(timeInterval) {
-  if (taskStatus[timeInterval] && taskStatus[timeInterval].running) {
-    console.log(`任務執行中：${timeInterval}`);
-    return;
+    updateSymbolKlinesData(timeInterval);
   }
 
-  taskStatus[timeInterval] = { running: true };
-
-  try {
-    await updateSymbolKlinesData(timeInterval);
-  } catch (error) {
-    console.error(`任務發生錯誤 ${error}`);
-  } finally {
-    await delay(10000); // 暫停10秒，單位是毫秒
-    taskStatus[timeInterval].running = false;
+  for (const timeInterval in timeIntervals) {
+    const minutes = timeIntervals[timeInterval];
+    setInterval(() => {
+      updateSymbolKlinesData(timeInterval);
+    }, minutes * 60 * 1000); // 分轉秒，秒轉毫秒（設定更新頻率）
   }
 }
 
