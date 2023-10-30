@@ -53,12 +53,6 @@ async function updateSymbolKlinesData(timeInterval) {
 //   return new Promise((resolve) => setTimeout(resolve, ms));
 // }
 
-async function updateAllTimeIntervals() {
-  for (const timeInterval in timeIntervals) {
-    await updateSymbolKlinesData(timeInterval);
-  }
-}
-
 // 從API取得K線數據
 async function getSymbolKlinesData(symbolQuoteVolumeData, timeInterval) {
   console.log(
@@ -135,6 +129,5 @@ async function fetchKlinesData(symbol, timeInterval) {
 // });
 
 module.exports = {
-  updateAllTimeIntervals,
   updateSymbolKlinesData,
 };

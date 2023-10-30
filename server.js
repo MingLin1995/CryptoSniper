@@ -1,9 +1,6 @@
 // server.js
 const { updateSymbolQuoteVolumeData } = require("./models/fetch24hData");
-const {
-  updateAllTimeIntervals,
-  updateSymbolKlinesData,
-} = require("./models/fetchKlinesData");
+const { updateSymbolKlinesData } = require("./models/fetchKlinesData");
 const schedule = require("node-schedule");
 
 // 時框
@@ -27,7 +24,9 @@ const timeIntervals = {
 
 // 隨機延遲函數
 function randomDelay() {
-  return new Promise((resolve) => setTimeout(resolve, Math.random() * 5000));
+  return new Promise((resolve) =>
+    setTimeout(resolve, 10000 + Math.random() * 10000)
+  );
 }
 
 // 進行初始更新
