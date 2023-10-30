@@ -51,13 +51,19 @@ function scheduleUpdates() {
     updateSymbolQuoteVolumeData();
   });
 
-  // 根據各個時間間隔設定更新K線
   for (const timeInterval in timeIntervals) {
     const minutes = timeIntervals[timeInterval];
-    schedule.scheduleJob(`*/${minutes} * * * *`, async () => {
-      await randomDelay();
+
+    // 使用setTimeout設定初始的延遲
+    setTimeout(() => {
+      // 啟動後的第一次觸發
       updateSymbolKlinesData(timeInterval);
-    });
+      // 設定定時任務
+      schedule.scheduleJob(`*/${minutes} * * * *`, async () => {
+        await randomDelay();
+        updateSymbolKlinesData(timeInterval);
+      });
+    }, 1 * 60 * 1000); // 乘以60將分鐘轉換為秒，再乘以1000將秒轉換為毫秒
   }
 }
 
