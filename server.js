@@ -40,23 +40,27 @@ async function initialUpdate() {
   } catch (error) {
     console.error(`Initial update failed: ${error}`);
   }
+  // initialUpdate 完成後，等待一段時間再啟動定期更新的作業
+  setTimeout(scheduleUpdates, 20000); // 延遲20秒
+}
+
+function scheduleUpdates() {
+  // 每5分鐘更新24h資料
+  schedule.scheduleJob("*/5 * * * *", async () => {
+    await randomDelay();
+    updateSymbolQuoteVolumeData();
+  });
+
+  // 根據各個時間間隔設定更新K線
+  for (const timeInterval in timeIntervals) {
+    const minutes = timeIntervals[timeInterval];
+    schedule.scheduleJob(`*/${minutes} * * * *`, async () => {
+      await randomDelay();
+      updateSymbolKlinesData(timeInterval);
+    });
+  }
 }
 
 initialUpdate();
-
-// 每5分鐘更新24h資料
-schedule.scheduleJob("*/5 * * * *", async () => {
-  await randomDelay();
-  updateSymbolQuoteVolumeData();
-});
-
-// 根據各個時間間隔設定更新K線
-for (const timeInterval in timeIntervals) {
-  const minutes = timeIntervals[timeInterval];
-  schedule.scheduleJob(`*/${minutes} * * * *`, async () => {
-    await randomDelay();
-    updateSymbolKlinesData(timeInterval);
-  });
-}
 
 console.log("Server started and schedules set.");
