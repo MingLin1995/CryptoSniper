@@ -1,8 +1,6 @@
 // models/fetchKlinesData.js
-
 const axios = require("axios");
 const { loadDataFromRedis, saveKlinesDataToRedis } = require("./redisModel");
-const schedule = require("node-schedule");
 
 // 時框
 const timeIntervals = {
@@ -23,7 +21,7 @@ const timeIntervals = {
   "1M": 60 * 24,
 };
 
-// 更新K線數據
+// 更新指定時間間隔的K線數據
 async function updateSymbolKlinesData(timeInterval) {
   try {
     const symbolQuoteVolumeData = await loadDataFromRedis();
@@ -46,16 +44,22 @@ async function updateSymbolKlinesData(timeInterval) {
       console.log("無法更新Ｋ線數據");
     }
   } catch (error) {
-    console.error(`Error: ${error}`);
+    console.error(`錯誤: ${error}`);
   }
 }
 
-// 异步函数，用于等待一段时间
-function sleep(ms) {
-  return new Promise((resolve) => setTimeout(resolve, ms));
+// // 等待指定時間的異步函數
+// function sleep(ms) {
+//   return new Promise((resolve) => setTimeout(resolve, ms));
+// }
+
+async function updateAllTimeIntervals() {
+  for (const timeInterval in timeIntervals) {
+    await updateSymbolKlinesData(timeInterval);
+  }
 }
 
-// 取得K線數據
+// 從API取得K線數據
 async function getSymbolKlinesData(symbolQuoteVolumeData, timeInterval) {
   console.log(
     `呼叫 API！時間間隔：${timeInterval}`,
@@ -70,15 +74,16 @@ async function getSymbolKlinesData(symbolQuoteVolumeData, timeInterval) {
       results.push(data);
     }
     // 增加每個標的之間的時間間隔，避免大量呼叫API
-    await sleep(800); // 500毫秒，每個時間框架處理時間約3分半
+    //await sleep(800); // 500毫秒，每個時間框架處理時間約3分半
   }
 
   return results;
 }
 
-// 連接幣安API
+// Binance的基本URL
 const BASE_URL = "https://fapi.binance.com/fapi/v1";
 
+// 使用API取得指定符號和時間間隔的K線數據
 async function fetchKlinesData(symbol, timeInterval) {
   const limit = 240;
   const klinesUrl = `${BASE_URL}/klines`;
@@ -110,21 +115,26 @@ async function fetchKlinesData(symbol, timeInterval) {
   }
 }
 
-// 主函数
-async function main() {
-  for (const timeInterval in timeIntervals) {
-    updateSymbolKlinesData(timeInterval);
-  }
+// // 主函數，對所有的時間間隔更新K線數據
+// async function main() {
+//   for (const timeInterval in timeIntervals) {
+//     updateSymbolKlinesData(timeInterval);
+//   }
 
-  for (const timeInterval in timeIntervals) {
-    const minutes = timeIntervals[timeInterval];
-    setInterval(() => {
-      updateSymbolKlinesData(timeInterval);
-    }, minutes * 60 * 1000); // 分轉秒，秒轉毫秒（設定更新頻率）
-  }
-}
+//   for (const timeInterval in timeIntervals) {
+//     const minutes = timeIntervals[timeInterval];
+//     setInterval(() => {
+//       updateSymbolKlinesData(timeInterval);
+//     }, minutes * 60 * 1000); // 分轉秒，秒轉毫秒（設定更新頻率）
+//   }
+// }
 
-// 啟動主函数
-main().catch((error) => {
-  console.error(`Main Error: ${error}`);
-});
+// // 啟動主函数
+// main().catch((error) => {
+//   console.error(`Main Error: ${error}`);
+// });
+
+module.exports = {
+  updateAllTimeIntervals,
+  updateSymbolKlinesData,
+};
