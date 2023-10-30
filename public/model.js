@@ -1,32 +1,25 @@
 // public/model.js
 
+// 取得篩選條件
 function extractFilterConditions() {
-  //總共四組參數
+  // 總共有四組參數
   const parameterGroups = 4;
-
   const intervalsData = [];
-  // 清空 intervalsData
-  intervalsData.length = 0;
 
   for (let i = 1; i <= parameterGroups; i++) {
-    //時框
-    const timeInterval = document.getElementById(`time-interval-${i}`).value;
-    //MA的值
-    const maParameters = [];
-    //比較方法
-    const comparisonOperator = [];
+    const timeInterval = document.getElementById(`time-interval-${i}`).value; // 取得時框
+    const maParameters = []; // MA的值
+    const comparisonOperator = []; // 比較方法
 
-    //是否多重比較
+    // 是否有多重比較
     const logicalOperator = document.getElementById(
       `logical-operator-${i}`
     ).value;
 
     for (let j = 1; j <= parameterGroups; j++) {
       const maParamValue = document.getElementById(`MA${i}-${j}`).value;
-      // 轉換為整數，否則為null
-      const maParam = maParamValue ? parseInt(maParamValue) : null;
       maParameters.push({
-        value: maParam,
+        value: maParamValue ? parseInt(maParamValue) : null, // 轉換為整數或設為null
       });
     }
 
@@ -49,35 +42,25 @@ function extractFilterConditions() {
       logical_operator: logicalOperator,
     });
   }
+
   return intervalsData;
 }
 
+// 從伺服器取得K線資料
 function getKlinesData(intervalsData) {
+  // 僅篩選param_1不為null的資料，並取出其時間區間
   const timeIntervals = intervalsData
-    .filter((interval) => interval.param_1 !== null) // 使用 filter 过滤 param_1 不为 null 的项
-    .map((interval) => interval.time_interval); // 提取所有的 time_interval 值
-  //console.log(timeIntervals);
+    .filter((interval) => interval.param_1 !== null)
+    .map((interval) => interval.time_interval);
 
   return fetch("/api/loadKlinesData", {
-    method: "POST", // 使用POST方法发送数据
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(timeIntervals), // 将条件数据作为JSON发送
-  })
-    .then((response) => response.json())
-    .then((allKlinesData) => {
-      //console.log(allKlinesData);
-      // 在这里处理从后端获取的K线数据
-      //processKlinesData(klinesData);
-      //console.log(allKlinesData);
-      return allKlinesData;
-    })
-    .catch((error) => {
-      //console.error("Error:", error); // 处理错误
-    });
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(timeIntervals),
+  }).then((response) => response.json());
 }
 
+// 計算MA值
 function calculateMA(allKlinesData, intervalsData) {
   const results = {};
 
@@ -99,7 +82,7 @@ function calculateMA(allKlinesData, intervalsData) {
     }
 
     if (!results[timeInterval]) {
-      results[timeInterval] = []; // 如果不存在該時間區間的結果，創建一個空數組
+      results[timeInterval] = []; // 如果不存在該時間區間的結果，建立該時框
     }
 
     //個別取出標的以及收盤價
@@ -131,7 +114,7 @@ function calculateMA(allKlinesData, intervalsData) {
   return results;
 }
 
-// MA筛选
+// 根據MA值進行篩選
 function compareMAValues(maData, intervalsData) {
   const results = {};
 
@@ -197,7 +180,7 @@ function compareMAValues(maData, intervalsData) {
   return results;
 }
 
-//取交集
+// 取得標的的交集
 function findIntersection(matchingData, intervalsData) {
   const symbolArrays = [];
   const count = intervalsData.filter((item) => item.param_1 !== null).length;
@@ -222,26 +205,19 @@ function findIntersection(matchingData, intervalsData) {
   return intersection;
 }
 
+// 從伺服器取得成交量資料
 function getResultsVolume(results) {
   return fetch("/api/loadVolumeData", {
-    method: "POST", // 使用POST方法发送数据
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(results), // 将条件数据作为JSON发送
-  })
-    .then((response) => response.json())
-    .then((ResultsVolume) => {
-      return ResultsVolume;
-    })
-    .catch((error) => {
-      console.error("Error:", error); // 处理错误
-    });
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(results),
+  }).then((response) => response.json());
 }
 
+// 顯示結果在前端
 function displayResults(allResultsVolume) {
   const messageDiv = document.getElementById("message");
-  messageDiv.innerHTML = ""; // 清空先前的內容
+  messageDiv.innerHTML = "";
 
   if (allResultsVolume.length === 0) {
     messageDiv.textContent = "查無任何標的";
@@ -251,10 +227,12 @@ function displayResults(allResultsVolume) {
   allResultsVolume.forEach((item) => {
     const p = document.createElement("p");
     const volume = formatVolume(item.quote_volume);
-    p.textContent = "標的：" + item.symbol + " 成交量：" + volume;
+    p.textContent = `標的：${item.symbol} 成交量：${volume}`;
     messageDiv.appendChild(p);
   });
 }
+
+// 格式化顯示成交量
 function formatVolume(volume) {
   if (volume >= 100000000) {
     // 如果成交量大於億，則以1億為單位
@@ -270,7 +248,6 @@ function formatVolume(volume) {
   }
 }
 
-//導出
 export {
   extractFilterConditions,
   getKlinesData,

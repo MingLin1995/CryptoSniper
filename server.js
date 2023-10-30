@@ -25,7 +25,7 @@ const timeIntervals = {
 // 隨機延遲函數
 function randomDelay() {
   return new Promise((resolve) =>
-    setTimeout(resolve, 10000 + Math.random() * 10000)
+    setTimeout(resolve, 20000 + Math.random() * 10000)
   );
 }
 
