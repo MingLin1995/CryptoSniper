@@ -1,6 +1,6 @@
 // models/redisModel.js
-const Redis = require("ioredis");
 
+const Redis = require("ioredis");
 const REDIS_HOST = "localhost"; // Redis 伺服器地址
 const REDIS_PORT = 6379; // Redis 伺服器端口
 const redis = new Redis(REDIS_PORT, REDIS_HOST); // 建立新的Redis連接

@@ -1,4 +1,4 @@
-// public/model.js
+// public/js/model.js
 
 // 取得篩選條件
 function extractFilterConditions() {

@@ -1,4 +1,5 @@
 // models/loadKlinesData.js
+
 // 引入相應的數據模型
 const { loadKlinesDataFromRedis } = require("./redisModel");
 
