@@ -14,10 +14,8 @@ async function updateSymbolKlinesData(timeInterval) {
 
       if (symbolsKlinesData && symbolsKlinesData.length > 0) {
         await saveKlinesDataToRedis(symbolsKlinesData, timeInterval);
-        console.log(
-          `更新 symbol_close_prices_data_${timeInterval} 到 Redis`,
-          new Date().toLocaleString()
-        );
+        console.log(`－－－－－
+更新 symbol_close_prices_data_${timeInterval}     ${new Date().toLocaleString()}`);
       } else {
         console.log(`更新失敗，時框：${timeInterval}`);
       }
@@ -36,10 +34,8 @@ function sleep(ms) {
 
 // 從API取得K線數據
 async function getSymbolKlinesData(symbolQuoteVolumeData, timeInterval) {
-  console.log(
-    `呼叫 API！時間間隔：${timeInterval}`,
-    new Date().toLocaleString()
-  );
+  console.log(`－－－－－
+呼叫 API！時間間隔：${timeInterval}     ${new Date().toLocaleString()}`);
 
   const results = [];
 

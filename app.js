@@ -20,5 +20,9 @@ app.get("/", (req, res) => {
 app.use("/api", loadDataRoutes);
 
 app.listen(8000, () => {
-  console.log("Express app listening on port 8000");
+  console.log(`
+  －－－－－
+  Express app listening on port 8000
+  －－－－－
+  `);
 });

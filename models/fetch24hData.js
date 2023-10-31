@@ -7,10 +7,8 @@ async function updateSymbolQuoteVolumeData() {
     const symbolQuoteVolumeData = await fetch24hrData();
     if (symbolQuoteVolumeData) {
       await saveDataToRedis(symbolQuoteVolumeData);
-      console.log(
-        "更新 symbol_quote_volume_data 到 Redis",
-        new Date().toLocaleString()
-      );
+      console.log(`－－－－－
+更新 symbol_quote_volume_data 到 Redis      ${new Date().toLocaleString()}`);
     } else {
       console.log("更新失敗");
     }
@@ -23,10 +21,11 @@ async function updateSymbolQuoteVolumeData() {
 const BASE_URL = "https://fapi.binance.com/fapi/v1";
 
 async function fetch24hrData() {
+  console.log(`－－－－－
+呼叫 24hr API！      ${new Date().toLocaleString()}`);
   try {
     const response = await axios.get(`${BASE_URL}/ticker/24hr`);
     if (response.status === 200) {
-      console.log("成功調用API！");
       const data24hr = response.data;
       const symbolQuoteVolumeData = data24hr
         .map((entry) => ({
