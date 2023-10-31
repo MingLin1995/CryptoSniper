@@ -2,25 +2,6 @@
 const axios = require("axios");
 const { loadDataFromRedis, saveKlinesDataToRedis } = require("./redisModel");
 
-// 時框
-const timeIntervals = {
-  // "1m": 1,
-  // "3m": 2,
-  "5m": 5,
-  "15m": 15,
-  "30m": 30,
-  "1h": 60,
-  "2h": 60 * 2,
-  "4h": 60 * 4,
-  "6h": 60 * 6,
-  "8h": 60 * 8,
-  "12h": 60 * 12,
-  "1d": 60 * 24,
-  "3d": 60 * 24,
-  "1w": 60 * 24,
-  "1M": 60 * 24,
-};
-
 // 更新指定時間間隔的K線數據
 async function updateSymbolKlinesData(timeInterval) {
   try {
@@ -48,10 +29,10 @@ async function updateSymbolKlinesData(timeInterval) {
   }
 }
 
-// // 等待指定時間的異步函數
-// function sleep(ms) {
-//   return new Promise((resolve) => setTimeout(resolve, ms));
-// }
+// 等待指定時間的異步函數
+function sleep(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
 
 // 從API取得K線數據
 async function getSymbolKlinesData(symbolQuoteVolumeData, timeInterval) {
@@ -68,7 +49,7 @@ async function getSymbolKlinesData(symbolQuoteVolumeData, timeInterval) {
       results.push(data);
     }
     // 增加每個標的之間的時間間隔，避免大量呼叫API
-    //await sleep(800); // 500毫秒，每個時間框架處理時間約3分半
+    await sleep(800); // 800毫秒，每個時間框架處理時間約4分
   }
 
   return results;
@@ -108,25 +89,6 @@ async function fetchKlinesData(symbol, timeInterval) {
     return null;
   }
 }
-
-// // 主函數，對所有的時間間隔更新K線數據
-// async function main() {
-//   for (const timeInterval in timeIntervals) {
-//     updateSymbolKlinesData(timeInterval);
-//   }
-
-//   for (const timeInterval in timeIntervals) {
-//     const minutes = timeIntervals[timeInterval];
-//     setInterval(() => {
-//       updateSymbolKlinesData(timeInterval);
-//     }, minutes * 60 * 1000); // 分轉秒，秒轉毫秒（設定更新頻率）
-//   }
-// }
-
-// // 啟動主函数
-// main().catch((error) => {
-//   console.error(`Main Error: ${error}`);
-// });
 
 module.exports = {
   updateSymbolKlinesData,
