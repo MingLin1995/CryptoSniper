@@ -1,4 +1,5 @@
 // server.js
+
 const { updateSymbolQuoteVolumeData } = require("./models/fetch24hData");
 const { updateSymbolKlinesData } = require("./models/fetchKlinesData");
 

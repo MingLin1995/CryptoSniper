@@ -1,4 +1,5 @@
 // 引入相應的數據模型
+
 const { loadDataFromRedis } = require("./redisModel");
 
 // 非同步函數：根據結果集過濾出匹配的交易量數據

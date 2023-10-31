@@ -1,9 +1,16 @@
 // app.js
+
 // 引入所需的模組
 const express = require("express");
 const app = express();
 const bodyParser = require("body-parser");
-const loadDataRoutes = require("./routes/loadDataRoutes");
+const klinesDataRoutes = require("./routes/klinesDataRoutes");
+const volumeDataRoutes = require("./routes/volumeDataRoutes");
+const connectDB = require("./models/mongoDB");
+const userRoutes = require("./routes/userRoutes");
+
+// Connect to MongoDB
+connectDB();
 
 // 使用body-parser中間件來解析POST請求的JSON格式數據
 app.use(bodyParser.json());
@@ -16,8 +23,10 @@ app.get("/", (req, res) => {
   res.sendFile(__dirname + "/views/index.html");
 });
 
-// 設定路由，所有以/api開頭的請求都會由loadDataRoutes這個路由器來處理
-app.use("/api", loadDataRoutes);
+// 設定路由
+app.use("/api/loadKlinesData", klinesDataRoutes);
+app.use("/api/loadVolumeData", volumeDataRoutes);
+app.use("/api/users", userRoutes);
 
 app.listen(8000, () => {
   console.log(`

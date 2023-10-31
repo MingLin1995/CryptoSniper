@@ -1,4 +1,4 @@
-// public/index.js
+// public/js/index.js
 
 import {
   extractFilterConditions,

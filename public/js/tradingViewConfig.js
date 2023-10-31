@@ -1,3 +1,5 @@
+// public/js/tradingViewConfig.js
+
 new TradingView.widget({
   width: 850,
   height: 550,

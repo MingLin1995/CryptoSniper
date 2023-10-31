@@ -1,4 +1,5 @@
 // models/fetch24hData.js
+
 const axios = require("axios");
 const { saveDataToRedis } = require("./redisModel");
 
