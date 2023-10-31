@@ -32,7 +32,7 @@ async function initialUpdate() {
       setInterval(async () => {
         await updateSymbolKlinesData(timeInterval);
       }, intervalMs);
-      await updateSymbolKlinesData(timeInterval);
+      updateSymbolKlinesData(timeInterval);
     }
   } catch (error) {
     console.error(`Initial update failed: ${error}`);

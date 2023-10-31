@@ -49,7 +49,7 @@ async function getSymbolKlinesData(symbolQuoteVolumeData, timeInterval) {
       results.push(data);
     }
     // 增加每個標的之間的時間間隔，避免大量呼叫API
-    await sleep(800); // 800毫秒，每個時間框架處理時間約4分
+    await sleep(1000); // 1000毫秒，每個時間框架處理時間約4分 AWS 2.5分鐘(0.625倍)
   }
 
   return results;
