@@ -3,11 +3,13 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>CryptoSniper</title>
-    <link rel="stylesheet" href="index.css" />
+    <title>Crypto Sniper</title>
+    <link rel="icon" type="image/x-icon" href="/images/icon.png" />
+    <link rel="stylesheet" href="/css/index.css" />
   </head>
   <body>
-    <h1>幣安U本位合約篩選器</h1>
+    <h1>Crypto Sniper</h1>
+    <h3>幣安U本位合約篩選器</h3>
     <div class="main">
       <form name="filterForm" onsubmit="return false">
         <!-- 第一组參數 -->
@@ -52,7 +54,7 @@
             id="MA1-2"
             name="MA1-2"
             placeholder="MA參數二"
-            value="99"
+            value="60"
           /><br />
 
           <label for="logical-operator-1"></label>
@@ -265,52 +267,12 @@
           type="text/javascript"
           src="https://s3.tradingview.com/tv.js"
         ></script>
-        <script type="text/javascript">
-          new TradingView.widget({
-            width: 850,
-            height: 550,
-            symbol: "BINANCE:BTCUSDT.P",
-            interval: "15", //15 60 240
-            timezone: "Asia/Taipei",
-            theme: "dark",
-            style: "1",
-            locale: "zh_TW",
-            enable_publishing: false, //禁用發布圖表功能
-            allow_symbol_change: true, //啟用更改交易對功能
-            container_id: "tradingview_0aab0", //圖表容器ID
-            studies: [
-              {
-                name: "Moving Average 25",
-                id: "MASimple@tv-basicstudies",
-                type: "moving_average",
-                inputs: {
-                  length: 25,
-                },
-              },
-              {
-                name: "Moving Average 60",
-                id: "MASimple@tv-basicstudies",
-                type: "moving_average",
-                inputs: {
-                  length: 60,
-                },
-              },
-              {
-                name: "Moving Average 99",
-                id: "MASimple@tv-basicstudies",
-                type: "moving_average",
-                inputs: {
-                  length: 99,
-                },
-              },
-            ],
-          });
-        </script>
+        <script type="text/javascript" src="/js/tradingViewConfig.js"></script>
       </div>
       <!-- TradingView Widget END -->
     </div>
     <div id="message"></div>
 
-    <script type="module" src="index.js"></script>
+    <script type="module" src="/js/index.js"></script>
   </body>
 </html>

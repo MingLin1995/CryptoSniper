@@ -21,8 +21,9 @@ submitButton.addEventListener("click", processForm);
 async function processForm() {
   const messageElement = document.getElementById("message");
 
-  // 當開始處理時，顯示「搜尋中...」訊息
-  messageElement.innerHTML = "搜尋中...";
+  // 當開始處理時，顯示「搜尋中...」訊息，並在下方顯示一個動態GIF
+  messageElement.innerHTML =
+    "搜尋中... <br> <img src='/images/searching.gif' alt='Searching'>";
 
   const intervalsData = extractFilterConditions(); // 取得所有篩選條件
 

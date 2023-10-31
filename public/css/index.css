@@ -10,3 +10,7 @@ body {
 .main form {
   margin-right: 50px;
 }
+
+.filterForm {
+  cursor: pointer;
+}
