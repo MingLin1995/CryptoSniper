@@ -3,21 +3,82 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>CryptoSniper</title>
-    <link rel="stylesheet" href="index.css" />
+    <title>Crypto Sniper</title>
+    <link rel="icon" type="image/x-icon" href="/images/icon.png" />
+    <link rel="stylesheet" href="/css/index.css" />
   </head>
   <body>
-    <h1>幣安U本位合約篩選器</h1>
+    <h1>Crypto Sniper</h1>
+    <!-- 註冊 -->
+    <h2>會員註冊</h2>
+    <form id="registerForm">
+      <label for="registerName">姓名:</label>
+      <input type="text" id="registerName" name="name" required /><br /><br />
+      <label for="registerEmail">電子郵件:</label>
+      <input
+        type="email"
+        id="registerEmail"
+        name="email"
+        required
+      /><br /><br />
+      <label for="registerPassword">密碼:</label>
+      <input
+        type="password"
+        id="registerPassword"
+        name="password"
+        required
+      /><br /><br />
+      <button type="button" onclick="register()">註冊</button>
+    </form>
+    <!-- 登入 -->
+    <h2>登入</h2>
+    <form id="loginForm">
+      <label for="loginEmail">電子郵件：</label>
+      <input type="email" id="loginEmail" required /><br /><br />
+      <label for="loginPassword">密碼：</label>
+      <input type="password" id="loginPassword" required /><br /><br />
+      <button type="button" onclick="login()">登入</button>
+    </form>
+    <p id="loginMessage"></p>
+    <!-- 登出 -->
+    <button id="logoutBtn" onclick="logout()">登出</button>
+    <!-- 到價通知 -->
+    <form id="trackingForm">
+      <label for="telegramId">Telegram ID:</label>
+      <input
+        type="text"
+        id="telegramId"
+        name="telegramId"
+        required
+      /><br /><br />
+
+      <label for="targetSymbol">Target Symbol (e.g., BTCUSDT):</label>
+      <input
+        type="text"
+        id="targetSymbol"
+        name="targetSymbol"
+        required
+      /><br /><br />
+
+      <label for="targetPrice">Target Price:</label>
+      <input
+        type="number"
+        id="targetPrice"
+        name="targetPrice"
+        required
+      /><br /><br />
+      <!-- 在您的HTML中 -->
+      <button onclick="trackPrice(event)">Track Price</button>
+    </form>
+
+    <!-- 篩選器、圖表 -->
+    <h2>幣安U本位合約篩選器</h2>
     <div class="main">
       <form name="filterForm" onsubmit="return false">
         <!-- 第一组參數 -->
         <div class="filter-group">
           <label for="time-interval-1">時間週期：</label>
           <select id="time-interval-1" name="time-interval-1">
-            <!--
-            <option value="1m">1分鐘</option>
-            <option value="3m">3分鐘</option> 
-            -->
             <option value="5m">5分鐘</option>
             <option value="15m" selected>15分鐘</option>
             <option value="30m">30分鐘</option>
@@ -56,7 +117,7 @@
             id="MA1-2"
             name="MA1-2"
             placeholder="MA參數二"
-            value="99"
+            value="60"
           /><br />
 
           <label for="logical-operator-1"></label>
@@ -84,10 +145,6 @@
         <div class="filter-group">
           <label for="time-interval-2">時間週期：</label>
           <select id="time-interval-2" name="time-interval-2">
-            <!--
-            <option value="1m">1分鐘</option>
-            <option value="3m">3分鐘</option> 
-            -->
             <option value="5m">5分鐘</option>
             <option value="15m">15分鐘</option>
             <option value="30m">30分鐘</option>
@@ -147,10 +204,6 @@
         <div class="filter-group">
           <label for="time-interval-3">時間週期：</label>
           <select id="time-interval-3" name="time-interval-3">
-            <!--
-            <option value="1m">1分鐘</option>
-            <option value="3m">3分鐘</option> 
-            -->
             <option value="5m">5分鐘</option>
             <option value="15m">15分鐘</option>
             <option value="30m">30分鐘</option>
@@ -210,10 +263,6 @@
         <div class="filter-group">
           <label for="time-interval-4">時間週期：</label>
           <select id="time-interval-4" name="time-interval-4">
-            <!--
-            <option value="1m">1分鐘</option>
-            <option value="3m">3分鐘</option> 
-            -->
             <option value="5m">5分鐘</option>
             <option value="15m">15分鐘</option>
             <option value="30m">30分鐘</option>
@@ -270,7 +319,7 @@
         </div>
 
         <br />
-        <button class="filterForm" onclick="processForm()">開始篩選</button>
+        <button class="filterForm">開始篩選</button>
       </form>
 
       <br />
@@ -281,52 +330,14 @@
           type="text/javascript"
           src="https://s3.tradingview.com/tv.js"
         ></script>
-        <script type="text/javascript">
-          new TradingView.widget({
-            width: 850,
-            height: 550,
-            symbol: "BINANCE:BTCUSDT.P",
-            interval: "15", //15 60 240
-            timezone: "Asia/Taipei",
-            theme: "dark",
-            style: "1",
-            locale: "zh_TW",
-            enable_publishing: false, //禁用發布圖表功能
-            allow_symbol_change: true, //啟用更改交易對功能
-            container_id: "tradingview_0aab0", //圖表容器ID
-            studies: [
-              {
-                name: "Moving Average 25",
-                id: "MASimple@tv-basicstudies",
-                type: "moving_average",
-                inputs: {
-                  length: 25,
-                },
-              },
-              {
-                name: "Moving Average 60",
-                id: "MASimple@tv-basicstudies",
-                type: "moving_average",
-                inputs: {
-                  length: 60,
-                },
-              },
-              {
-                name: "Moving Average 99",
-                id: "MASimple@tv-basicstudies",
-                type: "moving_average",
-                inputs: {
-                  length: 99,
-                },
-              },
-            ],
-          });
-        </script>
+        <script type="text/javascript" src="/js/tradingViewConfig.js"></script>
       </div>
       <!-- TradingView Widget END -->
     </div>
     <div id="message"></div>
 
-    <script src="index.js"></script>
+    <script type="module" src="/js/index.js"></script>
+    <script src="js/User.js"></script>
+    <script src="js/Tracking.js"></script>
   </body>
 </html>
