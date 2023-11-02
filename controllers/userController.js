@@ -30,7 +30,6 @@ exports.login = async (req, res) => {
   try {
     const { email, password } = req.body;
 
-    // 查資料格式
     if (!email || !password) {
       return res.status(400).json({ error: "All fields are required" });
     }
@@ -42,7 +41,11 @@ exports.login = async (req, res) => {
     const token = jwt.sign({ id: user._id }, "secretkey", { expiresIn: "1h" });
     user.token = token;
     await user.save();
-    res.status(200).json({ message: "Logged in successfully", token });
+    res.status(200).json({
+      message: "Logged in successfully",
+      token,
+      telegramId: user.telegramId,
+    });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -58,5 +61,18 @@ exports.logout = async (req, res) => {
     res.status(200).json({ message: "Logged out successfully" });
   } catch (error) {
     res.status(500).json({ error: error.message });
+  }
+};
+
+exports.updateTelegramId = async (req, res) => {
+  const userId = req.user.id; // 取得當前用戶的 ID
+  const { telegramId } = req.body;
+
+  try {
+    await User.findByIdAndUpdate(userId, { telegramId });
+    res.json({ message: "Telegram ID updated successfully" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Error updating Telegram ID" });
   }
 };

@@ -42,6 +42,34 @@
     <p id="loginMessage"></p>
     <!-- 登出 -->
     <button id="logoutBtn" onclick="logout()">登出</button>
+    <!-- 到價通知 -->
+    <form id="trackingForm">
+      <label for="telegramId">Telegram ID:</label>
+      <input
+        type="text"
+        id="telegramId"
+        name="telegramId"
+        required
+      /><br /><br />
+
+      <label for="targetSymbol">Target Symbol (e.g., BTCUSDT):</label>
+      <input
+        type="text"
+        id="targetSymbol"
+        name="targetSymbol"
+        required
+      /><br /><br />
+
+      <label for="targetPrice">Target Price:</label>
+      <input
+        type="number"
+        id="targetPrice"
+        name="targetPrice"
+        required
+      /><br /><br />
+      <!-- 在您的HTML中 -->
+      <button onclick="trackPrice(event)">Track Price</button>
+    </form>
 
     <!-- 篩選器、圖表 -->
     <h2>幣安U本位合約篩選器</h2>
@@ -310,5 +338,6 @@
 
     <script type="module" src="/js/index.js"></script>
     <script src="js/User.js"></script>
+    <script src="js/Tracking.js"></script>
   </body>
 </html>

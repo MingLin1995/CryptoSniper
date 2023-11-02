@@ -1,5 +1,29 @@
 // public/js/User.js
 
+function isUserLoggedIn() {
+  // 檢查 localStorage 是否有 token
+  return localStorage.getItem("token") !== null;
+}
+
+// 在頁面加載時檢查用戶的登錄狀態
+window.onload = function () {
+  if (isUserLoggedIn()) {
+    // 如果用戶已登入，則獲取和顯示 Telegram ID
+    getTelegramId();
+  } else {
+    // 如果用戶未登入，則不顯示 Telegram ID 相關信息
+    document.getElementById("telegramId").value = "";
+  }
+};
+
+async function getTelegramId() {
+  // 從伺服器或localStorage獲取用戶的Telegram ID，並設置到輸入框中
+  const savedTelegramId = localStorage.getItem("telegramId");
+  if (savedTelegramId) {
+    document.getElementById("telegramId").value = savedTelegramId;
+  }
+}
+
 // 註冊
 async function register() {
   const name = document.getElementById("registerName").value;
@@ -43,6 +67,13 @@ async function login() {
     if (response.ok) {
       alert("登入成功！" + data.message);
       localStorage.setItem("token", data.token); // 將 token 儲存到瀏覽器的 localStorage
+
+      // 假設伺服器返回的數據中包含了 telegramId
+      if (data.telegramId) {
+        localStorage.setItem("telegramId", data.telegramId); // 將 telegramId 儲存到 localStorage
+      }
+
+      location.reload(); // 重新加載頁面
     } else {
       alert("登入失敗：" + data.error);
     }
@@ -65,8 +96,10 @@ async function logout() {
     });
 
     if (response.ok) {
-      localStorage.removeItem("token"); // 刪除瀏覽器的 localStorage 中的 token
+      localStorage.removeItem("token");
+      localStorage.removeItem("telegramId"); // 登出時也移除 telegramId
       alert("登出成功！");
+      location.reload();
     } else {
       const data = await response.json();
       alert("登出失敗：" + data.error);
