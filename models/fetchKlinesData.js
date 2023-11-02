@@ -67,26 +67,31 @@ async function fetchKlinesData(symbol, timeInterval) {
     limit: limit,
   };
 
-  try {
-    const response = await axios.get(klinesUrl, { params: params });
-    if (response.status === 200) {
-      const klinesData = response.data;
-      klinesData.reverse();
-      const closePrices = klinesData.map((entry) => parseFloat(entry[4]));
+  let retries = 3; // 設定重試次數
+  while (retries > 0) {
+    try {
+      const response = await axios.get(klinesUrl, { params: params });
+      if (response.status === 200) {
+        const klinesData = response.data;
+        klinesData.reverse();
+        const closePrices = klinesData.map((entry) => parseFloat(entry[4]));
 
-      const dataToStore = {
-        [symbol]: { closePrices: closePrices },
-      };
+        const dataToStore = {
+          [symbol]: { closePrices: closePrices },
+        };
 
-      return dataToStore;
-    } else {
-      console.log(`連接幣安K線資料失敗 ${symbol}: ${response.status}`);
-      return null;
+        return dataToStore;
+      } else {
+        console.log(`連接幣安K線資料失敗 ${symbol}: ${response.status}`);
+        return null;
+      }
+    } catch (error) {
+      console.error(`連接幣安K線資料發生錯誤: ${symbol}: ${error}`);
+      retries--; // 減少一次重試機會
+      await sleep(1000 * (4 - retries)); // 遞延重試
     }
-  } catch (error) {
-    console.error(`連接幣安K線資料發生錯誤: ${symbol}: ${error}`);
-    return null;
   }
+  return null; // 如果所有重試都失敗，則返回null
 }
 
 module.exports = {
