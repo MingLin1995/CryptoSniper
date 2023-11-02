@@ -9,7 +9,7 @@ const connectDB = require("./models/mongoDB");
 const userRoutes = require("./routes/userRoutes");
 const trackingRoutes = require("./routes/trackingRoutes");
 const trackingController = require("./controllers/trackingController");
-const { fetchUpdates } = require("./services/telegramBot");
+const telegramBotRoutes = require("./routes/telegramBotRoutes");
 
 const app = express();
 // Connect to MongoDB
@@ -31,6 +31,7 @@ app.use("/api/loadKlinesData", klinesDataRoutes);
 app.use("/api/loadVolumeData", volumeDataRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/track", trackingRoutes);
+app.use("/telegram-updates", telegramBotRoutes);
 
 // 啟動追踪價格的函數
 setInterval(() => trackingController.trackPrices(), 10000); // 每10秒运行一次
@@ -41,5 +42,4 @@ app.listen(8000, () => {
   Express app listening on port 8000
   －－－－－
   `);
-  fetchUpdates();
 });
