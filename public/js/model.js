@@ -2,34 +2,25 @@
 
 // 取得篩選條件
 function extractFilterConditions() {
-  // 總共有四組參數
   const parameterGroups = 4;
   const intervalsData = [];
 
   for (let i = 1; i <= parameterGroups; i++) {
-    const timeInterval = document.getElementById(`time-interval-${i}`).value; // 取得時框
-    const maParameters = []; // MA的值
-    const comparisonOperator = []; // 比較方法
+    const timeInterval = document.getElementById(`time-interval-${i}`).value;
+    const maParameters = Array.from({ length: parameterGroups }, (_, j) => {
+      const maParamValue = document.getElementById(`MA${i}-${j + 1}`).value;
+      return { value: maParamValue ? parseInt(maParamValue) : null };
+    });
 
-    // 是否有多重比較
+    const comparisonOperator = Array.from({ length: 2 }, (_, j) => ({
+      comparisonOperator: document.getElementById(
+        `comparison-operator-${i}-${j + 1}`
+      ).value,
+    }));
+
     const logicalOperator = document.getElementById(
       `logical-operator-${i}`
     ).value;
-
-    for (let j = 1; j <= parameterGroups; j++) {
-      const maParamValue = document.getElementById(`MA${i}-${j}`).value;
-      maParameters.push({
-        value: maParamValue ? parseInt(maParamValue) : null, // 轉換為整數或設為null
-      });
-    }
-
-    for (let j = 1; j <= 2; j++) {
-      comparisonOperator.push({
-        comparisonOperator: document.getElementById(
-          `comparison-operator-${i}-${j}`
-        ).value,
-      });
-    }
 
     intervalsData.push({
       time_interval: timeInterval,
@@ -61,55 +52,45 @@ function getKlinesData(intervalsData) {
 }
 
 // 計算MA值
+// 計算MA值
 function calculateMA(allKlinesData, intervalsData) {
   const results = {};
 
-  //總共四組intervalsData
-  for (let i = 0; i < intervalsData.length; i++) {
-    const data = intervalsData[i];
-    //console.log(data.time_interval);
+  intervalsData.forEach((data, i) => {
     const timeInterval = data.time_interval;
 
     if (data.param_1 == null) {
-      continue;
+      return;
     }
 
-    //MA參數
-    const params = [];
-    for (let i = 1; i <= 4; i++) {
-      const param = data[`param_${i}`];
-      params.push(param);
-    }
+    const params = [data.param_1, data.param_2, data.param_3, data.param_4];
+    const maxParam = Math.max(...params.filter((param) => param !== null));
 
     if (!results[timeInterval]) {
-      results[timeInterval] = []; // 如果不存在該時間區間的結果，建立該時框
+      results[timeInterval] = [];
     }
 
-    //個別取出標的以及收盤價
-    for (let i = 0; i < allKlinesData[timeInterval].length; i++) {
-      const symbol = Object.keys(allKlinesData[timeInterval][i])[0];
-      const closePrices = allKlinesData[timeInterval][i][symbol]["closePrices"];
-      const maxParam = Math.max(...params.filter((param) => param !== null));
+    allKlinesData[timeInterval].forEach((klineData) => {
+      const symbol = Object.keys(klineData)[0];
+      const closePrices = klineData[symbol]["closePrices"];
+
       if (closePrices.length < maxParam) {
-        continue;
+        return;
       }
 
       const maData = {};
-
-      for (const param of params) {
+      params.forEach((param) => {
         if (param !== null) {
-          //取出對應param數量的K棒
           const dataSlice = closePrices.slice(0, param);
           const ma =
             dataSlice.reduce((acc, val) => acc + val, 0) / dataSlice.length;
           maData[`MA_${param}`] = ma;
         }
-      }
-      //console.log(timeInterval, symbol, maData);
+      });
+
       results[timeInterval].push({ symbol, maData });
-    }
-    //console.log(results);
-  }
+    });
+  });
 
   return results;
 }

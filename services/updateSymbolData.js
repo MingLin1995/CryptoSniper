@@ -1,7 +1,7 @@
 // server.js
 
-const { updateSymbolQuoteVolumeData } = require("./models/fetch24hData");
-const { updateSymbolKlinesData } = require("./models/fetchKlinesData");
+const { updateSymbolQuoteVolumeData } = require("../models/fetch24hData");
+const { updateSymbolKlinesData } = require("../models/fetchKlinesData");
 
 // 時框
 const timeIntervals = {
@@ -40,22 +40,8 @@ async function initialUpdate() {
   }
 }
 
-function scheduleUpdates() {
-  // 24hr Data
-  // setInterval(async () => {
-  //   await updateSymbolQuoteVolumeData();
-  // }, 5 * 60 * 1000); // 轉換為毫秒
-  // Klines Data
-  // for (const [timeInterval, intervalMs] of Object.entries(timeIntervals)) {
-  //   setInterval(async () => {
-  //     await updateSymbolKlinesData(timeInterval);
-  //   }, intervalMs);
-  // }
-}
-
 async function run() {
   await initialUpdate();
-  //scheduleUpdates();
 }
 
 run();

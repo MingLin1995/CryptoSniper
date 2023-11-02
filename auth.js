@@ -8,11 +8,13 @@ exports.verifyToken = async (req, res, next) => {
     const token = req.headers["authorization"];
 
     if (!token) {
-      return res.status(401).json({ error: "Unauthorized" });
+      return res.status(401).json({ error: "無權訪問" });
     }
 
+    //解碼
     const decoded = jwt.verify(token, "secretkey");
 
+    // 根據解碼的 ID 找用戶
     const user = await User.findById(decoded.id);
 
     if (!user || user.token !== token) {
