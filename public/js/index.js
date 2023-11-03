@@ -10,13 +10,9 @@ import {
   displayResults,
 } from "./model.js";
 
-// 取得過濾表單的按鈕
+// 取得篩選器表單的按鈕
 const submitButton = document.querySelector(".filterForm");
-
-// 為按鈕添加「點擊」事件監聽器，當按下按鈕時執行 processForm 函數
 submitButton.addEventListener("click", processForm);
-
-// 主要處理表單的函數，用於獲取篩選條件，呼叫API取得數據，進行數據處理，並在前端顯示結果
 
 async function processForm() {
   const messageElement = document.getElementById("message");

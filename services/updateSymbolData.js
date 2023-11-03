@@ -40,8 +40,6 @@ async function initialUpdate() {
   }
 }
 
-async function run() {
-  await initialUpdate();
-}
+//initialUpdate();
 
-run();
+module.exports = { initialUpdate };

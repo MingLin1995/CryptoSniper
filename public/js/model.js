@@ -52,7 +52,6 @@ function getKlinesData(intervalsData) {
 }
 
 // 計算MA值
-// 計算MA值
 function calculateMA(allKlinesData, intervalsData) {
   const results = {};
 

@@ -42,9 +42,8 @@ async function getSymbolKlinesData(symbolQuoteVolumeData, timeInterval) {
 
   for (const entry of symbolQuoteVolumeData) {
     const data = await fetchKlinesData(entry.symbol, timeInterval);
-    if (data !== null) {
-      results.push(data);
-    }
+    if (data !== null) results.push(data);
+
     // 增加每個標的之間的時間間隔，避免大量呼叫API
     await sleep(1000);
     // 800毫秒，每個時間框架處理時間約4分 AWS 2.5分鐘(0.625倍)

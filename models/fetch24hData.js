@@ -27,21 +27,17 @@ async function fetch24hrData() {
   try {
     const response = await axios.get(`${BASE_URL}/ticker/24hr`);
     if (response.status === 200) {
-      const data24hr = response.data;
-      const symbolQuoteVolumeData = data24hr
+      return response.data
         .map((entry) => ({
           symbol: entry.symbol,
           quote_volume: entry.quoteVolume,
         }))
         .sort((a, b) => b.quote_volume - a.quote_volume);
-      return symbolQuoteVolumeData;
-    } else {
-      return null;
     }
   } catch (error) {
     console.error(`錯誤: ${error}`);
-    return null;
   }
+  return null;
 }
 
 module.exports = {
