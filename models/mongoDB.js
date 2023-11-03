@@ -1,11 +1,22 @@
 // models/mongoDB.js
 
 const mongoose = require("mongoose");
+require("dotenv").config();
 
 const connectDB = async () => {
   try {
     // 連接到MongoDB資料庫，建立CryptoSniper資料庫
-    await mongoose.connect("mongodb://localhost:27017/CryptoSniper", {
+    const username = process.env.DB_USERNAME;
+    const password = process.env.DB_PASSWORD;
+    const dbName = process.env.DB_NAME;
+    const host = process.env.DB_HOST;
+    const port = process.env.DB_PORT;
+
+    const uri = `mongodb://${username}:${encodeURIComponent(
+      password
+    )}@${host}:${port}/${dbName}?authSource=admin`;
+
+    await mongoose.connect(uri, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
     });
