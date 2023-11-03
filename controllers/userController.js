@@ -78,7 +78,7 @@ const logout = async (req, res) => {
 
 const updateTelegramId = async (req, res) => {
   const userId = req.user.id; // 取得當前用戶的 ID
-  const telegramId = req.body;
+  const { telegramId } = req.body;
 
   try {
     await User.findByIdAndUpdate(userId, { telegramId });
