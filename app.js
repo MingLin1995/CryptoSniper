@@ -31,7 +31,7 @@ app.use("/telegram-updates", telegramBotRoutes);
 // 啟動追踪價格的函數
 setInterval(() => trackingController.trackPrices(), 10000); // 每10秒抓一次價格
 
-updateSymbolData.initialUpdate();
+//updateSymbolData.initialUpdate();
 
 app.listen(8000, () => {
   console.log(`

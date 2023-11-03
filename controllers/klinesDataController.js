@@ -1,4 +1,4 @@
-// controllers/.js
+// controllers/klinesDataController
 
 const loadKlinesData = require("../models/loadKlinesData");
 

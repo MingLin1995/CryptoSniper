@@ -1,6 +1,6 @@
 // models/loadVolumeData.js
 
-const loadDataFromRedis = require("./redisModel");
+const { loadDataFromRedis } = require("./redisModel");
 
 async function getVolumeData(results) {
   const symbolQuoteVolumeData = await loadDataFromRedis();
