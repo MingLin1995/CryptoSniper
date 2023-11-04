@@ -103,7 +103,6 @@ function calculateMA(allKlinesData, intervalsData) {
 // 根據MA值進行篩選
 function compareMAValues(maData, intervalsData) {
   const results = {};
-
   for (let i = 0; i < 4; i++) {
     const interval = intervalsData[i];
 
@@ -121,7 +120,6 @@ function compareMAValues(maData, intervalsData) {
       continue;
     }
 
-    //console.log(allMaData);
     for (let j = 0; j < allMaData.length; j++) {
       const symbolMAData = allMaData[j];
       const symbol = symbolMAData["symbol"];
@@ -197,7 +195,15 @@ function getResultsVolume(results) {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(results),
-  }).then((response) => response.json());
+  }).then((response) => {
+    if (!response.ok) {
+      // 若伺服器響應不是 2xx，抛出錯誤
+      return response.json().then((err) => {
+        throw new Error(err.message);
+      });
+    }
+    return response.json(); //會出現錯誤，是因為五分鐘更新一次，所以抓日線資料，會沒有成交量
+  });
 }
 
 // 格式化顯示成交量
@@ -220,7 +226,6 @@ function formatVolume(volume) {
 function displayResults(allResultsVolume) {
   const tbody = document.getElementById("results-tbody"); // 更改此行
   tbody.innerHTML = ""; // 清空現有的内容
-  console.log(allResultsVolume);
 
   if (allResultsVolume.length === 0) {
     const tr = document.createElement("tr");
