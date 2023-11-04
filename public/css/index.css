@@ -61,3 +61,7 @@ body.night-mode #volume-header:hover {
   height: auto;
   margin: 0 auto; /* 進一步確保圖片居中 */
 }
+
+.centered-text {
+  text-align: center;
+}

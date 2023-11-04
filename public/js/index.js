@@ -18,11 +18,14 @@ filterForm.addEventListener("submit", function (event) {
 });
 
 async function processForm() {
+  const resultContainer = document.getElementById("resultContainer");
   const loadingMessageElement = document.getElementById("loading-message");
   const loadingImageContainer = document.querySelector(
     ".loading-image-container"
   );
   const resultsTable = document.getElementById("results-table");
+
+  resultContainer.style.display = "block";
 
   // 當開始處理時，顯示「搜尋中」訊息和動態GIF
   loadingMessageElement.style.display = "block";
