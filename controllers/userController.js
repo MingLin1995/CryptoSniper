@@ -89,4 +89,8 @@ const updateTelegramId = async (req, res) => {
   }
 };
 
-module.exports = { register, login, logout, updateTelegramId };
+const verifyToken = (req, res) => {
+  res.status(200).json({ status: "success", message: "Token 驗證成功" });
+};
+
+module.exports = { register, login, logout, updateTelegramId, verifyToken };

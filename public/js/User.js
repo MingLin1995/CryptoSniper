@@ -4,7 +4,7 @@ document.addEventListener("DOMContentLoaded", () => {
   checkLoginStatus();
 });
 
-function checkLoginStatus() {
+async function checkLoginStatus() {
   const token = localStorage.getItem("token");
   const loginBtn = document.getElementById("loginBtn");
   const logoutBtn = document.getElementById("logoutBtn");
@@ -14,6 +14,28 @@ function checkLoginStatus() {
   );
 
   if (token) {
+    // 驗證token是否有效
+    try {
+      const response = await fetch("/api/users/verifyToken", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: token,
+        },
+      });
+
+      if (!response.ok) {
+        // token無效，清除token並返回
+        localStorage.removeItem("token");
+        localStorage.removeItem("telegramId");
+        throw new Error("Token expired");
+      }
+    } catch (error) {
+      // 處理token過期或其他錯誤
+      console.error(error);
+      return checkLoginStatus(); // 重新檢查登錄狀態
+    }
+
     loginBtn.style.display = "none";
     logoutBtn.style.display = "inline-block";
     trackingForm.style.display = "block";
