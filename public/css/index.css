@@ -1,28 +1,63 @@
 /* public/css/index.css */
 
+/* 確保表格的文字居中 */
+#results-table th,
+#results-table td {
+  text-align: center;
+  vertical-align: middle;
+}
+
+/* 為深色模式下的文字設定一個亮色 */
+body.night-mode #results-table th,
+body.night-mode #results-table td {
+  color: white;
+}
+
+/* 其他原有的 CSS */
 body.night-mode {
   background-color: #343a40;
   color: white;
 }
-.night-mode .modal-content {
+.night-mode .modal-content,
+.night-mode .card,
+.night-mode .list-group-item {
   background-color: #343a40;
   color: white;
 }
-
-.main {
-  padding: 20px;
-  border-radius: 5px;
-  margin-bottom: 20px;
+.night-mode .list-group-item {
+  border-color: #6c757d; /* 設定一個深灰色的邊框顏色 */
 }
 
-/* .main {
-  display: flex;
+/* 為表頭的每一列設定一個固定的寬度 */
+#results-table th:nth-child(1) {
+  width: 50%; /* 根據需要調整 */
 }
 
-.main form {
-  margin-right: 50px;
+#results-table th:nth-child(2) {
+  width: 50%; /* 根據需要調整 */
 }
 
-.filterForm {
-  cursor: pointer;
-} */
+/* 添加懸停效果 */
+#volume-header:hover {
+  cursor: pointer; /* 讓滑鼠懸停時顯示手形圖標 */
+  text-decoration: underline; /* 給文字加上底線 */
+  color: #007bff; /* 將文字顏色更改為淺藍色 */
+}
+
+/* 為深色模式下的懸停效果設定不同的顏色 */
+body.night-mode #volume-header:hover {
+  color: #00d2ff; /* 將文字顏色更改為亮藍色 */
+}
+
+/* 給圖片容器添加樣式 */
+.loading-image-container {
+  width: 100%;
+  text-align: center; /* 將圖片置於容器中間 */
+}
+
+/* 公共圖片樣式 */
+.searching-gif {
+  max-width: 100%;
+  height: auto;
+  margin: 0 auto; /* 進一步確保圖片居中 */
+}
