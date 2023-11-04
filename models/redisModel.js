@@ -61,7 +61,6 @@ function loadKlinesDataFromRedis(timeInterval) {
 }
 
 module.exports = {
-  redis,
   saveDataToRedis,
   loadDataFromRedis,
   saveKlinesDataToRedis,

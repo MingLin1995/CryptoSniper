@@ -18,7 +18,6 @@ filterForm.addEventListener("submit", function (event) {
 });
 
 async function processForm() {
-  const messageElement = document.getElementById("volume-header");
   const loadingMessageElement = document.getElementById("loading-message");
   const loadingImageContainer = document.querySelector(
     ".loading-image-container"
@@ -27,18 +26,32 @@ async function processForm() {
 
   // 當開始處理時，顯示「搜尋中」訊息和動態GIF
   loadingMessageElement.style.display = "block";
-  messageElement.innerHTML = "";
 
   const intervalsData = extractFilterConditions(); // 取得所有篩選條件
 
   try {
-    const allKlinesData = await getKlinesData(intervalsData); // 取得K線資料
+    // 取得K線資料
+    const allKlinesData = await getKlinesData(intervalsData);
+
+    // 檢查是否有為null的時間週期數據
+    for (const key in allKlinesData) {
+      if (allKlinesData[key] === null) {
+        throw new Error(`數據為null: ${key}`);
+      }
+    }
 
     // 計算移動平均值
     const maResults = calculateMA(allKlinesData, intervalsData);
 
     // 對比移動平均值
     const matchingData = compareMAValues(maResults, intervalsData);
+
+    // 檢查 maResults 是否為空對象
+    if (Object.keys(matchingData).length === 0) {
+      resultsTable.style.display = "none";
+      loadingImageContainer.innerHTML = "查無任何標的";
+      return;
+    }
 
     // 找出符合的數據
     const results = findIntersection(matchingData, intervalsData);
@@ -50,8 +63,9 @@ async function processForm() {
     displayResults(allResultsVolume);
     // 隱藏「搜尋中」訊息和動態GIF
     loadingMessageElement.style.display = "none";
-    // 成功的情況下清除錯誤訊息
-    messageElement.innerHTML = "";
+
+    // 確保結果表格是可見的
+    resultsTable.style.display = "table";
   } catch (error) {
     resultsTable.style.display = "none";
     // 錯誤處理
