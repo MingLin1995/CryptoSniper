@@ -10,9 +10,11 @@ const trackingRoutes = require("./routes/trackingRoutes");
 const trackingController = require("./controllers/trackingController");
 const telegramBotRoutes = require("./routes/telegramBotRoutes");
 const updateSymbolData = require("./services/updateSymbolData");
+const { redis } = require("./models/redisModel");
 
 const app = express();
 connectDB();
+redis.ping;
 
 app.use(bodyParser.json());
 
