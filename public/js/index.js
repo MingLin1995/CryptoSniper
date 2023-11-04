@@ -26,6 +26,7 @@ async function processForm() {
 
   // 當開始處理時，顯示「搜尋中」訊息和動態GIF
   loadingMessageElement.style.display = "block";
+  resultsTable.style.display = "none";
 
   const intervalsData = extractFilterConditions(); // 取得所有篩選條件
 
