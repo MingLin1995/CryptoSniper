@@ -218,11 +218,17 @@ function formatVolume(volume) {
 
 // 顯示結果在前端
 function displayResults(allResultsVolume) {
-  const messageDiv = document.getElementById("message");
-  messageDiv.innerHTML = "";
+  const tbody = document.getElementById("results-tbody"); // 更改此行
+  tbody.innerHTML = ""; // 清空現有的内容
+  console.log(allResultsVolume);
 
   if (allResultsVolume.length === 0) {
-    messageDiv.textContent = "查無任何標的";
+    const tr = document.createElement("tr");
+    const tdMessage = document.createElement("td");
+    tdMessage.colSpan = 2;
+    tdMessage.textContent = "查無任何標的";
+    tr.appendChild(tdMessage);
+    tbody.appendChild(tr); // 修正此处
     return;
   }
 
@@ -239,7 +245,7 @@ function displayResults(allResultsVolume) {
       tdVolume.textContent = formatVolume(item.quote_volume);
       tr.appendChild(tdSymbol);
       tr.appendChild(tdVolume);
-      messageDiv.appendChild(tr);
+      tbody.appendChild(tr);
     }
 
     if (currentIndex >= allResultsVolume.length) {
@@ -248,7 +254,7 @@ function displayResults(allResultsVolume) {
       tdEndMessage.colSpan = 2;
       tdEndMessage.textContent = "沒有更多資料了";
       tr.appendChild(tdEndMessage);
-      messageDiv.appendChild(tr);
+      tbody.appendChild(tr); // 修正此处
     }
   };
 
@@ -276,7 +282,7 @@ function displayResults(allResultsVolume) {
         ? a.quote_volume - b.quote_volume
         : b.quote_volume - a.quote_volume
     );
-    messageDiv.innerHTML = ""; // 清空當前的結果
+    tbody.innerHTML = ""; // 清空當前的結果，修正此处
     currentIndex = 0; // 重設索引
     loadMore(); // 重新載入數據
   };

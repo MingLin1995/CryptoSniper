@@ -18,8 +18,12 @@ filterForm.addEventListener("submit", function (event) {
 });
 
 async function processForm() {
-  const messageElement = document.getElementById("message");
+  const messageElement = document.getElementById("volume-header");
   const loadingMessageElement = document.getElementById("loading-message");
+  const loadingImageContainer = document.querySelector(
+    ".loading-image-container"
+  );
+  const resultsTable = document.getElementById("results-table");
 
   // 當開始處理時，顯示「搜尋中」訊息和動態GIF
   loadingMessageElement.style.display = "block";
@@ -49,9 +53,9 @@ async function processForm() {
     // 成功的情況下清除錯誤訊息
     messageElement.innerHTML = "";
   } catch (error) {
+    resultsTable.style.display = "none";
     // 錯誤處理
-    loadingMessageElement.style.display = "none";
-    messageElement.innerHTML =
+    loadingImageContainer.innerHTML =
       "選擇的時間週期資料庫更新中，請稍後再試或是換個時框";
     console.error("錯誤:", error);
   }
