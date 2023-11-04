@@ -1,11 +1,21 @@
 /* public/css/index.css */
 
-body {
-  background-color: black;
+body.night-mode {
+  background-color: #343a40;
+  color: white;
+}
+.night-mode .modal-content {
+  background-color: #343a40;
   color: white;
 }
 
 .main {
+  padding: 20px;
+  border-radius: 5px;
+  margin-bottom: 20px;
+}
+
+/* .main {
   display: flex;
 }
 
@@ -15,4 +25,4 @@ body {
 
 .filterForm {
   cursor: pointer;
-}
+} */
