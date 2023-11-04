@@ -10,16 +10,20 @@ import {
   displayResults,
 } from "./model.js";
 
-// 取得篩選器表單的按鈕
-const submitButton = document.querySelector(".filterForm");
-submitButton.addEventListener("click", processForm);
+// 取得篩選器表單
+const filterForm = document.querySelector('form[name="filterForm"]');
+filterForm.addEventListener("submit", function (event) {
+  event.preventDefault(); // 阻止表單的默認提交行為
+  processForm(); // 調用您的篩選函數
+});
 
 async function processForm() {
   const messageElement = document.getElementById("message");
+  const loadingMessageElement = document.getElementById("loading-message");
 
-  // 當開始處理時，顯示「搜尋中...」訊息，並在下方顯示一個動態GIF
-  messageElement.innerHTML =
-    "搜尋中... <br> <img src='/images/searching.gif' alt='Searching'>";
+  // 當開始處理時，顯示「搜尋中」訊息和動態GIF
+  loadingMessageElement.style.display = "block";
+  messageElement.innerHTML = "";
 
   const intervalsData = extractFilterConditions(); // 取得所有篩選條件
 
@@ -40,7 +44,13 @@ async function processForm() {
 
     // 在前端顯示結果
     displayResults(allResultsVolume);
+    // 隱藏「搜尋中」訊息和動態GIF
+    loadingMessageElement.style.display = "none";
+    // 成功的情況下清除錯誤訊息
+    messageElement.innerHTML = "";
   } catch (error) {
+    // 錯誤處理
+    loadingMessageElement.style.display = "none";
     messageElement.innerHTML =
       "選擇的時間週期資料庫更新中，請稍後再試或是換個時框";
     console.error("錯誤:", error);

@@ -11,12 +11,11 @@
       rel="stylesheet"
     />
   </head>
-  <body class="night-mode">
+  <body>
     <div id="mainContainer" class="container mt-5">
       <h1 class="text-center mb-4">Crypto Sniper</h1>
-      <!-- 增加底部間距 -->
+
       <div class="text-center mb-4">
-        <!-- 增加底部間距 -->
         <!-- 登入和註冊按鈕 -->
         <button
           class="btn btn-primary"
@@ -51,7 +50,7 @@
               </button>
             </div>
             <div class="modal-body">
-              <form id="loginForm">
+              <form id="loginForm" onsubmit="event.preventDefault(); login();">
                 <div class="form-group">
                   <label for="loginEmail">電子郵件：</label>
                   <input
@@ -70,9 +69,7 @@
                     required
                   />
                 </div>
-                <button type="button" class="btn btn-primary" onclick="login()">
-                  登入
-                </button>
+                <button type="submit" class="btn btn-primary">登入</button>
               </form>
               <p class="mt-3">
                 還沒有帳戶?
@@ -100,7 +97,10 @@
               </button>
             </div>
             <div class="modal-body">
-              <form id="registerForm">
+              <form
+                id="registerForm"
+                onsubmit="event.preventDefault(); login();"
+              >
                 <div class="form-group">
                   <label for="registerName">姓名:</label>
                   <input
@@ -131,13 +131,7 @@
                     required
                   />
                 </div>
-                <button
-                  type="button"
-                  class="btn btn-primary"
-                  onclick="register()"
-                >
-                  註冊
-                </button>
+                <button type="submit" class="btn btn-primary">註冊</button>
               </form>
               <p class="mt-3">
                 已經有帳戶了?
@@ -197,7 +191,7 @@
       <!-- 篩選器、圖表 -->
       <h2 class="mb-3">幣安U本位合約篩選器</h2>
       <div class="main">
-        <form name="filterForm" onsubmit="return false">
+        <form name="filterForm" class="mb-4">
           <!-- 第一组參數 -->
           <div class="filter-group">
             <div class="form-group">
@@ -632,11 +626,12 @@
               </div>
             </div>
           </div>
-          <button class="btn btn-primary filterForm">開始篩選</button>
+          <button type="submit" class="btn btn-primary submitButton">
+            開始篩選
+          </button>
         </form>
-
         <!-- TradingView Widget BEGIN -->
-        <div class="tradingview-widget-container">
+        <div class="tradingview-widget-container mb-4">
           <div id="tradingview_0aab0"></div>
           <script
             type="text/javascript"
@@ -649,7 +644,44 @@
         </div>
         <!-- TradingView Widget END -->
       </div>
-      <div id="message"></div>
+      <!-- 篩選結果 -->
+      <div class="result-container">
+        <div class="card">
+          <div class="card-header">
+            <h5>篩選結果</h5>
+          </div>
+          <div class="card-body">
+            <!-- 新增一個用於顯示「搜尋中」訊息和圖片的 div -->
+            <div
+              id="loading-message"
+              style="display: none"
+              class="searching-gif"
+            >
+              <div class="loading-image-container">
+                <p>搜尋中...</p>
+                <img
+                  src="/images/searching.gif"
+                  alt="Searching"
+                  class="searching-gif"
+                />
+              </div>
+            </div>
+            <table class="table" id="results-table">
+              <thead>
+                <tr>
+                  <th scope="col">標的</th>
+                  <th scope="col" class="sortable" id="volume-header">
+                    成交量
+                  </th>
+                </tr>
+              </thead>
+              <tbody id="message">
+                <!-- 您的篩選結果將在這裡顯示 -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
     </div>
 
     <script type="module" src="/js/index.js"></script>

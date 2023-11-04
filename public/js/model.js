@@ -200,24 +200,6 @@ function getResultsVolume(results) {
   }).then((response) => response.json());
 }
 
-// 顯示結果在前端
-function displayResults(allResultsVolume) {
-  const messageDiv = document.getElementById("message");
-  messageDiv.innerHTML = "";
-
-  if (allResultsVolume.length === 0) {
-    messageDiv.textContent = "查無任何標的";
-    return;
-  }
-
-  allResultsVolume.forEach((item) => {
-    const p = document.createElement("p");
-    const volume = formatVolume(item.quote_volume);
-    p.textContent = `標的：${item.symbol} 成交量：${volume}`;
-    messageDiv.appendChild(p);
-  });
-}
-
 // 格式化顯示成交量
 function formatVolume(volume) {
   if (volume >= 100000000) {
@@ -232,6 +214,72 @@ function formatVolume(volume) {
     // 如果成交量小於萬，顯示原始值
     return volume;
   }
+}
+
+// 顯示結果在前端
+function displayResults(allResultsVolume) {
+  const messageDiv = document.getElementById("message");
+  messageDiv.innerHTML = "";
+
+  if (allResultsVolume.length === 0) {
+    messageDiv.textContent = "查無任何標的";
+    return;
+  }
+
+  let currentIndex = 0;
+
+  const loadMore = () => {
+    const endIndex = Math.min(currentIndex + 10, allResultsVolume.length);
+    for (; currentIndex < endIndex; currentIndex++) {
+      const item = allResultsVolume[currentIndex];
+      const tr = document.createElement("tr");
+      const tdSymbol = document.createElement("td");
+      tdSymbol.textContent = item.symbol;
+      const tdVolume = document.createElement("td");
+      tdVolume.textContent = formatVolume(item.quote_volume);
+      tr.appendChild(tdSymbol);
+      tr.appendChild(tdVolume);
+      messageDiv.appendChild(tr);
+    }
+
+    if (currentIndex >= allResultsVolume.length) {
+      const tr = document.createElement("tr");
+      const tdEndMessage = document.createElement("td");
+      tdEndMessage.colSpan = 2;
+      tdEndMessage.textContent = "沒有更多資料了";
+      tr.appendChild(tdEndMessage);
+      messageDiv.appendChild(tr);
+    }
+  };
+
+  loadMore();
+
+  // 移除舊的滾動事件監聽器
+  window.onscroll = null;
+  window.onscroll = function () {
+    if (
+      window.innerHeight + window.scrollY >= document.body.offsetHeight - 5 &&
+      currentIndex < allResultsVolume.length
+    ) {
+      loadMore();
+    }
+  };
+
+  // 排序功能
+  const volumeHeader = document.getElementById("volume-header");
+  let isAscending = false;
+  volumeHeader.onclick = null;
+  volumeHeader.onclick = () => {
+    isAscending = !isAscending;
+    allResultsVolume.sort((a, b) =>
+      isAscending
+        ? a.quote_volume - b.quote_volume
+        : b.quote_volume - a.quote_volume
+    );
+    messageDiv.innerHTML = ""; // 清空當前的結果
+    currentIndex = 0; // 重設索引
+    loadMore(); // 重新載入數據
+  };
 }
 
 export {

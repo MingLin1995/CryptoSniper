@@ -2,7 +2,17 @@
 
 document.addEventListener("DOMContentLoaded", () => {
   checkLoginStatus();
+  applyThemePreference();
 });
+
+function applyThemePreference() {
+  const theme = localStorage.getItem("theme");
+  if (theme === "day-mode") {
+    document.body.classList.remove("night-mode");
+  } else {
+    document.body.classList.add("night-mode");
+  }
+}
 
 async function checkLoginStatus() {
   const token = localStorage.getItem("token");
