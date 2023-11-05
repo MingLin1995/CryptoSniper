@@ -290,6 +290,15 @@ function loadMoreResults(
     tbody.appendChild(tr);
   }
 
+  if (currentIndex >= allResultsVolume.length) {
+    const tr = document.createElement("tr");
+    const tdEndMessage = document.createElement("td");
+    tdEndMessage.colSpan = 2;
+    tdEndMessage.textContent = "沒有更多資料了";
+    tr.appendChild(tdEndMessage);
+    tbody.appendChild(tr);
+  }
+
   return currentIndex; // 返回新的currentIndex值
 }
 
