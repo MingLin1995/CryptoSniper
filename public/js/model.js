@@ -360,7 +360,7 @@ function displayResults(allResultsVolume, intervalsData) {
       intervalsData,
       indexObject,
       loadCount
-    );
+    ); // 重新加載並顯示排序後的結果
     handleScroll(
       tbody,
       allResultsVolume,
@@ -368,6 +368,11 @@ function displayResults(allResultsVolume, intervalsData) {
       indexObject,
       loadCount
     );
+    // 如果有標的，則更新 TradingView Widget
+    if (allResultsVolume.length > 0) {
+      const firstSymbol = allResultsVolume[0].symbol;
+      handleSymbolClick(firstSymbol, intervalsData);
+    }
   };
 
   loadMoreResults(
