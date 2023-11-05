@@ -198,7 +198,6 @@ function getResultsVolume(results) {
     body: JSON.stringify(results),
   }).then((response) => {
     if (!response.ok) {
-      // 若伺服器響應不是 2xx，抛出錯誤
       return response.json().then((err) => {
         throw new Error(err.message);
       });
@@ -223,75 +222,153 @@ function formatVolume(volume) {
   }
 }
 
-// 顯示結果在前端
-function displayResults(allResultsVolume, intervalsData) {
-  const tbody = document.getElementById("results-tbody"); // 更改此行
-  tbody.innerHTML = ""; // 清空現有的内容
+//建立表格
+function createTableRow(item, intervalsData) {
+  // 創建一個表格行並填充數據
+  const tr = document.createElement("tr");
 
-  if (allResultsVolume.length === 0) {
-    const tr = document.createElement("tr");
-    const tdMessage = document.createElement("td");
-    tdMessage.colSpan = 2;
-    tdMessage.textContent = "查無任何標的";
-    tr.appendChild(tdMessage);
-    tbody.appendChild(tr); // 修正此处
-    return;
+  // 創建標的名稱的列
+  const tdSymbol = document.createElement("td");
+  tdSymbol.textContent = item.symbol;
+  tdSymbol.id = "symbol-column";
+  tdSymbol.addEventListener("click", function () {
+    handleSymbolClick(item.symbol, intervalsData);
+  });
+
+  // 創建交易量的列
+  const tdVolume = document.createElement("td");
+  tdVolume.textContent = formatVolume(item.quote_volume);
+
+  // 將這兩列添加到行中
+  tr.appendChild(tdSymbol);
+  tr.appendChild(tdVolume);
+
+  return tr; // 返回已創建的行
+}
+
+// 點擊標的
+function handleSymbolClick(symbol, intervalsData) {
+  const clickedSymbol = `BINANCE:${symbol}.P`;
+  createTradingViewWidget(intervalsData, clickedSymbol);
+  document.getElementById("targetSymbol").value = symbol;
+
+  // 增加一個延遲，以確保頁面已經動態加載並渲染
+  setTimeout(() => {
+    const targetElement = document.getElementById("tradingViewContainer");
+
+    targetElement.style.display = "block";
+
+    // 獲取元素相對於視窗的位置
+    const rect = targetElement.getBoundingClientRect();
+    const offset = rect.top + window.scrollY;
+
+    // 計算並滾動到元素應該在的位置
+    const offsetPosition =
+      offset - window.innerHeight / 2 + targetElement.clientHeight / 2;
+
+    window.scrollTo({
+      top: offsetPosition,
+      behavior: "smooth",
+    });
+  }, 100);
+}
+
+// 載入更多
+function loadMoreResults(
+  tbody,
+  allResultsVolume,
+  intervalsData,
+  currentIndex,
+  loadCount
+) {
+  // 載入更多的結果到表格中
+  const endIndex = Math.min(currentIndex + loadCount, allResultsVolume.length);
+
+  for (; currentIndex < endIndex; currentIndex++) {
+    const item = allResultsVolume[currentIndex];
+    const tr = createTableRow(item, intervalsData);
+    tbody.appendChild(tr);
   }
 
-  let currentIndex = 0;
+  if (currentIndex >= allResultsVolume.length) {
+    const tr = document.createElement("tr");
+    const tdEndMessage = document.createElement("td");
+    tdEndMessage.colSpan = 2;
+    tdEndMessage.textContent = "沒有更多資料了";
+    tr.appendChild(tdEndMessage);
+    tbody.appendChild(tr);
+  }
 
-  const loadMore = () => {
-    const endIndex = Math.min(currentIndex + 10, allResultsVolume.length);
-    for (; currentIndex < endIndex; currentIndex++) {
-      const item = allResultsVolume[currentIndex];
-      const tr = document.createElement("tr");
+  return currentIndex; // 返回新的currentIndex值
+}
 
-      const tdSymbol = document.createElement("td");
-      tdSymbol.textContent = item.symbol;
-      tdSymbol.style.cursor = "pointer"; // 讓光標變為手指
-      tdSymbol.addEventListener("click", function () {
-        const clickedSymbol = `BINANCE:${item.symbol}.P`;
-        // 使用 intervalsData 和 clickedSymbol 更新圖表
-        createTradingViewWidget(intervalsData, clickedSymbol);
-      });
+// 排序功能
+function sortResultsByVolume(allResultsVolume, isAscending) {
+  return allResultsVolume.sort((a, b) =>
+    isAscending
+      ? a.quote_volume - b.quote_volume
+      : b.quote_volume - a.quote_volume
+  );
+}
 
-      const tdVolume = document.createElement("td");
-      tdVolume.textContent = formatVolume(item.quote_volume);
-
-      tr.appendChild(tdSymbol);
-      tr.appendChild(tdVolume);
-      tbody.appendChild(tr);
-    }
-  };
-
-  loadMore();
-
-  // 移除舊的滾動事件監聽器
-  window.onscroll = null;
+// 滾動加載功能
+function handleScroll(
+  tbody,
+  allResultsVolume,
+  intervalsData,
+  currentIndex,
+  loadCount
+) {
   window.onscroll = function () {
     if (
       window.innerHeight + window.scrollY >= document.body.offsetHeight - 5 &&
       currentIndex < allResultsVolume.length
     ) {
-      loadMore();
+      currentIndex = loadMoreResults(
+        tbody,
+        allResultsVolume,
+        intervalsData,
+        currentIndex,
+        loadCount
+      );
     }
   };
+}
+
+// 前端畫面顯示
+function displayResults(allResultsVolume, intervalsData) {
+  const tbody = document.getElementById("results-tbody");
+  tbody.innerHTML = "";
+  let currentIndex = 0;
+  const loadCount = 10;
 
   // 排序功能
   const volumeHeader = document.getElementById("volume-header");
   let isAscending = false;
-  volumeHeader.onclick = null;
   volumeHeader.onclick = () => {
     isAscending = !isAscending;
-    allResultsVolume.sort((a, b) =>
-      isAscending
-        ? a.quote_volume - b.quote_volume
-        : b.quote_volume - a.quote_volume
-    );
-    tbody.innerHTML = ""; // 清空當前的結果，修正此处
-    currentIndex = 0; // 重設索引
-    loadMore(); // 重新載入數據
+    allResultsVolume = sortResultsByVolume(allResultsVolume, isAscending);
+    tbody.innerHTML = ""; // 清空當前的表格內容
+    currentIndex = 0; // 重置currentIndex為0
+    currentIndex = loadMoreResults(
+      tbody,
+      allResultsVolume,
+      intervalsData,
+      currentIndex,
+      loadCount
+    ); // 重新加載並顯示排序後的結果
   };
+
+  currentIndex = loadMoreResults(
+    tbody,
+    allResultsVolume,
+    intervalsData,
+    currentIndex,
+    loadCount
+  );
+
+  // 滾動加載功能
+  handleScroll(tbody, allResultsVolume, intervalsData, currentIndex, loadCount);
 }
 
 export {

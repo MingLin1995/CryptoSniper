@@ -13,7 +13,6 @@ body.night-mode #results-table td {
   color: white;
 }
 
-/* 其他原有的 CSS */
 body.night-mode {
   background-color: #343a40;
   color: white;
@@ -25,41 +24,40 @@ body.night-mode {
   color: white;
 }
 .night-mode .list-group-item {
-  border-color: #6c757d; /* 設定一個深灰色的邊框顏色 */
+  border-color: #6c757d;
 }
 
-/* 為表頭的每一列設定一個固定的寬度 */
+/* 表頭固定寬度 */
 #results-table th:nth-child(1) {
-  width: 50%; /* 根據需要調整 */
+  width: 50%;
 }
-
 #results-table th:nth-child(2) {
-  width: 50%; /* 根據需要調整 */
+  width: 50%;
 }
 
-/* 添加懸停效果 */
-#volume-header:hover {
-  cursor: pointer; /* 讓滑鼠懸停時顯示手形圖標 */
-  text-decoration: underline; /* 給文字加上底線 */
+#volume-header:hover,
+#symbol-column:hover {
+  cursor: pointer;
   color: #007bff; /* 將文字顏色更改為淺藍色 */
 }
 
 /* 為深色模式下的懸停效果設定不同的顏色 */
-body.night-mode #volume-header:hover {
+body.night-mode #volume-header:hover,
+body.night-mode #symbol-column:hover {
   color: #00d2ff; /* 將文字顏色更改為亮藍色 */
 }
 
-/* 給圖片容器添加樣式 */
+/* 圖片容器 */
 .loading-image-container {
   width: 100%;
-  text-align: center; /* 將圖片置於容器中間 */
+  text-align: center;
 }
 
-/* 公共圖片樣式 */
+/* 搜尋圖片樣式 */
 .searching-gif {
   max-width: 100%;
   height: auto;
-  margin: 0 auto; /* 進一步確保圖片居中 */
+  margin: 0 auto;
 }
 
 .centered-text {

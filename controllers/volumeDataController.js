@@ -12,5 +12,4 @@ async function handleLoadVolumeRequest(req, res) {
   }
 }
 
-// 將此控制器的函數導出，供路由使用
 module.exports = { handleLoadVolumeRequest };
