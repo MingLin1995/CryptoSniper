@@ -244,6 +244,7 @@ function displayResults(allResultsVolume) {
     for (; currentIndex < endIndex; currentIndex++) {
       const item = allResultsVolume[currentIndex];
       const tr = document.createElement("tr");
+
       const tdSymbol = document.createElement("td");
       tdSymbol.textContent = item.symbol;
       const tdVolume = document.createElement("td");

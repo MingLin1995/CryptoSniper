@@ -65,3 +65,7 @@ body.night-mode #volume-header:hover {
 .centered-text {
   text-align: center;
 }
+
+.tradingview-widget-container {
+  height: 60vh;
+}
