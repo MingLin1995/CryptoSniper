@@ -1,4 +1,5 @@
 // public/js/model.js
+import { createTradingViewWidget } from "./tradingViewConfig.js";
 
 // 取得篩選條件
 function extractFilterConditions() {
@@ -52,7 +53,6 @@ function getKlinesData(intervalsData) {
 }
 
 // 計算MA值
-// 計算MA值
 function calculateMA(allKlinesData, intervalsData) {
   const results = {};
 
@@ -78,6 +78,12 @@ function calculateMA(allKlinesData, intervalsData) {
         return;
       }
 
+      // 檢查 allKlinesData[timeInterval] 是否存在
+      if (!allKlinesData[timeInterval]) {
+        console.error(`Error: allKlinesData[${timeInterval}] is undefined`);
+        return;
+      }
+
       const maData = {};
       params.forEach((param) => {
         if (param !== null) {
@@ -98,7 +104,6 @@ function calculateMA(allKlinesData, intervalsData) {
 // 根據MA值進行篩選
 function compareMAValues(maData, intervalsData) {
   const results = {};
-
   for (let i = 0; i < 4; i++) {
     const interval = intervalsData[i];
 
@@ -116,7 +121,6 @@ function compareMAValues(maData, intervalsData) {
       continue;
     }
 
-    //console.log(allMaData);
     for (let j = 0; j < allMaData.length; j++) {
       const symbolMAData = allMaData[j];
       const symbol = symbolMAData["symbol"];
@@ -192,24 +196,13 @@ function getResultsVolume(results) {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(results),
-  }).then((response) => response.json());
-}
-
-// 顯示結果在前端
-function displayResults(allResultsVolume) {
-  const messageDiv = document.getElementById("message");
-  messageDiv.innerHTML = "";
-
-  if (allResultsVolume.length === 0) {
-    messageDiv.textContent = "查無任何標的";
-    return;
-  }
-
-  allResultsVolume.forEach((item) => {
-    const p = document.createElement("p");
-    const volume = formatVolume(item.quote_volume);
-    p.textContent = `標的：${item.symbol} 成交量：${volume}`;
-    messageDiv.appendChild(p);
+  }).then((response) => {
+    if (!response.ok) {
+      return response.json().then((err) => {
+        throw new Error(err.message);
+      });
+    }
+    return response.json(); //會出現錯誤，是因為五分鐘更新一次，所以抓日線資料，會沒有成交量
   });
 }
 
@@ -227,6 +220,77 @@ function formatVolume(volume) {
     // 如果成交量小於萬，顯示原始值
     return volume;
   }
+}
+
+// 顯示結果在前端
+function displayResults(allResultsVolume, intervalsData) {
+  const tbody = document.getElementById("results-tbody");
+  tbody.innerHTML = "";
+
+  if (allResultsVolume.length === 0) {
+    const tr = document.createElement("tr");
+    const tdMessage = document.createElement("td");
+    tdMessage.colSpan = 2;
+    tdMessage.textContent = "查無任何標的";
+    tr.appendChild(tdMessage);
+    tbody.appendChild(tr);
+    return;
+  }
+
+  let currentIndex = 0;
+
+  const loadMore = () => {
+    const endIndex = Math.min(currentIndex + 10, allResultsVolume.length);
+    for (; currentIndex < endIndex; currentIndex++) {
+      const item = allResultsVolume[currentIndex];
+      const tr = document.createElement("tr");
+
+      const tdSymbol = document.createElement("td");
+      tdSymbol.textContent = item.symbol;
+      tdSymbol.id = "symbol-column";
+      tdSymbol.addEventListener("click", function () {
+        const clickedSymbol = `BINANCE:${item.symbol}.P`;
+        // 更新圖表
+        createTradingViewWidget(intervalsData, clickedSymbol);
+      });
+
+      const tdVolume = document.createElement("td");
+      tdVolume.textContent = formatVolume(item.quote_volume);
+
+      tr.appendChild(tdSymbol);
+      tr.appendChild(tdVolume);
+      tbody.appendChild(tr);
+    }
+  };
+
+  loadMore();
+
+  // 移除舊的滾動事件監聽器
+  window.onscroll = null;
+  window.onscroll = function () {
+    if (
+      window.innerHeight + window.scrollY >= document.body.offsetHeight - 5 &&
+      currentIndex < allResultsVolume.length
+    ) {
+      loadMore();
+    }
+  };
+
+  // 排序功能
+  const volumeHeader = document.getElementById("volume-header");
+  let isAscending = false;
+  volumeHeader.onclick = null;
+  volumeHeader.onclick = () => {
+    isAscending = !isAscending;
+    allResultsVolume.sort((a, b) =>
+      isAscending
+        ? a.quote_volume - b.quote_volume
+        : b.quote_volume - a.quote_volume
+    );
+    tbody.innerHTML = "";
+    currentIndex = 0;
+    loadMore();
+  };
 }
 
 export {

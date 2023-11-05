@@ -3,7 +3,6 @@
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt"); //用來密碼加密
 
-// 定義一個用戶的資料模型結構 (Schema)
 const UserSchema = new mongoose.Schema({
   name: { type: String, required: true },
   email: { type: String, required: true, unique: true },

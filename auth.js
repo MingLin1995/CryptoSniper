@@ -2,8 +2,11 @@
 
 const jwt = require("jsonwebtoken");
 const User = require("./models/User");
+require("dotenv").config();
 
-exports.verifyToken = async (req, res, next) => {
+const secretKey = process.env.JWT_SECRET_KEY;
+
+const verifyToken = async (req, res, next) => {
   try {
     const token = req.headers["authorization"];
 
@@ -12,13 +15,13 @@ exports.verifyToken = async (req, res, next) => {
     }
 
     //解碼
-    const decoded = jwt.verify(token, "secretkey");
+    const decoded = jwt.verify(token, secretKey);
 
     // 根據解碼的 ID 找用戶
     const user = await User.findById(decoded.id);
 
     if (!user || user.token !== token) {
-      return res.status(401).json({ error: "Invalid token" });
+      return res.status(401).json({ error: "token 不正確" });
     }
 
     req.user = user;
@@ -27,3 +30,5 @@ exports.verifyToken = async (req, res, next) => {
     res.status(500).json({ error: error.message });
   }
 };
+
+module.exports = verifyToken;

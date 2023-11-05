@@ -6,338 +6,678 @@
     <title>Crypto Sniper</title>
     <link rel="icon" type="image/x-icon" href="/images/icon.png" />
     <link rel="stylesheet" href="/css/index.css" />
+    <link
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
   </head>
   <body>
-    <h1>Crypto Sniper</h1>
-    <!-- 註冊 -->
-    <h2>會員註冊</h2>
-    <form id="registerForm">
-      <label for="registerName">姓名:</label>
-      <input type="text" id="registerName" name="name" required /><br /><br />
-      <label for="registerEmail">電子郵件:</label>
-      <input
-        type="email"
-        id="registerEmail"
-        name="email"
-        required
-      /><br /><br />
-      <label for="registerPassword">密碼:</label>
-      <input
-        type="password"
-        id="registerPassword"
-        name="password"
-        required
-      /><br /><br />
-      <button type="button" onclick="register()">註冊</button>
-    </form>
-    <!-- 登入 -->
-    <h2>登入</h2>
-    <form id="loginForm">
-      <label for="loginEmail">電子郵件：</label>
-      <input type="email" id="loginEmail" required /><br /><br />
-      <label for="loginPassword">密碼：</label>
-      <input type="password" id="loginPassword" required /><br /><br />
-      <button type="button" onclick="login()">登入</button>
-    </form>
-    <p id="loginMessage"></p>
-    <!-- 登出 -->
-    <button id="logoutBtn" onclick="logout()">登出</button>
-    <!-- 到價通知 -->
-    <form id="trackingForm">
-      <label for="telegramId">Telegram ID:</label>
-      <input
-        type="text"
-        id="telegramId"
-        name="telegramId"
-        required
-      /><br /><br />
+    <div id="mainContainer" class="container mt-5">
+      <h1 class="text-center mb-4">Crypto Sniper</h1>
 
-      <label for="targetSymbol">Target Symbol (e.g., BTCUSDT):</label>
-      <input
-        type="text"
-        id="targetSymbol"
-        name="targetSymbol"
-        required
-      /><br /><br />
+      <div class="text-center mb-4">
+        <!-- 登入和註冊按鈕 -->
+        <button
+          class="btn btn-primary"
+          id="loginBtn"
+          data-toggle="modal"
+          data-target="#loginModal"
+        >
+          註冊/登入
+        </button>
 
-      <label for="targetPrice">Target Price:</label>
-      <input
-        type="number"
-        id="targetPrice"
-        name="targetPrice"
-        required
-      /><br /><br />
-      <!-- 在您的HTML中 -->
-      <button onclick="trackPrice(event)">Track Price</button>
-    </form>
+        <!-- 登出按鈕 -->
+        <button
+          class="btn btn-danger"
+          id="logoutBtn"
+          onclick="logout()"
+          style="display: none"
+        >
+          登出
+        </button>
 
-    <!-- 篩選器、圖表 -->
-    <h2>幣安U本位合約篩選器</h2>
-    <div class="main">
-      <form name="filterForm" onsubmit="return false">
-        <!-- 第一组參數 -->
-        <div class="filter-group">
-          <label for="time-interval-1">時間週期：</label>
-          <select id="time-interval-1" name="time-interval-1">
-            <option value="5m">5分鐘</option>
-            <option value="15m" selected>15分鐘</option>
-            <option value="30m">30分鐘</option>
-            <option value="1h">1小時</option>
-            <option value="2h">2小時</option>
-            <option value="4h">4小時</option>
-            <option value="6h">6小時</option>
-            <option value="8h">8小時</option>
-            <option value="12h">12小時</option>
-            <option value="1d">1天</option>
-            <option value="3d">3天</option>
-            <option value="1w">1周</option>
-            <option value="1M">1個月</option></select
-          ><br />
+        <button class="btn btn-secondary" id="toggleThemeBtn">背景切換</button>
+      </div>
 
+      <!-- Login Modal -->
+      <div class="modal" id="loginModal">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">登入</h5>
+              <button type="button" class="close" data-dismiss="modal">
+                &times;
+              </button>
+            </div>
+            <div class="modal-body">
+              <form id="loginForm" onsubmit="event.preventDefault(); login();">
+                <div class="form-group">
+                  <label for="loginEmail">電子郵件：</label>
+                  <input
+                    type="email"
+                    class="form-control"
+                    id="loginEmail"
+                    required
+                  />
+                </div>
+                <div class="form-group">
+                  <label for="loginPassword">密碼：</label>
+                  <input
+                    type="password"
+                    class="form-control"
+                    id="loginPassword"
+                    required
+                  />
+                </div>
+                <button type="submit" class="btn btn-primary">登入</button>
+              </form>
+              <p class="mt-3">
+                還沒有帳戶?
+                <a
+                  href="#"
+                  data-dismiss="modal"
+                  data-toggle="modal"
+                  data-target="#registerModal"
+                  >點此註冊</a
+                >
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Register Modal -->
+      <div class="modal" id="registerModal">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">會員註冊</h5>
+              <button type="button" class="close" data-dismiss="modal">
+                &times;
+              </button>
+            </div>
+            <div class="modal-body">
+              <form
+                id="registerForm"
+                onsubmit="event.preventDefault(); login();"
+              >
+                <div class="form-group">
+                  <label for="registerName">姓名:</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="registerName"
+                    name="name"
+                    required
+                  />
+                </div>
+                <div class="form-group">
+                  <label for="registerEmail">電子郵件:</label>
+                  <input
+                    type="email"
+                    class="form-control"
+                    id="registerEmail"
+                    name="email"
+                    required
+                  />
+                </div>
+                <div class="form-group">
+                  <label for="registerPassword">密碼:</label>
+                  <input
+                    type="password"
+                    class="form-control"
+                    id="registerPassword"
+                    name="password"
+                    required
+                  />
+                </div>
+                <button type="submit" class="btn btn-primary">註冊</button>
+              </form>
+              <p class="mt-3">
+                已經有帳戶了?
+                <a
+                  href="#"
+                  data-dismiss="modal"
+                  data-toggle="modal"
+                  data-target="#loginModal"
+                  >點此登入</a
+                >
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 到價通知 -->
+      <form id="trackingForm" class="mb-4" style="display: none">
+        <div class="form-group">
+          <label for="telegramId">Telegram ID:</label>
           <input
             type="text"
-            id="MA1-1"
-            name="MA1-1"
-            placeholder="MA參數一"
-            value="25"
+            id="telegramId"
+            name="telegramId"
+            class="form-control"
+            required
           />
-
-          <label for="comparison-operator-1-1"></label>
-          <select id="comparison-operator-1-1" name="comparison-operator-1-1">
-            <option value=">">大於</option>
-            <option value="<">小於</option>
-            <option value="==">等於</option>
-            <option value=">=">大於等於</option>
-            <option value="<=">小於等於</option>
-            <option value="!==">不等於</option>
-          </select>
-
-          <input
-            type="text"
-            id="MA1-2"
-            name="MA1-2"
-            placeholder="MA參數二"
-            value="60"
-          /><br />
-
-          <label for="logical-operator-1"></label>
-          <select id="logical-operator-1" name="logical-operator-1">
-            <option value="and">且</option>
-            <option value="or">或</option></select
-          ><br />
-
-          <input type="text" id="MA1-3" name="MA1-3" placeholder="MA參數三" />
-
-          <label for="comparison-operator-1-2"></label>
-          <select id="comparison-operator-1-2" name="comparison-operator-1-2">
-            <option value=">">大於</option>
-            <option value="<">小於</option>
-            <option value="==">等於</option>
-            <option value=">=">大於等於</option>
-            <option value="<=">小於等於</option>
-            <option value="!==">不等於</option>
-          </select>
-
-          <input type="text" id="MA1-4" name="MA1-4" placeholder="MA參數四" />
-        </div>
-        <br />
-        <!-- 第二组參數 -->
-        <div class="filter-group">
-          <label for="time-interval-2">時間週期：</label>
-          <select id="time-interval-2" name="time-interval-2">
-            <option value="5m">5分鐘</option>
-            <option value="15m">15分鐘</option>
-            <option value="30m">30分鐘</option>
-            <option value="1h" selected>1小時</option>
-            <option value="2h">2小時</option>
-            <option value="4h">4小時</option>
-            <option value="6h">6小時</option>
-            <option value="8h">8小時</option>
-            <option value="12h">12小時</option>
-            <option value="1d">1天</option>
-            <option value="3d">3天</option>
-            <option value="1w">1周</option>
-            <option value="1M">1個月</option></select
-          ><br />
-
-          <input type="text" id="MA2-1" name="MA2-1" placeholder="MA參數一" />
-
-          <label for="comparison-operator-2-1"></label>
-          <select id="comparison-operator-2-1" name="comparison-operator-2-1">
-            <option value=">">大於</option>
-            <option value="<">小於</option>
-            <option value="==">等於</option>
-            <option value=">=">大於等於</option>
-            <option value="<=">小於等於</option>
-            <option value="!==">不等於</option>
-          </select>
-
-          <input
-            type="text"
-            id="MA2-2"
-            name="MA2-2"
-            placeholder="MA參數二"
-          /><br />
-
-          <label for="logical-operator-2"></label>
-          <select id="logical-operator-2" name="logical-operator-2">
-            <option value="and">且</option>
-            <option value="or">或</option></select
-          ><br />
-
-          <input type="text" id="MA2-3" name="MA2-3" placeholder="MA參數三" />
-
-          <label for="comparison-operator-2-2"></label>
-          <select id="comparison-operator-2-2" name="comparison-operator-2-2">
-            <option value=">">大於</option>
-            <option value="<">小於</option>
-            <option value="==">等於</option>
-            <option value=">=">大於等於</option>
-            <option value="<=">小於等於</option>
-            <option value="!==">不等於</option>
-          </select>
-
-          <input type="text" id="MA2-4" name="MA2-4" placeholder="MA參數四" />
-        </div>
-        <br />
-        <!-- 第三组參數 -->
-        <div class="filter-group">
-          <label for="time-interval-3">時間週期：</label>
-          <select id="time-interval-3" name="time-interval-3">
-            <option value="5m">5分鐘</option>
-            <option value="15m">15分鐘</option>
-            <option value="30m">30分鐘</option>
-            <option value="1h">1小時</option>
-            <option value="2h">2小時</option>
-            <option value="4h" selected>4小時</option>
-            <option value="6h">6小時</option>
-            <option value="8h">8小時</option>
-            <option value="12h">12小時</option>
-            <option value="1d">1天</option>
-            <option value="3d">3天</option>
-            <option value="1w">1周</option>
-            <option value="1M">1個月</option></select
-          ><br />
-
-          <input type="text" id="MA3-1" name="MA3-1" placeholder="MA參數一" />
-
-          <label for="comparison-operator-3-1"></label>
-          <select id="comparison-operator-3-1" name="comparison-operator-3-1">
-            <option value=">">大於</option>
-            <option value="<">小於</option>
-            <option value="==">等於</option>
-            <option value=">=">大於等於</option>
-            <option value="<=">小於等於</option>
-            <option value="!==">不等於</option>
-          </select>
-
-          <input
-            type="text"
-            id="MA3-2"
-            name="MA3-2"
-            placeholder="MA參數二"
-          /><br />
-
-          <label for="logical-operator-3"></label>
-          <select id="logical-operator-3" name="logical-operator-3">
-            <option value="and">且</option>
-            <option value="or">或</option></select
-          ><br />
-
-          <input type="text" id="MA3-3" name="MA3-3" placeholder="MA參數三" />
-
-          <label for="comparison-operator-3-2"></label>
-          <select id="comparison-operator-3-2" name="comparison-operator-3-2">
-            <option value=">">大於</option>
-            <option value="<">小於</option>
-            <option value="==">等於</option>
-            <option value=">=">大於等於</option>
-            <option value="<=">小於等於</option>
-            <option value="!==">不等於</option>
-          </select>
-
-          <input type="text" id="MA3-4" name="MA3-4" placeholder="MA參數四" />
-        </div>
-        <br />
-        <!-- 第四组參數 -->
-        <div class="filter-group">
-          <label for="time-interval-4">時間週期：</label>
-          <select id="time-interval-4" name="time-interval-4">
-            <option value="5m">5分鐘</option>
-            <option value="15m">15分鐘</option>
-            <option value="30m">30分鐘</option>
-            <option value="1h">1小時</option>
-            <option value="2h">2小時</option>
-            <option value="4h">4小時</option>
-            <option value="6h">6小時</option>
-            <option value="8h">8小時</option>
-            <option value="12h">12小時</option>
-            <option value="1d" selected>1天</option>
-            <option value="3d">3天</option>
-            <option value="1w">1周</option>
-            <option value="1M">1個月</option></select
-          ><br />
-
-          <input type="text" id="MA4-1" name="MA4-1" placeholder="MA參數一" />
-
-          <label for="comparison-operator-4-1"></label>
-          <select id="comparison-operator-4-1" name="comparison-operator-4-1">
-            <option value=">">大於</option>
-            <option value="<">小於</option>
-            <option value="==">等於</option>
-            <option value=">=">大於等於</option>
-            <option value="<=">小於等於</option>
-            <option value="!==">不等於</option>
-          </select>
-
-          <input
-            type="text"
-            id="MA4-2"
-            name="MA4-2"
-            placeholder="MA參數二"
-          /><br />
-
-          <label for="logical-operator-4"></label>
-          <select id="logical-operator-4" name="logical-operator-4">
-            <option value="and">且</option>
-            <option value="or">或</option></select
-          ><br />
-
-          <input type="text" id="MA4-3" name="MA4-3" placeholder="MA參數三" />
-
-          <label for="comparison-operator-4-2"></label>
-          <select id="comparison-operator-4-2" name="comparison-operator-4-2">
-            <option value=">">大於</option>
-            <option value="<">小於</option>
-            <option value="==">等於</option>
-            <option value=">=">大於等於</option>
-            <option value="<=">小於等於</option>
-            <option value="!==">不等於</option>
-          </select>
-
-          <input type="text" id="MA4-4" name="MA4-4" placeholder="MA參數四" />
         </div>
 
-        <br />
-        <button class="filterForm">開始篩選</button>
+        <div class="form-group">
+          <label for="targetSymbol">Target Symbol (e.g., BTCUSDT):</label>
+          <input
+            type="text"
+            id="targetSymbol"
+            name="targetSymbol"
+            class="form-control"
+            required
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="targetPrice">Target Price:</label>
+          <input
+            type="number"
+            id="targetPrice"
+            name="targetPrice"
+            class="form-control"
+            required
+          />
+        </div>
+
+        <button onclick="trackPrice(event)" class="btn btn-primary">
+          Track Price
+        </button>
       </form>
 
-      <br />
-      <!-- TradingView Widget BEGIN -->
-      <div class="tradingview-widget-container">
-        <div id="tradingview_0aab0"></div>
-        <script
-          type="text/javascript"
-          src="https://s3.tradingview.com/tv.js"
-        ></script>
-        <script type="text/javascript" src="/js/tradingViewConfig.js"></script>
+      <!-- 篩選器、圖表 -->
+      <h2 class="mb-3">幣安U本位合約篩選器</h2>
+      <div class="main">
+        <form name="filterForm" class="mb-4">
+          <!-- 第一组參數 -->
+          <div class="filter-group">
+            <div class="form-group">
+              <label for="time-interval-1">時間週期：</label>
+              <select
+                id="time-interval-1"
+                name="time-interval-1"
+                class="form-control"
+              >
+                <option value="5m">5分鐘</option>
+                <option value="15m" selected>15分鐘</option>
+                <option value="30m">30分鐘</option>
+                <option value="1h">1小時</option>
+                <option value="2h">2小時</option>
+                <option value="4h">4小時</option>
+                <option value="1d">1天</option>
+                <option value="1w">1周</option>
+                <option value="1M">1個月</option>
+              </select>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group col-md-3">
+                <input
+                  type="text"
+                  id="MA1-1"
+                  name="MA1-1"
+                  class="form-control"
+                  placeholder="MA參數一"
+                  value="25"
+                />
+              </div>
+
+              <div class="form-group col-md-3">
+                <select
+                  id="comparison-operator-1-1"
+                  name="comparison-operator-1-1"
+                  class="form-control"
+                >
+                  <option value=">">大於</option>
+                  <option value="<">小於</option>
+                  <option value="==">等於</option>
+                  <option value=">=">大於等於</option>
+                  <option value="<=">小於等於</option>
+                  <option value="!==">不等於</option>
+                </select>
+              </div>
+
+              <div class="form-group col-md-3">
+                <input
+                  type="text"
+                  id="MA1-2"
+                  name="MA1-2"
+                  class="form-control"
+                  placeholder="MA參數二"
+                  value="60"
+                />
+              </div>
+
+              <div class="w-100"></div>
+
+              <div class="form-group col-md-3">
+                <select
+                  id="logical-operator-1"
+                  name="logical-operator-1"
+                  class="form-control"
+                >
+                  <option value="and">且</option>
+                  <option value="or">或</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group col-md-3">
+                <input
+                  type="text"
+                  id="MA1-3"
+                  name="MA1-3"
+                  class="form-control"
+                  placeholder="MA參數三"
+                />
+              </div>
+
+              <div class="form-group col-md-3">
+                <select
+                  id="comparison-operator-1-2"
+                  name="comparison-operator-1-2"
+                  class="form-control"
+                >
+                  <option value=">">大於</option>
+                  <option value="<">小於</option>
+                  <option value="==">等於</option>
+                  <option value=">=">大於等於</option>
+                  <option value="<=">小於等於</option>
+                  <option value="!==">不等於</option>
+                </select>
+              </div>
+
+              <div class="form-group col-md-3">
+                <input
+                  type="text"
+                  id="MA1-4"
+                  name="MA1-4"
+                  class="form-control"
+                  placeholder="MA參數四"
+                />
+              </div>
+            </div>
+          </div>
+          <!-- 第二组參數 -->
+          <div class="filter-group hidden-before-login" style="display: none">
+            <div class="form-group">
+              <label for="time-interval-2">時間週期：</label>
+              <select
+                id="time-interval-2"
+                name="time-interval-2"
+                class="form-control"
+              >
+                <option value="5m">5分鐘</option>
+                <option value="15m" selected>15分鐘</option>
+                <option value="30m">30分鐘</option>
+                <option value="1h">1小時</option>
+                <option value="2h">2小時</option>
+                <option value="4h">4小時</option>
+                <option value="1d">1天</option>
+                <option value="1w">1周</option>
+                <option value="1M">1個月</option>
+              </select>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group col-md-3">
+                <input
+                  type="text"
+                  id="MA2-1"
+                  name="MA2-1"
+                  placeholder="MA參數一"
+                  class="form-control"
+                />
+              </div>
+
+              <div class="form-group col-md-3">
+                <select
+                  id="comparison-operator-2-1"
+                  name="comparison-operator-2-1"
+                  class="form-control"
+                >
+                  <option value=">">大於</option>
+                  <option value="<">小於</option>
+                  <option value="==">等於</option>
+                  <option value=">=">大於等於</option>
+                  <option value="<=">小於等於</option>
+                  <option value="!==">不等於</option>
+                </select>
+              </div>
+
+              <div class="form-group col-md-3">
+                <input
+                  type="text"
+                  id="MA2-2"
+                  name="MA2-2"
+                  placeholder="MA參數二"
+                  class="form-control"
+                />
+              </div>
+
+              <div class="w-100"></div>
+
+              <div class="form-group col-md-3">
+                <select
+                  id="logical-operator-2"
+                  name="logical-operator-2"
+                  class="form-control"
+                >
+                  <option value="and">且</option>
+                  <option value="or">或</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group col-md-3">
+                <input
+                  type="text"
+                  id="MA2-3"
+                  name="MA2-3"
+                  placeholder="MA參數三"
+                  class="form-control"
+                />
+              </div>
+
+              <div class="form-group col-md-3">
+                <select
+                  id="comparison-operator-2-2"
+                  name="comparison-operator-2-2"
+                  class="form-control"
+                >
+                  <option value=">">大於</option>
+                  <option value="<">小於</option>
+                  <option value="==">等於</option>
+                  <option value=">=">大於等於</option>
+                  <option value="<=">小於等於</option>
+                  <option value="!==">不等於</option>
+                </select>
+              </div>
+
+              <div class="form-group col-md-3">
+                <input
+                  type="text"
+                  id="MA2-4"
+                  name="MA2-4"
+                  placeholder="MA參數四"
+                  class="form-control"
+                />
+              </div>
+            </div>
+          </div>
+          <!-- 第三组參數 -->
+          <div class="filter-group hidden-before-login" style="display: none">
+            <div class="form-group">
+              <label for="time-interval-3">時間週期：</label>
+              <select
+                id="time-interval-3"
+                name="time-interval-3"
+                class="form-control"
+              >
+                <option value="5m">5分鐘</option>
+                <option value="15m" selected>15分鐘</option>
+                <option value="30m">30分鐘</option>
+                <option value="1h">1小時</option>
+                <option value="2h">2小時</option>
+                <option value="4h">4小時</option>
+                <option value="1d">1天</option>
+                <option value="1w">1周</option>
+                <option value="1M">1個月</option>
+              </select>
+            </div>
+            <div class="form-row">
+              <div class="form-group col-md-3">
+                <input
+                  type="text"
+                  id="MA3-1"
+                  name="MA3-1"
+                  placeholder="MA參數一"
+                  class="form-control"
+                />
+              </div>
+              <div class="form-group col-md-3">
+                <select
+                  id="comparison-operator-3-1"
+                  name="comparison-operator-3-1"
+                  class="form-control"
+                >
+                  <option value=">">大於</option>
+                  <option value="<">小於</option>
+                  <option value="==">等於</option>
+                  <option value=">=">大於等於</option>
+                  <option value="<=">小於等於</option>
+                  <option value="!==">不等於</option>
+                </select>
+              </div>
+              <div class="form-group col-md-3">
+                <input
+                  type="text"
+                  id="MA3-2"
+                  name="MA3-2"
+                  placeholder="MA參數二"
+                  class="form-control"
+                />
+              </div>
+              <div class="w-100"></div>
+              <div class="form-group col-md-3">
+                <select
+                  id="logical-operator-3"
+                  name="logical-operator-3"
+                  class="form-control"
+                >
+                  <option value="and">且</option>
+                  <option value="or">或</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group col-md-3">
+                <input
+                  type="text"
+                  id="MA3-3"
+                  name="MA3-3"
+                  placeholder="MA參數三"
+                  class="form-control"
+                />
+              </div>
+              <div class="form-group col-md-3">
+                <select
+                  id="comparison-operator-3-2"
+                  name="comparison-operator-3-2"
+                  class="form-control"
+                >
+                  <option value=">">大於</option>
+                  <option value="<">小於</option>
+                  <option value="==">等於</option>
+                  <option value=">=">大於等於</option>
+                  <option value="<=">小於等於</option>
+                  <option value="!==">不等於</option>
+                </select>
+              </div>
+              <div class="form-group col-md-3">
+                <input
+                  type="text"
+                  id="MA3-4"
+                  name="MA3-4"
+                  placeholder="MA參數四"
+                  class="form-control"
+                />
+              </div>
+            </div>
+          </div>
+          <!-- 第四组參數 -->
+          <div class="filter-group hidden-before-login" style="display: none">
+            <div class="form-group">
+              <label for="time-interval-4">時間週期：</label>
+              <select
+                id="time-interval-4"
+                name="time-interval-4"
+                class="form-control"
+              >
+                <option value="5m">5分鐘</option>
+                <option value="15m" selected>15分鐘</option>
+                <option value="30m">30分鐘</option>
+                <option value="1h">1小時</option>
+                <option value="2h">2小時</option>
+                <option value="4h">4小時</option>
+                <option value="1d">1天</option>
+                <option value="1w">1周</option>
+                <option value="1M">1個月</option>
+              </select>
+            </div>
+            <div class="form-row">
+              <div class="form-group col-md-3">
+                <input
+                  type="text"
+                  id="MA4-1"
+                  name="MA4-1"
+                  placeholder="MA參數一"
+                  class="form-control"
+                />
+              </div>
+              <div class="form-group col-md-3">
+                <select
+                  id="comparison-operator-4-1"
+                  name="comparison-operator-4-1"
+                  class="form-control"
+                >
+                  <option value=">">大於</option>
+                  <option value="<">小於</option>
+                  <option value="==">等於</option>
+                  <option value=">=">大於等於</option>
+                  <option value="<=">小於等於</option>
+                  <option value="!==">不等於</option>
+                </select>
+              </div>
+              <div class="form-group col-md-3">
+                <input
+                  type="text"
+                  id="MA4-2"
+                  name="MA4-2"
+                  placeholder="MA參數二"
+                  class="form-control"
+                />
+              </div>
+              <div class="w-100"></div>
+              <div class="form-group col-md-3">
+                <select
+                  id="logical-operator-4"
+                  name="logical-operator-4"
+                  class="form-control"
+                >
+                  <option value="and">且</option>
+                  <option value="or">或</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group col-md-3">
+                <input
+                  type="text"
+                  id="MA4-3"
+                  name="MA4-3"
+                  placeholder="MA參數三"
+                  class="form-control"
+                />
+              </div>
+              <div class="form-group col-md-3">
+                <select
+                  id="comparison-operator-4-2"
+                  name="comparison-operator-4-2"
+                  class="form-control"
+                >
+                  <option value=">">大於</option>
+                  <option value="<">小於</option>
+                  <option value="==">等於</option>
+                  <option value=">=">大於等於</option>
+                  <option value="<=">小於等於</option>
+                  <option value="!==">不等於</option>
+                </select>
+              </div>
+              <div class="form-group col-md-3">
+                <input
+                  type="text"
+                  id="MA4-4"
+                  name="MA4-4"
+                  placeholder="MA參數四"
+                  class="form-control"
+                />
+              </div>
+            </div>
+          </div>
+          <button type="submit" class="btn btn-primary submitButton">
+            開始篩選
+          </button>
+        </form>
+        <!-- TradingView Widget BEGIN -->
+        <div
+          class="tradingview-widget-container mb-4"
+          id="tradingViewContainer"
+          style="display: none"
+        >
+          <div id="tradingview_0aab0"></div>
+          <script
+            type="text/javascript"
+            src="https://s3.tradingview.com/tv.js"
+          ></script>
+          <script
+            type="text/javascript"
+            src="/js/tradingViewConfig.js"
+          ></script>
+        </div>
+        <!-- TradingView Widget END -->
       </div>
-      <!-- TradingView Widget END -->
+      <!-- 篩選結果 -->
+      <div class="result-container" id="resultContainer" style="display: none">
+        <div class="card">
+          <div class="card-header">
+            <h5 class="centered-text">篩選結果</h5>
+          </div>
+          <div class="card-body">
+            <!-- 新增一個用於顯示「搜尋中」訊息和圖片的 div -->
+            <div
+              id="loading-message"
+              style="display: none"
+              class="searching-gif"
+            >
+              <div class="loading-image-container">
+                <p>搜尋中...</p>
+                <img
+                  src="/images/searching.gif"
+                  alt="Searching"
+                  class="searching-gif"
+                />
+              </div>
+            </div>
+            <table class="table" id="results-table">
+              <thead>
+                <tr>
+                  <th scope="col">標的</th>
+                  <th scope="col" class="sortable" id="volume-header">
+                    成交量
+                  </th>
+                </tr>
+              </thead>
+              <tbody id="results-tbody">
+                <!-- 您的篩選結果將在這裡顯示 -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
     </div>
-    <div id="message"></div>
 
     <script type="module" src="/js/index.js"></script>
     <script src="js/User.js"></script>
     <script src="js/Tracking.js"></script>
+    <script src="js/Bootstrap.js"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
   </body>
 </html>

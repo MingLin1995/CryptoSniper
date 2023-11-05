@@ -1,18 +1,69 @@
 /* public/css/index.css */
 
-body {
-  background-color: black;
+/* 確保表格的文字居中 */
+#results-table th,
+#results-table td {
+  text-align: center;
+  vertical-align: middle;
+}
+
+/* 為深色模式下的文字設定一個亮色 */
+body.night-mode #results-table th,
+body.night-mode #results-table td {
   color: white;
 }
 
-.main {
-  display: flex;
+body.night-mode {
+  background-color: #343a40;
+  color: white;
+}
+.night-mode .modal-content,
+.night-mode .card,
+.night-mode .list-group-item {
+  background-color: #343a40;
+  color: white;
+}
+.night-mode .list-group-item {
+  border-color: #6c757d;
 }
 
-.main form {
-  margin-right: 50px;
+/* 表頭固定寬度 */
+#results-table th:nth-child(1) {
+  width: 50%;
+}
+#results-table th:nth-child(2) {
+  width: 50%;
 }
 
-.filterForm {
+#volume-header:hover,
+#symbol-column:hover {
   cursor: pointer;
+  color: #007bff; /* 將文字顏色更改為淺藍色 */
+}
+
+/* 為深色模式下的懸停效果設定不同的顏色 */
+body.night-mode #volume-header:hover,
+body.night-mode #symbol-column:hover {
+  color: #00d2ff; /* 將文字顏色更改為亮藍色 */
+}
+
+/* 圖片容器 */
+.loading-image-container {
+  width: 100%;
+  text-align: center;
+}
+
+/* 搜尋圖片樣式 */
+.searching-gif {
+  max-width: 100%;
+  height: auto;
+  margin: 0 auto;
+}
+
+.centered-text {
+  text-align: center;
+}
+
+.tradingview-widget-container {
+  height: 60vh;
 }

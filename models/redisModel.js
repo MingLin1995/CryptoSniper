@@ -1,8 +1,8 @@
 // models/redisModel.js
 
 const Redis = require("ioredis");
-const REDIS_HOST = "localhost"; // Redis 伺服器地址
-const REDIS_PORT = 6379; // Redis 伺服器端口
+const REDIS_HOST = "localhost";
+const REDIS_PORT = 6379;
 const redis = new Redis(REDIS_PORT, REDIS_HOST); // 建立新的Redis連接
 
 const time_intervals = {
@@ -14,11 +14,11 @@ const time_intervals = {
   "1h": 60,
   "2h": 60 * 2,
   "4h": 60 * 4,
-  "6h": 60 * 6,
-  "8h": 60 * 8,
-  "12h": 60 * 12,
+  //"6h": 60 * 6,
+  //"8h": 60 * 8,
+  //"12h": 60 * 12,
   "1d": 60 * 24,
-  "3d": 60 * 24,
+  //"3d": 60 * 24,
   "1w": 60 * 24,
   "1M": 60 * 24,
 };

@@ -7,7 +7,7 @@ const { sendNotification } = require("./notificationService");
 // 儲存正在執行的 WebSocket 連接
 const activeWebSockets = new Map();
 
-exports.trackPrices = async () => {
+const trackPrices = async () => {
   const trackings = await Tracking.find({});
 
   trackings.forEach((tracking) => {
@@ -59,3 +59,5 @@ exports.trackPrices = async () => {
     });
   });
 };
+
+module.exports = { trackPrices };
