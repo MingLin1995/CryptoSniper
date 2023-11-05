@@ -17,7 +17,11 @@ const time_intervals = {
   "1M": "M",
 };
 
-function createTradingViewWidget(intervalsData) {
+function createTradingViewWidget(intervalsData, symbol = "BINANCE:BTCUSDT.P") {
+  const tradingViewContainer = document.getElementById("tradingViewContainer");
+  // 确保 TradingView 的容器是可见的
+  tradingViewContainer.style.display = "block";
+
   // 计算容器的高度
   const containerHeight = document.querySelector(
     ".tradingview-widget-container"
@@ -85,7 +89,7 @@ function createTradingViewWidget(intervalsData) {
   new TradingView.widget({
     width: "100%",
     height: containerHeight, // 使用计算得到的容器高度
-    symbol: "BINANCE:BTCUSDT.P",
+    symbol: symbol,
     interval: interval.toString(),
     timezone: "Asia/Taipei",
     theme: "dark",

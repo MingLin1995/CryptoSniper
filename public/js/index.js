@@ -70,19 +70,17 @@ async function processForm() {
     const allResultsVolume = await getResultsVolume(results);
 
     // 在前端顯示結果
-    displayResults(allResultsVolume);
+    displayResults(allResultsVolume, intervalsData);
     // 隱藏「搜尋中」訊息和動態GIF
     loadingMessageElement.style.display = "none";
 
     // 確保結果表格是可見的
     resultsTable.style.display = "table";
 
-    // 确保 TradingView 的容器是可见的
-    tradingViewContainer.style.display = "block";
+    const symbol = `BINANCE:${results[0]}.P`;
 
-    // 使用 setTimeout 确保 DOM 更新后再创建图表
     setTimeout(() => {
-      createTradingViewWidget(intervalsData);
+      createTradingViewWidget(intervalsData, symbol);
     }, 0);
   } catch (error) {
     resultsTable.style.display = "none";

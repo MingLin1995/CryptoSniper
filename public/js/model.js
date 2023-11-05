@@ -1,4 +1,5 @@
 // public/js/model.js
+import { createTradingViewWidget } from "./tradingViewConfig.js";
 
 // 取得篩選條件
 function extractFilterConditions() {
@@ -223,7 +224,7 @@ function formatVolume(volume) {
 }
 
 // 顯示結果在前端
-function displayResults(allResultsVolume) {
+function displayResults(allResultsVolume, intervalsData) {
   const tbody = document.getElementById("results-tbody"); // 更改此行
   tbody.innerHTML = ""; // 清空現有的内容
 
@@ -247,20 +248,19 @@ function displayResults(allResultsVolume) {
 
       const tdSymbol = document.createElement("td");
       tdSymbol.textContent = item.symbol;
+      tdSymbol.style.cursor = "pointer"; // 讓光標變為手指
+      tdSymbol.addEventListener("click", function () {
+        const clickedSymbol = `BINANCE:${item.symbol}.P`;
+        // 使用 intervalsData 和 clickedSymbol 更新圖表
+        createTradingViewWidget(intervalsData, clickedSymbol);
+      });
+
       const tdVolume = document.createElement("td");
       tdVolume.textContent = formatVolume(item.quote_volume);
+
       tr.appendChild(tdSymbol);
       tr.appendChild(tdVolume);
       tbody.appendChild(tr);
-    }
-
-    if (currentIndex >= allResultsVolume.length) {
-      const tr = document.createElement("tr");
-      const tdEndMessage = document.createElement("td");
-      tdEndMessage.colSpan = 2;
-      tdEndMessage.textContent = "沒有更多資料了";
-      tr.appendChild(tdEndMessage);
-      tbody.appendChild(tr); // 修正此处
     }
   };
 
