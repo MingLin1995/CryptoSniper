@@ -198,7 +198,6 @@ function getResultsVolume(results) {
     body: JSON.stringify(results),
   }).then((response) => {
     if (!response.ok) {
-      // 若伺服器響應不是 2xx，抛出錯誤
       return response.json().then((err) => {
         throw new Error(err.message);
       });
@@ -225,8 +224,8 @@ function formatVolume(volume) {
 
 // 顯示結果在前端
 function displayResults(allResultsVolume, intervalsData) {
-  const tbody = document.getElementById("results-tbody"); // 更改此行
-  tbody.innerHTML = ""; // 清空現有的内容
+  const tbody = document.getElementById("results-tbody");
+  tbody.innerHTML = "";
 
   if (allResultsVolume.length === 0) {
     const tr = document.createElement("tr");
@@ -234,7 +233,7 @@ function displayResults(allResultsVolume, intervalsData) {
     tdMessage.colSpan = 2;
     tdMessage.textContent = "查無任何標的";
     tr.appendChild(tdMessage);
-    tbody.appendChild(tr); // 修正此处
+    tbody.appendChild(tr);
     return;
   }
 
@@ -248,10 +247,10 @@ function displayResults(allResultsVolume, intervalsData) {
 
       const tdSymbol = document.createElement("td");
       tdSymbol.textContent = item.symbol;
-      tdSymbol.style.cursor = "pointer"; // 讓光標變為手指
+      tdSymbol.id = "symbol-column";
       tdSymbol.addEventListener("click", function () {
         const clickedSymbol = `BINANCE:${item.symbol}.P`;
-        // 使用 intervalsData 和 clickedSymbol 更新圖表
+        // 更新圖表
         createTradingViewWidget(intervalsData, clickedSymbol);
       });
 
@@ -288,9 +287,9 @@ function displayResults(allResultsVolume, intervalsData) {
         ? a.quote_volume - b.quote_volume
         : b.quote_volume - a.quote_volume
     );
-    tbody.innerHTML = ""; // 清空當前的結果，修正此处
-    currentIndex = 0; // 重設索引
-    loadMore(); // 重新載入數據
+    tbody.innerHTML = "";
+    currentIndex = 0;
+    loadMore();
   };
 }
 

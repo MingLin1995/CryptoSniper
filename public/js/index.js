@@ -15,8 +15,8 @@ import { createTradingViewWidget } from "./tradingViewConfig.js";
 // 取得篩選器表單
 const filterForm = document.querySelector('form[name="filterForm"]');
 filterForm.addEventListener("submit", function (event) {
-  event.preventDefault(); // 阻止表單的默認提交行為
-  processForm(); // 調用您的篩選函數
+  event.preventDefault(); // 阻止表單提交
+  processForm();
 });
 
 async function processForm() {
@@ -71,6 +71,7 @@ async function processForm() {
 
     // 在前端顯示結果
     displayResults(allResultsVolume, intervalsData);
+
     // 隱藏「搜尋中」訊息和動態GIF
     loadingMessageElement.style.display = "none";
 
@@ -85,7 +86,6 @@ async function processForm() {
   } catch (error) {
     resultsTable.style.display = "none";
     tradingViewContainer.style.display = "none";
-    // 錯誤處理
     loadingImageContainer.innerHTML =
       "選擇的時間週期資料庫更新中，請稍後再試或是換個時框";
     console.error("錯誤:", error);

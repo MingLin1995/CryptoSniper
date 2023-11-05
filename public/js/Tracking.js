@@ -7,7 +7,7 @@ function trackPrice(event) {
   const targetSymbolInput = document.getElementById("targetSymbol");
   const targetPriceInput = document.getElementById("targetPrice");
 
-  // 獲取用戶輸入的值
+  // 獲取使用者輸入的值
   const telegramId = telegramIdInput.value;
   const targetSymbol = targetSymbolInput.value;
   const targetPrice = targetPriceInput.value;

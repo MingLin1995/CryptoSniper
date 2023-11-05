@@ -1,6 +1,6 @@
 // public/js/tradingViewConfig.js
 
-// 时间间隔与对应的分钟数
+// 時間間隔
 const time_intervals = {
   "5m": 5,
   "15m": 15,
@@ -19,10 +19,9 @@ const time_intervals = {
 
 function createTradingViewWidget(intervalsData, symbol = "BINANCE:BTCUSDT.P") {
   const tradingViewContainer = document.getElementById("tradingViewContainer");
-  // 确保 TradingView 的容器是可见的
   tradingViewContainer.style.display = "block";
 
-  // 计算容器的高度
+  // 計算容器高度
   const containerHeight = document.querySelector(
     ".tradingview-widget-container"
   ).offsetHeight;
@@ -34,10 +33,9 @@ function createTradingViewWidget(intervalsData, symbol = "BINANCE:BTCUSDT.P") {
   const param3 = intervalData["param_3"];
   const param4 = intervalData["param_4"];
 
-  // 创建空数组用于存放 studies
   const studies = [];
 
-  // 根据 param 的值动态添加 studies
+  // 根據 param 的值動態新增 studies
   if (param1 !== null) {
     studies.push({
       name: `Moving Average ${param1}`,
@@ -82,13 +80,13 @@ function createTradingViewWidget(intervalsData, symbol = "BINANCE:BTCUSDT.P") {
     });
   }
 
-  // 根据intervalData中的"time_interval"键的值，从time_intervals中获取对应的分钟数
+  // 取得對應時匡的值
   const timeIntervalKey = timeInterval;
   const interval = time_intervals[timeIntervalKey];
 
   new TradingView.widget({
     width: "100%",
-    height: containerHeight, // 使用计算得到的容器高度
+    height: containerHeight,
     symbol: symbol,
     interval: interval.toString(),
     timezone: "Asia/Taipei",
