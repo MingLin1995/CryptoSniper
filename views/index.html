@@ -150,8 +150,23 @@
 
       <!-- 到價通知 -->
       <form id="trackingForm" class="mb-4" style="display: none">
+        <div class="instructions mb-4">
+          <h5>到價通知機器人設定教學：</h5>
+          <ol>
+            <li>
+              先點選<a
+                href="https://t.me/CryptoSniper_MLvip_Bot"
+                target="_blank"
+                >CryptoSniper</a
+              >加入機器人。
+            </li>
+            <li>點選開始按鈕，會收到歡迎通知，即可看到您的 Telegram ID。</li>
+            <li>輸入Telegram ID、標的名稱、目標價即可。</li>
+          </ol>
+        </div>
+
         <div class="form-group">
-          <label for="telegramId">Telegram ID:</label>
+          <label for="telegramId">Telegram ID：</label>
           <input
             type="text"
             id="telegramId"
@@ -162,7 +177,7 @@
         </div>
 
         <div class="form-group">
-          <label for="targetSymbol">Target Symbol (e.g., BTCUSDT):</label>
+          <label for="targetSymbol">交易對：</label>
           <input
             type="text"
             id="targetSymbol"
@@ -173,7 +188,7 @@
         </div>
 
         <div class="form-group">
-          <label for="targetPrice">Target Price:</label>
+          <label for="targetPrice">目標價：</label>
           <input
             type="number"
             id="targetPrice"
@@ -184,7 +199,7 @@
         </div>
 
         <button onclick="trackPrice(event)" class="btn btn-primary">
-          Track Price
+          到價通知
         </button>
       </form>
 
@@ -220,7 +235,7 @@
                   id="MA1-1"
                   name="MA1-1"
                   class="form-control"
-                  placeholder="MA參數一"
+                  placeholder="請輸入MA"
                   value="25"
                 />
               </div>
@@ -246,7 +261,7 @@
                   id="MA1-2"
                   name="MA1-2"
                   class="form-control"
-                  placeholder="MA參數二"
+                  placeholder="請輸入MA"
                   value="60"
                 />
               </div>
@@ -272,7 +287,7 @@
                   id="MA1-3"
                   name="MA1-3"
                   class="form-control"
-                  placeholder="MA參數三"
+                  placeholder="請輸入MA"
                 />
               </div>
 
@@ -297,7 +312,7 @@
                   id="MA1-4"
                   name="MA1-4"
                   class="form-control"
-                  placeholder="MA參數四"
+                  placeholder="請輸入MA"
                 />
               </div>
             </div>
@@ -312,9 +327,9 @@
                 class="form-control"
               >
                 <option value="5m">5分鐘</option>
-                <option value="15m" selected>15分鐘</option>
+                <option value="15m">15分鐘</option>
                 <option value="30m">30分鐘</option>
-                <option value="1h">1小時</option>
+                <option value="1h" selected>1小時</option>
                 <option value="2h">2小時</option>
                 <option value="4h">4小時</option>
                 <option value="1d">1天</option>
@@ -329,7 +344,7 @@
                   type="text"
                   id="MA2-1"
                   name="MA2-1"
-                  placeholder="MA參數一"
+                  placeholder="請輸入MA"
                   class="form-control"
                 />
               </div>
@@ -354,7 +369,7 @@
                   type="text"
                   id="MA2-2"
                   name="MA2-2"
-                  placeholder="MA參數二"
+                  placeholder="請輸入MA"
                   class="form-control"
                 />
               </div>
@@ -379,7 +394,7 @@
                   type="text"
                   id="MA2-3"
                   name="MA2-3"
-                  placeholder="MA參數三"
+                  placeholder="請輸入MA"
                   class="form-control"
                 />
               </div>
@@ -404,7 +419,7 @@
                   type="text"
                   id="MA2-4"
                   name="MA2-4"
-                  placeholder="MA參數四"
+                  placeholder="請輸入MA"
                   class="form-control"
                 />
               </div>
@@ -420,11 +435,11 @@
                 class="form-control"
               >
                 <option value="5m">5分鐘</option>
-                <option value="15m" selected>15分鐘</option>
+                <option value="15m">15分鐘</option>
                 <option value="30m">30分鐘</option>
                 <option value="1h">1小時</option>
                 <option value="2h">2小時</option>
-                <option value="4h">4小時</option>
+                <option value="4h" selected>4小時</option>
                 <option value="1d">1天</option>
                 <option value="1w">1周</option>
                 <option value="1M">1個月</option>
@@ -436,7 +451,7 @@
                   type="text"
                   id="MA3-1"
                   name="MA3-1"
-                  placeholder="MA參數一"
+                  placeholder="請輸入MA"
                   class="form-control"
                 />
               </div>
@@ -459,7 +474,7 @@
                   type="text"
                   id="MA3-2"
                   name="MA3-2"
-                  placeholder="MA參數二"
+                  placeholder="請輸入MA"
                   class="form-control"
                 />
               </div>
@@ -481,7 +496,7 @@
                   type="text"
                   id="MA3-3"
                   name="MA3-3"
-                  placeholder="MA參數三"
+                  placeholder="請輸入MA"
                   class="form-control"
                 />
               </div>
@@ -504,7 +519,7 @@
                   type="text"
                   id="MA3-4"
                   name="MA3-4"
-                  placeholder="MA參數四"
+                  placeholder="請輸入MA"
                   class="form-control"
                 />
               </div>
@@ -520,12 +535,12 @@
                 class="form-control"
               >
                 <option value="5m">5分鐘</option>
-                <option value="15m" selected>15分鐘</option>
+                <option value="15m">15分鐘</option>
                 <option value="30m">30分鐘</option>
                 <option value="1h">1小時</option>
                 <option value="2h">2小時</option>
                 <option value="4h">4小時</option>
-                <option value="1d">1天</option>
+                <option value="1d" selected>1天</option>
                 <option value="1w">1周</option>
                 <option value="1M">1個月</option>
               </select>
@@ -536,7 +551,7 @@
                   type="text"
                   id="MA4-1"
                   name="MA4-1"
-                  placeholder="MA參數一"
+                  placeholder="請輸入MA"
                   class="form-control"
                 />
               </div>
@@ -559,7 +574,7 @@
                   type="text"
                   id="MA4-2"
                   name="MA4-2"
-                  placeholder="MA參數二"
+                  placeholder="請輸入MA"
                   class="form-control"
                 />
               </div>
@@ -581,7 +596,7 @@
                   type="text"
                   id="MA4-3"
                   name="MA4-3"
-                  placeholder="MA參數三"
+                  placeholder="請輸入MA"
                   class="form-control"
                 />
               </div>
@@ -604,7 +619,7 @@
                   type="text"
                   id="MA4-4"
                   name="MA4-4"
-                  placeholder="MA參數四"
+                  placeholder="請輸入MA"
                   class="form-control"
                 />
               </div>
@@ -621,6 +636,7 @@
           style="display: none"
         >
           <div id="tradingview_0aab0"></div>
+          <div>※此圖表不支援『季度交割合約』、『BUSD交易對』</div>
           <script
             type="text/javascript"
             src="https://s3.tradingview.com/tv.js"

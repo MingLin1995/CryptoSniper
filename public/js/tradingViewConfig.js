@@ -17,85 +17,46 @@ const time_intervals = {
   "1M": "M",
 };
 
+//建立K線圖表
+function generateStudies(params) {
+  const studies = [];
+  params.forEach((param) => {
+    if (param !== null) {
+      studies.push({
+        name: `Moving Average ${param}`,
+        id: "MASimple@tv-basicstudies",
+        type: "moving_average",
+        inputs: {
+          length: param,
+        },
+      });
+    }
+  });
+  return studies;
+}
+
 function createTradingViewWidget(intervalsData, symbol = "BINANCE:BTCUSDT.P") {
   const tradingViewContainer = document.getElementById("tradingViewContainer");
   tradingViewContainer.style.display = "block";
 
-  // 計算容器高度
-  const containerHeight = document.querySelector(
-    ".tradingview-widget-container"
-  ).offsetHeight;
-
   const intervalData = intervalsData[0];
-  const timeInterval = intervalData["time_interval"];
-  const param1 = intervalData["param_1"];
-  const param2 = intervalData["param_2"];
-  const param3 = intervalData["param_3"];
-  const param4 = intervalData["param_4"];
+  const { time_interval, param_1, param_2, param_3, param_4 } = intervalData;
 
-  const studies = [];
-
-  // 根據 param 的值動態新增 studies
-  if (param1 !== null) {
-    studies.push({
-      name: `Moving Average ${param1}`,
-      id: "MASimple@tv-basicstudies",
-      type: "moving_average",
-      inputs: {
-        length: param1,
-      },
-    });
-  }
-
-  if (param2 !== null) {
-    studies.push({
-      name: `Moving Average ${param2}`,
-      id: "MASimple@tv-basicstudies",
-      type: "moving_average",
-      inputs: {
-        length: param2,
-      },
-    });
-  }
-
-  if (param3 !== null) {
-    studies.push({
-      name: `Moving Average ${param3}`,
-      id: "MASimple@tv-basicstudies",
-      type: "moving_average",
-      inputs: {
-        length: param3,
-      },
-    });
-  }
-
-  if (param4 !== null) {
-    studies.push({
-      name: `Moving Average ${param4}`,
-      id: "MASimple@tv-basicstudies",
-      type: "moving_average",
-      inputs: {
-        length: param4,
-      },
-    });
-  }
-
-  // 取得對應時匡的值
-  const timeIntervalKey = timeInterval;
-  const interval = time_intervals[timeIntervalKey];
+  const studies = generateStudies([param_1, param_2, param_3, param_4]);
+  const interval = time_intervals[time_interval];
 
   new TradingView.widget({
     width: "100%",
-    height: containerHeight,
+    height: tradingViewContainer.offsetHeight,
     symbol: symbol,
     interval: interval.toString(),
     timezone: "Asia/Taipei",
     theme: "dark",
     style: "1",
     locale: "zh_TW",
-    enable_publishing: false, //禁用發布圖表功能
-    allow_symbol_change: true, //啟用更改交易對功能
-    container_id: "tradingview_0aab0", //圖表容器ID
+    enable_publishing: false,
+    allow_symbol_change: true,
+    container_id: "tradingview_0aab0",
     studies: studies,
   });
 }
