@@ -10,6 +10,8 @@ import {
   displayResults,
 } from "./model.js";
 
+import { createTradingViewWidget } from "./tradingViewConfig.js";
+
 // 取得篩選器表單
 const filterForm = document.querySelector('form[name="filterForm"]');
 filterForm.addEventListener("submit", function (event) {
@@ -24,12 +26,14 @@ async function processForm() {
     ".loading-image-container"
   );
   const resultsTable = document.getElementById("results-table");
+  const tradingViewContainer = document.getElementById("tradingViewContainer");
 
   resultContainer.style.display = "block";
 
   // 當開始處理時，顯示「搜尋中」訊息和動態GIF
   loadingMessageElement.style.display = "block";
   resultsTable.style.display = "none";
+  tradingViewContainer.style.display = "none";
 
   const intervalsData = extractFilterConditions(); // 取得所有篩選條件
 
@@ -49,10 +53,12 @@ async function processForm() {
 
     // 對比移動平均值
     const matchingData = compareMAValues(maResults, intervalsData);
+    //1M出現錯誤，有可能是因為K線數量不足
 
     // 檢查 maResults 是否為空對象
     if (Object.keys(matchingData).length === 0) {
       resultsTable.style.display = "none";
+      tradingViewContainer.style.display = "none";
       loadingImageContainer.innerHTML = "查無任何標的";
       return;
     }
@@ -64,14 +70,21 @@ async function processForm() {
     const allResultsVolume = await getResultsVolume(results);
 
     // 在前端顯示結果
-    displayResults(allResultsVolume);
+    displayResults(allResultsVolume, intervalsData);
     // 隱藏「搜尋中」訊息和動態GIF
     loadingMessageElement.style.display = "none";
 
     // 確保結果表格是可見的
     resultsTable.style.display = "table";
+
+    const symbol = `BINANCE:${results[0]}.P`;
+
+    setTimeout(() => {
+      createTradingViewWidget(intervalsData, symbol);
+    }, 0);
   } catch (error) {
     resultsTable.style.display = "none";
+    tradingViewContainer.style.display = "none";
     // 錯誤處理
     loadingImageContainer.innerHTML =
       "選擇的時間週期資料庫更新中，請稍後再試或是換個時框";
