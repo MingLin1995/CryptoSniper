@@ -67,3 +67,7 @@ body.night-mode #symbol-column:hover {
 .tradingview-widget-container {
   height: 60vh;
 }
+
+.hidden {
+  display: none !important;
+}

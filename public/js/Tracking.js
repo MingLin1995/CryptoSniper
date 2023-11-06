@@ -30,7 +30,7 @@ function trackPrice(event) {
       return response.json();
     })
     .then((data) => {
-      console.log("Success:", data);
+      //console.log("Success:", data);
       alert("成功設定追蹤");
 
       // 更新用戶的 Telegram ID
@@ -57,7 +57,7 @@ function updateUserTelegramId(telegramId) {
   })
     .then((response) => response.json())
     .then((data) => {
-      console.log(data);
+      //console.log(data);
       // 如果有新的Telegram ID，則更新資料庫和輸入框
       if (data.telegramId) {
         localStorage.setItem("telegramId", data.telegramId);
