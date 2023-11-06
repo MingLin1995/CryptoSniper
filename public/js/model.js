@@ -273,24 +273,35 @@ function handleSymbolClick(symbol, intervalsData) {
   }, 100);
 }
 
+let indexObject = { currentIndex: 0 };
+
 // 載入更多
 function loadMoreResults(
   tbody,
   allResultsVolume,
   intervalsData,
-  currentIndex,
+  indexObject,
   loadCount
 ) {
-  // 載入更多的結果到表格中
-  const endIndex = Math.min(currentIndex + loadCount, allResultsVolume.length);
+  const endIndex = Math.min(
+    indexObject.currentIndex + loadCount,
+    allResultsVolume.length
+  );
 
-  for (; currentIndex < endIndex; currentIndex++) {
-    const item = allResultsVolume[currentIndex];
+  for (; indexObject.currentIndex < endIndex; indexObject.currentIndex++) {
+    const item = allResultsVolume[indexObject.currentIndex];
     const tr = createTableRow(item, intervalsData);
     tbody.appendChild(tr);
   }
 
-  return currentIndex; // 返回新的currentIndex值
+  if (indexObject.currentIndex >= allResultsVolume.length) {
+    const tr = document.createElement("tr");
+    const tdEndMessage = document.createElement("td");
+    tdEndMessage.colSpan = 2;
+    tdEndMessage.textContent = "沒有更多資料了";
+    tr.appendChild(tdEndMessage);
+    tbody.appendChild(tr);
+  }
 }
 
 // 排序功能
@@ -307,19 +318,19 @@ function handleScroll(
   tbody,
   allResultsVolume,
   intervalsData,
-  currentIndex,
+  indexObject,
   loadCount
 ) {
   window.onscroll = function () {
     if (
       window.innerHeight + window.scrollY >= document.body.offsetHeight - 5 &&
-      currentIndex < allResultsVolume.length
+      indexObject.currentIndex < allResultsVolume.length
     ) {
-      currentIndex = loadMoreResults(
+      loadMoreResults(
         tbody,
         allResultsVolume,
         intervalsData,
-        currentIndex,
+        indexObject,
         loadCount
       );
     }
@@ -329,9 +340,11 @@ function handleScroll(
 // 前端畫面顯示
 function displayResults(allResultsVolume, intervalsData) {
   const tbody = document.getElementById("results-tbody");
-  tbody.innerHTML = "";
-  let currentIndex = 0;
+  tbody.innerHTML = ""; // 清空表格
   const loadCount = 10;
+
+  // 重置currentIndex
+  indexObject.currentIndex = 0;
 
   // 排序功能
   const volumeHeader = document.getElementById("volume-header");
@@ -339,27 +352,37 @@ function displayResults(allResultsVolume, intervalsData) {
   volumeHeader.onclick = () => {
     isAscending = !isAscending;
     allResultsVolume = sortResultsByVolume(allResultsVolume, isAscending);
-    tbody.innerHTML = ""; // 清空當前的表格內容
-    currentIndex = 0; // 重置currentIndex為0
-    currentIndex = loadMoreResults(
+    tbody.innerHTML = ""; // 清空表格
+    indexObject.currentIndex = 0; // 重置currentIndex
+    loadMoreResults(
       tbody,
       allResultsVolume,
       intervalsData,
-      currentIndex,
+      indexObject,
       loadCount
     ); // 重新加載並顯示排序後的結果
+    handleScroll(
+      tbody,
+      allResultsVolume,
+      intervalsData,
+      indexObject,
+      loadCount
+    );
+    // 如果有標的，則更新 TradingView Widget
+    if (allResultsVolume.length > 0) {
+      const firstSymbol = allResultsVolume[0].symbol;
+      handleSymbolClick(firstSymbol, intervalsData);
+    }
   };
 
-  currentIndex = loadMoreResults(
+  loadMoreResults(
     tbody,
     allResultsVolume,
     intervalsData,
-    currentIndex,
+    indexObject,
     loadCount
   );
-
-  // 滾動加載功能
-  handleScroll(tbody, allResultsVolume, intervalsData, currentIndex, loadCount);
+  handleScroll(tbody, allResultsVolume, intervalsData, indexObject, loadCount);
 }
 
 export {

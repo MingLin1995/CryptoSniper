@@ -148,61 +148,6 @@
         </div>
       </div>
 
-      <!-- 到價通知 -->
-      <form id="trackingForm" class="mb-4" style="display: none">
-        <div class="instructions mb-4">
-          <h5>到價通知機器人設定教學：</h5>
-          <ol>
-            <li>
-              先點選<a
-                href="https://t.me/CryptoSniper_MLvip_Bot"
-                target="_blank"
-                >CryptoSniper</a
-              >加入機器人。
-            </li>
-            <li>點選開始按鈕，會收到歡迎通知，即可看到您的 Telegram ID。</li>
-            <li>輸入Telegram ID、標的名稱、目標價即可。</li>
-          </ol>
-        </div>
-
-        <div class="form-group">
-          <label for="telegramId">Telegram ID：</label>
-          <input
-            type="text"
-            id="telegramId"
-            name="telegramId"
-            class="form-control"
-            required
-          />
-        </div>
-
-        <div class="form-group">
-          <label for="targetSymbol">交易對：</label>
-          <input
-            type="text"
-            id="targetSymbol"
-            name="targetSymbol"
-            class="form-control"
-            required
-          />
-        </div>
-
-        <div class="form-group">
-          <label for="targetPrice">目標價：</label>
-          <input
-            type="number"
-            id="targetPrice"
-            name="targetPrice"
-            class="form-control"
-            required
-          />
-        </div>
-
-        <button onclick="trackPrice(event)" class="btn btn-primary">
-          到價通知
-        </button>
-      </form>
-
       <!-- 篩選器、圖表 -->
       <h2 class="mb-3">幣安U本位合約篩選器</h2>
       <div class="main">
@@ -266,9 +211,18 @@
                 />
               </div>
 
+              <!-- 增加篩選條件的按鈕 -->
+              <button
+                id="toggle-filters-btn-1"
+                type="button"
+                class="btn btn-info btn-lg btn-block mt-3 mb-3"
+              >
+                增加篩選條件
+              </button>
+
               <div class="w-100"></div>
 
-              <div class="form-group col-md-3">
+              <div class="form-group col-md-3 hidden toggle-element-1">
                 <select
                   id="logical-operator-1"
                   name="logical-operator-1"
@@ -280,7 +234,7 @@
               </div>
             </div>
 
-            <div class="form-row">
+            <div class="form-row hidden toggle-element-1">
               <div class="form-group col-md-3">
                 <input
                   type="text"
@@ -316,9 +270,19 @@
                 />
               </div>
             </div>
+
+            <!-- 增加時間週期的按鈕 -->
+            <button
+              id="add-time-period-1"
+              type="button"
+              class="btn btn-primary btn-lg btn-block mt-3 mb-3 hidden-before-login"
+            >
+              增加時間週期
+            </button>
           </div>
+
           <!-- 第二组參數 -->
-          <div class="filter-group hidden-before-login" style="display: none">
+          <div class="filter-group hidden-before-login hidden toggle-element-5">
             <div class="form-group">
               <label for="time-interval-2">時間週期：</label>
               <select
@@ -374,9 +338,17 @@
                 />
               </div>
 
+              <button
+                id="toggle-filters-btn-2"
+                type="button"
+                class="btn btn-info btn-lg btn-block mt-3 mb-3"
+              >
+                增加篩選條件
+              </button>
+
               <div class="w-100"></div>
 
-              <div class="form-group col-md-3">
+              <div class="form-group col-md-3 hidden toggle-element-2">
                 <select
                   id="logical-operator-2"
                   name="logical-operator-2"
@@ -388,7 +360,7 @@
               </div>
             </div>
 
-            <div class="form-row">
+            <div class="form-row hidden toggle-element-2">
               <div class="form-group col-md-3">
                 <input
                   type="text"
@@ -424,9 +396,18 @@
                 />
               </div>
             </div>
+
+            <button
+              id="add-time-period-2"
+              type="button"
+              class="btn btn-primary btn-lg btn-block mt-3 mb-3 hidden-before-login"
+            >
+              增加時間週期
+            </button>
           </div>
+
           <!-- 第三组參數 -->
-          <div class="filter-group hidden-before-login" style="display: none">
+          <div class="filter-group hidden-before-login hidden toggle-element-6">
             <div class="form-group">
               <label for="time-interval-3">時間週期：</label>
               <select
@@ -445,6 +426,7 @@
                 <option value="1M">1個月</option>
               </select>
             </div>
+
             <div class="form-row">
               <div class="form-group col-md-3">
                 <input
@@ -478,8 +460,16 @@
                   class="form-control"
                 />
               </div>
+              <button
+                id="toggle-filters-btn-3"
+                type="button"
+                class="btn btn-info btn-lg btn-block mt-3 mb-3"
+              >
+                增加篩選條件
+              </button>
               <div class="w-100"></div>
-              <div class="form-group col-md-3">
+
+              <div class="form-group col-md-3 hidden toggle-element-3">
                 <select
                   id="logical-operator-3"
                   name="logical-operator-3"
@@ -490,7 +480,8 @@
                 </select>
               </div>
             </div>
-            <div class="form-row">
+
+            <div class="form-row hidden toggle-element-3">
               <div class="form-group col-md-3">
                 <input
                   type="text"
@@ -524,9 +515,18 @@
                 />
               </div>
             </div>
+
+            <button
+              id="add-time-period-3"
+              type="button"
+              class="btn btn-primary btn-lg btn-block mt-3 mb-3 hidden-before-login"
+            >
+              增加時間週期
+            </button>
           </div>
+
           <!-- 第四组參數 -->
-          <div class="filter-group hidden-before-login" style="display: none">
+          <div class="filter-group hidden-before-login hidden toggle-element-7">
             <div class="form-group">
               <label for="time-interval-4">時間週期：</label>
               <select
@@ -578,8 +578,16 @@
                   class="form-control"
                 />
               </div>
+              <button
+                id="toggle-filters-btn-4"
+                type="button"
+                class="btn btn-info btn-lg btn-block mt-3 mb-3"
+              >
+                增加篩選條件
+              </button>
               <div class="w-100"></div>
-              <div class="form-group col-md-3">
+
+              <div class="form-group col-md-3 hidden toggle-element-4">
                 <select
                   id="logical-operator-4"
                   name="logical-operator-4"
@@ -590,7 +598,7 @@
                 </select>
               </div>
             </div>
-            <div class="form-row">
+            <div class="form-row hidden toggle-element-4">
               <div class="form-group col-md-3">
                 <input
                   type="text"
@@ -629,6 +637,106 @@
             開始篩選
           </button>
         </form>
+
+        <!-- 到價通知 -->
+        <div class="hidden-before-login">
+          <h2 class="mb-3">到價通知機器人</h2>
+          <img
+            src="/images/telegram.png"
+            alt="Telegram"
+            class="img-fluid mb-3"
+            data-toggle="modal"
+            data-target="#trackingModal"
+            style="cursor: pointer; max-width: 50px"
+          />
+          <!-- Modal -->
+          <div
+            class="modal fade"
+            id="trackingModal"
+            tabindex="-1"
+            role="dialog"
+            aria-labelledby="trackingModalLabel"
+            aria-hidden="true"
+          >
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="trackingModalLabel">
+                    到價通知設定
+                  </h5>
+                  <button
+                    type="button"
+                    class="close"
+                    data-dismiss="modal"
+                    aria-label="Close"
+                  >
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <!-- 機器人表單 -->
+                  <form id="trackingForm" class="mb-4" style="display: none">
+                    <div class="instructions mb-4">
+                      <h5>到價通知機器人設定教學：</h5>
+                      <ol>
+                        <li>
+                          先點選<a
+                            href="https://t.me/CryptoSniper_MLvip_Bot"
+                            target="_blank"
+                            >CryptoSniper</a
+                          >加入機器人。
+                        </li>
+                        <li>
+                          點選開始按鈕，會收到歡迎通知，即可看到您的 Telegram
+                          ID。
+                        </li>
+                        <li>輸入Telegram ID、標的名稱、目標價即可。</li>
+                      </ol>
+                    </div>
+
+                    <div class="form-group">
+                      <label for="telegramId">Telegram ID：</label>
+                      <input
+                        type="text"
+                        id="telegramId"
+                        name="telegramId"
+                        class="form-control"
+                        required
+                      />
+                    </div>
+
+                    <div class="form-group">
+                      <label for="targetSymbol">交易對：</label>
+                      <input
+                        type="text"
+                        id="targetSymbol"
+                        name="targetSymbol"
+                        class="form-control"
+                        required
+                      />
+                    </div>
+
+                    <div class="form-group">
+                      <label for="targetPrice">目標價：</label>
+                      <input
+                        type="number"
+                        id="targetPrice"
+                        name="targetPrice"
+                        class="form-control"
+                        required
+                      />
+                    </div>
+
+                    <button onclick="trackPrice(event)" class="btn btn-primary">
+                      到價通知
+                    </button>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
         <!-- TradingView Widget BEGIN -->
         <div
           class="tradingview-widget-container mb-4"
@@ -636,7 +744,7 @@
           style="display: none"
         >
           <div id="tradingview_0aab0"></div>
-          <div>※此圖表不支援『季度交割合約』、『BUSD交易對』</div>
+          <div>※部分『季度合約』、『BUSD交易對』不支援</div>
           <script
             type="text/javascript"
             src="https://s3.tradingview.com/tv.js"
@@ -648,6 +756,7 @@
         </div>
         <!-- TradingView Widget END -->
       </div>
+
       <!-- 篩選結果 -->
       <div class="result-container" id="resultContainer" style="display: none">
         <div class="card">
