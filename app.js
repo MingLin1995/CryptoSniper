@@ -11,6 +11,9 @@ const trackingController = require("./controllers/trackingController");
 const telegramBotRoutes = require("./routes/telegramBotRoutes");
 const updateSymbolData = require("./services/updateSymbolData");
 
+const subscriptionRoutes = require("./routes/subscriptionRoutes");
+const initializeWebSocket = require("./services/webSocketService");
+
 const app = express();
 connectDB();
 
@@ -28,10 +31,13 @@ app.use("/api/users", userRoutes);
 app.use("/api/track", trackingRoutes);
 app.use("/telegram-updates", telegramBotRoutes);
 
+app.use("/api", subscriptionRoutes);
+
 // 啟動追踪價格的函數
 setInterval(() => trackingController.trackPrices(), 10000); // 每10秒抓一次價格
 
-updateSymbolData.initialUpdate();
+//updateSymbolData.initialUpdate();
+setInterval(() => initializeWebSocket(), 10000); // 每10秒抓一次價格
 
 app.listen(8000, () => {
   console.log(`

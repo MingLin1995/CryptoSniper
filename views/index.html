@@ -797,9 +797,34 @@
       </div>
     </div>
 
+    <img
+      id="notification-img"
+      src="images/notification.png"
+      alt="Notification Image"
+      style="cursor: pointer"
+    />
+
+    <form id="targetPriceForm">
+      <input
+        type="text"
+        id="symbol-Notification"
+        placeholder="Enter Symbol (e.g., BTCUSDT)"
+        required
+      />
+      <input
+        type="number"
+        id="targetPrice-Notification"
+        placeholder="Enter Target Price"
+        required
+      />
+      <button type="submit">Set Target Price</button>
+    </form>
+
     <script type="module" src="/js/index.js"></script>
     <script src="js/User.js"></script>
     <script src="js/Tracking.js"></script>
+    <script src="/js/service-worker.js"></script>
+    <script src="/js/notifications.js"></script>
     <script src="js/Bootstrap.js"></script>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
