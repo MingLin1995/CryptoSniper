@@ -1,6 +1,6 @@
 // services/telegramBot.js
 
-const { sendNotification } = require("./notificationService");
+const sendTelegramNotification = require("./telegramNotification");
 require("dotenv").config();
 
 function processUpdate(update) {
@@ -10,7 +10,7 @@ function processUpdate(update) {
 
     if (text === "/start") {
       const welcomeMessage = `歡迎使用 CryptoSniper 機器人！您的 Telegram ID 是 ${chatId}。`;
-      sendNotification(chatId, welcomeMessage);
+      sendTelegramNotification(chatId, welcomeMessage);
     }
   }
 }

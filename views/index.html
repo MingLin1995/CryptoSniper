@@ -638,105 +638,6 @@
           </button>
         </form>
 
-        <!-- 到價通知 -->
-        <div class="hidden-before-login">
-          <h2 class="mb-3">到價通知機器人</h2>
-          <img
-            src="/images/telegram.png"
-            alt="Telegram"
-            class="img-fluid mb-3"
-            data-toggle="modal"
-            data-target="#trackingModal"
-            style="cursor: pointer; max-width: 50px"
-          />
-          <!-- Modal -->
-          <div
-            class="modal fade"
-            id="trackingModal"
-            tabindex="-1"
-            role="dialog"
-            aria-labelledby="trackingModalLabel"
-            aria-hidden="true"
-          >
-            <div class="modal-dialog" role="document">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h5 class="modal-title" id="trackingModalLabel">
-                    到價通知設定
-                  </h5>
-                  <button
-                    type="button"
-                    class="close"
-                    data-dismiss="modal"
-                    aria-label="Close"
-                  >
-                    <span aria-hidden="true">&times;</span>
-                  </button>
-                </div>
-                <div class="modal-body">
-                  <!-- 機器人表單 -->
-                  <form id="trackingForm" class="mb-4" style="display: none">
-                    <div class="instructions mb-4">
-                      <h5>到價通知機器人設定教學：</h5>
-                      <ol>
-                        <li>
-                          先點選<a
-                            href="https://t.me/CryptoSniper_MLvip_Bot"
-                            target="_blank"
-                            >CryptoSniper</a
-                          >加入機器人。
-                        </li>
-                        <li>
-                          點選開始按鈕，會收到歡迎通知，即可看到您的 Telegram
-                          ID。
-                        </li>
-                        <li>輸入Telegram ID、標的名稱、目標價即可。</li>
-                      </ol>
-                    </div>
-
-                    <div class="form-group">
-                      <label for="telegramId">Telegram ID：</label>
-                      <input
-                        type="text"
-                        id="telegramId"
-                        name="telegramId"
-                        class="form-control"
-                        required
-                      />
-                    </div>
-
-                    <div class="form-group">
-                      <label for="targetSymbol">交易對：</label>
-                      <input
-                        type="text"
-                        id="targetSymbol"
-                        name="targetSymbol"
-                        class="form-control"
-                        required
-                      />
-                    </div>
-
-                    <div class="form-group">
-                      <label for="targetPrice">目標價：</label>
-                      <input
-                        type="number"
-                        id="targetPrice"
-                        name="targetPrice"
-                        class="form-control"
-                        required
-                      />
-                    </div>
-
-                    <button onclick="trackPrice(event)" class="btn btn-primary">
-                      到價通知
-                    </button>
-                  </form>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
         <!-- TradingView Widget BEGIN -->
         <div
           class="tradingview-widget-container mb-4"
@@ -797,13 +698,114 @@
       </div>
     </div>
 
+    <label for="notificationMethod">選擇通知方式:</label>
+    <select id="notificationMethod">
+      <option value="Telegram">Telegram</option>
+      <option value="Web">網站通知</option>
+    </select>
+
+    <!-- 到價通知 -->
+    <div class="hidden-before-login">
+      <h2 class="mb-3">到價通知機器人</h2>
+      <img
+        src="/images/telegram.png"
+        alt="Telegram"
+        class="img-fluid mb-3"
+        data-toggle="modal"
+        data-target="#trackingModal"
+        style="cursor: pointer; max-width: 50px"
+      />
+      <!-- Modal -->
+      <div
+        class="modal fade"
+        id="trackingModal"
+        tabindex="-1"
+        role="dialog"
+        aria-labelledby="trackingModalLabel"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="trackingModalLabel">到價通知設定</h5>
+              <button
+                type="button"
+                class="close"
+                data-dismiss="modal"
+                aria-label="Close"
+              >
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <!-- 機器人表單 -->
+              <form id="trackingForm" class="mb-4" style="display: none">
+                <div class="instructions mb-4">
+                  <h5>到價通知機器人設定教學：</h5>
+                  <ol>
+                    <li>
+                      先點選<a
+                        href="https://t.me/CryptoSniper_MLvip_Bot"
+                        target="_blank"
+                        >CryptoSniper</a
+                      >加入機器人。
+                    </li>
+                    <li>
+                      點選開始按鈕，會收到歡迎通知，即可看到您的 Telegram ID。
+                    </li>
+                    <li>輸入Telegram ID、標的名稱、目標價即可。</li>
+                  </ol>
+                </div>
+
+                <div class="form-group">
+                  <label for="telegramId">Telegram ID：</label>
+                  <input
+                    type="text"
+                    id="telegramId"
+                    name="telegramId"
+                    class="form-control"
+                    required
+                  />
+                </div>
+
+                <div class="form-group">
+                  <label for="targetSymbol">交易對：</label>
+                  <input
+                    type="text"
+                    id="targetSymbol"
+                    name="targetSymbol"
+                    class="form-control"
+                    required
+                  />
+                </div>
+
+                <div class="form-group">
+                  <label for="targetPrice">目標價：</label>
+                  <input
+                    type="number"
+                    id="targetPrice"
+                    name="targetPrice"
+                    class="form-control"
+                    required
+                  />
+                </div>
+
+                <button onclick="trackPrice(event)" class="btn btn-primary">
+                  到價通知
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <img
       id="notification-img"
       src="images/notification.png"
       alt="Notification Image"
       style="cursor: pointer"
     />
-
     <form id="targetPriceForm">
       <input
         type="text"

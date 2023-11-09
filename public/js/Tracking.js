@@ -9,17 +9,24 @@ function trackPrice(event) {
 
   // 獲取使用者輸入的值
   const telegramId = telegramIdInput.value;
-  const targetSymbol = targetSymbolInput.value;
+  const symbol = targetSymbolInput.value;
   const targetPrice = targetPriceInput.value;
 
+  const notificationMethodSelect =
+    document.getElementById("notificationMethod");
+  const notificationMethod = notificationMethodSelect.value;
+
+  const token = localStorage.getItem("token");
   fetch("/api/track", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
+      Authorization: token,
     },
     body: JSON.stringify({
       telegramId,
-      targetSymbol,
+      notificationMethod, // 新增的通知方式選項
+      symbol,
       targetPrice,
     }),
   })

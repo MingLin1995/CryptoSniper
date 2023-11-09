@@ -158,14 +158,21 @@ document
       "targetPrice-Notification"
     ).value;
     const token = localStorage.getItem("token");
+    const notificationMethodSelect =
+      document.getElementById("notificationMethod");
+    const notificationMethod = notificationMethodSelect.value;
 
-    fetch("/api/track/Notification", {
+    fetch("/api/track", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
         Authorization: token,
       },
-      body: JSON.stringify({ symbol: symbol, targetPrice: targetPrice }), // 添加symbol字段到body數據中
+      body: JSON.stringify({
+        symbol: symbol,
+        targetPrice: targetPrice,
+        notificationMethod: notificationMethod,
+      }), // 添加symbol字段到body數據中
     })
       .then((response) => response.json())
       .then((data) => {

@@ -1,53 +1,35 @@
 // controllers/trackingController.js
 
-const Tracking = require("../models/Tracking");
-const { trackPrices } = require("../services/priceTracker");
-const TargetPrice = require("../models/TargetPrice");
+const PriceAlert = require("../models/PriceAlert");
+const { trackPrices } = require("../services/priceAlertService.js");
 
 const addTracking = async (req, res) => {
-  const { telegramId, targetSymbol, targetPrice } = req.body;
+  const { symbol, targetPrice, notificationMethod, telegramId } = req.body;
+  const userId = req.user._id; // 從 verifyToken 中間件獲取用戶ID
 
   try {
-    const tracking = new Tracking({
-      telegramId,
-      targetSymbol,
+    let alertData = {
+      user: userId,
+      symbol,
       targetPrice,
-    });
+      notificationMethod,
+    };
 
-    await tracking.save();
+    if (notificationMethod === "Telegram") {
+      alertData.telegramId = telegramId; // 只有當使用 Telegram 通知時才添加
+    }
 
-    res.json({
-      message: "追蹤設定成功",
-      telegramId: tracking.telegramId,
-    });
+    const priceAlert = new PriceAlert(alertData);
+    await priceAlert.save();
+    // 如果追蹤成功保存，啟動價格追蹤
+    if (priceAlert) {
+      trackPrices();
+    }
+
+    res.status(201).json({ message: "追蹤成功設置！", priceAlert });
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: "設定追蹤時發生錯誤" });
+    res.status(400).json({ error: "無法設置追蹤", details: error.message });
   }
 };
 
-// services/setTargetPrice.js 或是其他相對應的路由處理器檔案
-const setTargetPrice = async (req, res) => {
-  try {
-    const { symbol, targetPrice } = req.body;
-    const userId = req.user._id;
-
-    // 创建新的目标价格记录
-    const newTarget = new TargetPrice({
-      user: userId, // 请确保这里使用的是'user'字段，与模型定义一致
-      symbol: symbol,
-      targetPrice: targetPrice,
-    });
-
-    await newTarget.save(); // 保存到数据库
-
-    res
-      .status(200)
-      .json({ message: "目标价格设置成功。", targetPrice: newTarget });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: "设置目标价格时出错。" });
-  }
-};
-
-module.exports = { addTracking, trackPrices, setTargetPrice };
+module.exports = { addTracking };
