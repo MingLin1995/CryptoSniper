@@ -1,4 +1,4 @@
-// models/redisModel.js
+// models/redis.js
 
 const Redis = require("ioredis");
 const REDIS_HOST = "localhost";

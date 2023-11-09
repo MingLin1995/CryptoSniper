@@ -54,7 +54,7 @@ function trackPrice(event) {
 
 function updateUserTelegramId(telegramId) {
   // 發送請求更新用戶的 Telegram ID
-  fetch("/api/users/updateTelegramId", {
+  fetch("/api/user/updateTelegramId", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

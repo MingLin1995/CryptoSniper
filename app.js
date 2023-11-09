@@ -24,11 +24,12 @@ app.get("/", (req, res) => {
 
 app.use("/api/loadKlinesData", klinesDataRoutes);
 app.use("/api/loadVolumeData", volumeDataRoutes);
-app.use("/api/users", userRoutes);
+app.use("/api/user", userRoutes);
 app.use("/api/track", trackingRoutes);
-app.use("/telegram-updates", telegramBotRoutes);
+app.use("/api/subscription", subscriptionRoutes);
 
-app.use("/api", subscriptionRoutes);
+//webhooks
+app.use("/telegram-updates", telegramBotRoutes);
 
 updateSymbolData.initialUpdate();
 

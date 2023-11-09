@@ -142,11 +142,11 @@ async function communicateWithBackend(endpoint, subscription) {
 
 // 使用新的通用函數
 async function sendSubscriptionToBackend(subscription) {
-  await communicateWithBackend("/api/subscribe", subscription);
+  await communicateWithBackend("/api/subscription/subscribe", subscription);
 }
 
 async function sendUnsubscriptionToBackend(subscription) {
-  await communicateWithBackend("/api/unsubscribe", subscription);
+  await communicateWithBackend("/api/subscription/unsubscribe", subscription);
 }
 
 document

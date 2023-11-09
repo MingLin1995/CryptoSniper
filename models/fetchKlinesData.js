@@ -1,7 +1,7 @@
 // models/fetchKlinesData.js
 
 const axios = require("axios");
-const { loadDataFromRedis, saveKlinesDataToRedis } = require("./redisModel");
+const { loadDataFromRedis, saveKlinesDataToRedis } = require("./redis");
 
 // 更新指定時間間隔的K線數據
 async function updateSymbolKlinesData(timeInterval) {

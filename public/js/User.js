@@ -26,7 +26,7 @@ async function checkLoginStatus() {
   if (token) {
     // 驗證token是否有效
     try {
-      const response = await fetch("/api/users/verifyToken", {
+      const response = await fetch("/api/user/verifyToken", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -81,7 +81,7 @@ async function register() {
   const password = document.getElementById("registerPassword").value;
 
   try {
-    const response = await fetch("/api/users/register", {
+    const response = await fetch("/api/user/register", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ name, email, password }),
@@ -105,7 +105,7 @@ async function login() {
   const password = document.getElementById("loginPassword").value;
 
   try {
-    const response = await fetch("/api/users/login", {
+    const response = await fetch("/api/user/login", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email, password }),
@@ -135,7 +135,7 @@ async function login() {
 
 async function logout() {
   try {
-    const response = await fetch("/api/users/logout", {
+    const response = await fetch("/api/user/logout", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
