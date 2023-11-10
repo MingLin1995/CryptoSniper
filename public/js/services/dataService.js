@@ -2,7 +2,7 @@
 
 // 從伺服器取得K線資料
 async function getKlinesData(intervalsData) {
-  // 僅篩選param_1不為null的資料，並取出其時間區間
+  // param_1不為null的資料，取出時間區間
   const timeIntervals = intervalsData
     .filter((interval) => interval.param_1 !== null)
     .map((interval) => interval.time_interval);

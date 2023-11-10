@@ -19,7 +19,6 @@ document.addEventListener("DOMContentLoaded", function () {
   const toggleElements = document.querySelectorAll(".toggle-element-1");
 
   toggleButton.addEventListener("click", function () {
-    // 切換每個 toggle-element 的顯示狀態
     toggleElements.forEach(function (element) {
       element.classList.toggle("hidden");
     });
@@ -30,7 +29,6 @@ document.addEventListener("DOMContentLoaded", function () {
   const toggleElements = document.querySelectorAll(".toggle-element-2");
 
   toggleButton.addEventListener("click", function () {
-    // 切換每個 toggle-element 的顯示狀態
     toggleElements.forEach(function (element) {
       element.classList.toggle("hidden");
     });
@@ -41,7 +39,6 @@ document.addEventListener("DOMContentLoaded", function () {
   const toggleElements = document.querySelectorAll(".toggle-element-3");
 
   toggleButton.addEventListener("click", function () {
-    // 切換每個 toggle-element 的顯示狀態
     toggleElements.forEach(function (element) {
       element.classList.toggle("hidden");
     });
@@ -52,7 +49,6 @@ document.addEventListener("DOMContentLoaded", function () {
   const toggleElements = document.querySelectorAll(".toggle-element-4");
 
   toggleButton.addEventListener("click", function () {
-    // 切換每個 toggle-element 的顯示狀態
     toggleElements.forEach(function (element) {
       element.classList.toggle("hidden");
     });
@@ -63,7 +59,6 @@ document.addEventListener("DOMContentLoaded", function () {
 document.addEventListener("DOMContentLoaded", function () {
   const toggleButton = document.getElementById("add-time-period-1");
   const toggleElement = document.querySelector(".toggle-element-5");
-
   toggleButton.addEventListener("click", function () {
     toggleElement.classList.toggle("hidden");
   });
@@ -71,7 +66,6 @@ document.addEventListener("DOMContentLoaded", function () {
 document.addEventListener("DOMContentLoaded", function () {
   const toggleButton = document.getElementById("add-time-period-2");
   const toggleElement = document.querySelector(".toggle-element-6");
-
   toggleButton.addEventListener("click", function () {
     toggleElement.classList.toggle("hidden");
   });
@@ -79,7 +73,6 @@ document.addEventListener("DOMContentLoaded", function () {
 document.addEventListener("DOMContentLoaded", function () {
   const toggleButton = document.getElementById("add-time-period-3");
   const toggleElement = document.querySelector(".toggle-element-7");
-
   toggleButton.addEventListener("click", function () {
     toggleElement.classList.toggle("hidden");
   });

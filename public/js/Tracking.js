@@ -1,11 +1,10 @@
 // public/js/Tracking.js
 
-// 綁定事件到所有帶有特定data-target的圖片
+// 綁定事件到所有通知管道的圖片
 document
   .querySelectorAll('img[data-target="#trackingModal"]')
   .forEach((img) => {
     img.addEventListener("click", function () {
-      // 更新全局變量
       currentNotificationMethod = this.getAttribute("data-notification-method");
     });
   });
@@ -22,7 +21,7 @@ function trackPrice(event) {
   const symbol = targetSymbolInput.value;
   const targetPrice = targetPriceInput.value;
 
-  // 使用先前選擇的通知方式
+  // 選擇的通知方式
   const notificationMethod = currentNotificationMethod;
 
   const token = localStorage.getItem("token");
@@ -34,7 +33,7 @@ function trackPrice(event) {
     },
     body: JSON.stringify({
       telegramId,
-      notificationMethod, // 新增的通知方式選項
+      notificationMethod,
       symbol,
       targetPrice,
     }),
@@ -47,7 +46,7 @@ function trackPrice(event) {
     })
     .then((data) => {
       //console.log("Success:", data);
-      alert("成功設定追蹤");
+      alert("到價通知設定成功！");
 
       // 更新用戶的 Telegram ID
       updateUserTelegramId(telegramId);
@@ -57,7 +56,6 @@ function trackPrice(event) {
     })
     .catch((error) => {
       console.error("Error:", error);
-      alert("設定追蹤時發生錯誤");
     });
 }
 
