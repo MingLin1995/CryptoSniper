@@ -1,15 +1,9 @@
 // public/js/index.js
 
-import {
-  extractFilterConditions,
-  getKlinesData,
-  calculateMA,
-  compareMAValues,
-  findIntersection,
-  getResultsVolume,
-  displayResults,
-} from "./model.js";
-
+import { extractFilterConditions } from "./helpers.js";
+import { getKlinesData, getResultsVolume } from "./services/dataService.js";
+import { calculateMA, compareMAValues, findIntersection } from "./model.js";
+import { displayResults } from "./viewHandlers.js";
 import { createTradingViewWidget } from "./tradingViewConfig.js";
 
 // 取得篩選器表單
@@ -51,11 +45,11 @@ async function processForm() {
     // 計算移動平均值
     const maResults = calculateMA(allKlinesData, intervalsData);
 
-    // 對比移動平均值
+    // 依據ma做篩選
     const matchingData = compareMAValues(maResults, intervalsData);
     //1M出現錯誤，有可能是因為K線數量不足
 
-    // 檢查 maResults 是否為空對象
+    // 檢查 maResults 是否為空值
     if (Object.keys(matchingData).length === 0) {
       resultsTable.style.display = "none";
       tradingViewContainer.style.display = "none";
@@ -88,6 +82,6 @@ async function processForm() {
     tradingViewContainer.style.display = "none";
     loadingImageContainer.innerHTML =
       "選擇的時間週期資料庫更新中，請稍後再試或是換個時框";
-    console.error("錯誤:", error);
+    //console.error("錯誤:", error);
   }
 }
