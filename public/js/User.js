@@ -150,10 +150,10 @@ async function logout() {
       checkLoginStatus();
     } else {
       const data = await response.json();
-      alert("登出失敗：" + data.error);
+      window.location.href = "/";
     }
   } catch (error) {
     console.error("Error:", error);
-    alert("伺服器錯誤");
+    window.location.href = "/";
   }
 }

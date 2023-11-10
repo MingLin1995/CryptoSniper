@@ -36,7 +36,31 @@ async function unsubscribe(req, res) {
   }
 }
 
+async function checkSubscription(req, res) {
+  try {
+    // 確保用戶已經通過身份驗證
+    if (!req.user) {
+      return res.status(401).json({ error: "未授權" });
+    }
+
+    // 查找與此用戶相關聯的訂閱
+    const subscription = await Subscription.findOne({ user: req.user._id });
+
+    // 如果訂閱存在，返回已訂閱的響應
+    if (subscription) {
+      res.json({ isSubscribed: true });
+    } else {
+      // 否則返回未訂閱的響應
+      res.json({ isSubscribed: false });
+    }
+  } catch (error) {
+    console.error("檢查訂閱失敗:", error);
+    res.status(500).json({ error: "內部伺服器錯誤" });
+  }
+}
+
 module.exports = {
   subscribe,
   unsubscribe,
+  checkSubscription,
 };

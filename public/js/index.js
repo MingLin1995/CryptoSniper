@@ -1,15 +1,9 @@
 // public/js/index.js
 
-import {
-  extractFilterConditions,
-  getKlinesData,
-  calculateMA,
-  compareMAValues,
-  findIntersection,
-  getResultsVolume,
-  displayResults,
-} from "./model.js";
-
+import { extractFilterConditions } from "./helpers.js";
+import { getKlinesData, getResultsVolume } from "./services/dataService.js";
+import { calculateMA, compareMAValues, findIntersection } from "./model.js";
+import { displayResults } from "./viewHandlers.js";
 import { createTradingViewWidget } from "./tradingViewConfig.js";
 
 // 取得篩選器表單

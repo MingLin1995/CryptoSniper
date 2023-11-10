@@ -10,6 +10,7 @@ const trackingRoutes = require("./routes/trackingRoutes");
 const telegramBotRoutes = require("./routes/telegramBotRoutes");
 const updateSymbolData = require("./services/updateSymbolData");
 const subscriptionRoutes = require("./routes/subscriptionRoutes");
+const { trackPrices } = require("./services/priceAlertService.js");
 
 const app = express();
 connectDB();
@@ -31,7 +32,10 @@ app.use("/api/subscription", subscriptionRoutes);
 //webhooks
 app.use("/telegram-updates", telegramBotRoutes);
 
+//更新redis資料庫
 updateSymbolData.initialUpdate();
+//建立webSocket連線
+trackPrices();
 
 app.listen(8000, () => {
   console.log(`

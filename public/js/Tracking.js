@@ -1,5 +1,15 @@
 // public/js/Tracking.js
 
+// 綁定事件到所有帶有特定data-target的圖片
+document
+  .querySelectorAll('img[data-target="#trackingModal"]')
+  .forEach((img) => {
+    img.addEventListener("click", function () {
+      // 更新全局變量
+      currentNotificationMethod = this.getAttribute("data-notification-method");
+    });
+  });
+
 function trackPrice(event) {
   event.preventDefault();
 
@@ -12,9 +22,8 @@ function trackPrice(event) {
   const symbol = targetSymbolInput.value;
   const targetPrice = targetPriceInput.value;
 
-  const notificationMethodSelect =
-    document.getElementById("notificationMethod");
-  const notificationMethod = notificationMethodSelect.value;
+  // 使用先前選擇的通知方式
+  const notificationMethod = currentNotificationMethod;
 
   const token = localStorage.getItem("token");
   fetch("/api/track", {
