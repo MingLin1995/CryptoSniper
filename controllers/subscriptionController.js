@@ -36,11 +36,6 @@ async function unsubscribe(req, res) {
 
 async function checkSubscription(req, res) {
   try {
-    // 確保用戶已通過身份驗證
-    if (!req.user) {
-      return res.status(401).json({ error: "未授權" });
-    }
-
     // 查詢該用戶相關聯的訂閱
     const subscription = await Subscription.findOne({ user: req.user._id });
 

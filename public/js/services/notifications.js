@@ -243,3 +243,33 @@ document
         console.error("Error:", error);
       });
   });
+
+document
+  .getElementById("NotificationPermissio")
+  .addEventListener("click", function () {
+    checkUserSubscription();
+  });
+
+// 檢查用戶的訂閱狀態
+async function checkUserSubscription() {
+  const token = localStorage.getItem("token");
+  try {
+    const response = await fetch("/api/subscription/check", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: token,
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error("無法獲取訂閱狀態");
+    }
+
+    const data = await response.json();
+    // 假設後端返回的是一個包含 isSubscribed 屬性的物件
+    updateSubscriptionButton(data.isSubscribed);
+  } catch (error) {
+    console.error("檢查訂閱狀態失敗：", error);
+  }
+}
