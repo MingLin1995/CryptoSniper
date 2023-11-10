@@ -1,5 +1,15 @@
 // public/js/Tracking.js
 
+// 綁定事件到所有帶有特定data-target的圖片
+document
+  .querySelectorAll('img[data-target="#trackingModal"]')
+  .forEach((img) => {
+    img.addEventListener("click", function () {
+      // 更新全局變量
+      currentNotificationMethod = this.getAttribute("data-notification-method");
+    });
+  });
+
 function trackPrice(event) {
   event.preventDefault();
 
@@ -9,17 +19,23 @@ function trackPrice(event) {
 
   // 獲取使用者輸入的值
   const telegramId = telegramIdInput.value;
-  const targetSymbol = targetSymbolInput.value;
+  const symbol = targetSymbolInput.value;
   const targetPrice = targetPriceInput.value;
 
+  // 使用先前選擇的通知方式
+  const notificationMethod = currentNotificationMethod;
+
+  const token = localStorage.getItem("token");
   fetch("/api/track", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
+      Authorization: token,
     },
     body: JSON.stringify({
       telegramId,
-      targetSymbol,
+      notificationMethod, // 新增的通知方式選項
+      symbol,
       targetPrice,
     }),
   })
@@ -47,7 +63,7 @@ function trackPrice(event) {
 
 function updateUserTelegramId(telegramId) {
   // 發送請求更新用戶的 Telegram ID
-  fetch("/api/users/updateTelegramId", {
+  fetch("/api/user/updateTelegramId", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

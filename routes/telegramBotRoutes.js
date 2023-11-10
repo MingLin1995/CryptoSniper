@@ -2,13 +2,8 @@
 
 const express = require("express");
 const router = express.Router();
-const { processUpdate } = require("../services/telegramBot");
+const telegramBotController = require("../controllers/telegramBotController");
 
-router.post("/", async (req, res) => {
-  const update = req.body;
-  processUpdate(update);
-
-  res.status(200).end();
-});
+router.post("/", telegramBotController.processTelegramUpdate);
 
 module.exports = router;
