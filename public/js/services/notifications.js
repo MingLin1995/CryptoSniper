@@ -65,7 +65,7 @@ async function subscribeUser(registration) {
     });
     //console.log("成功開啟到價通知");
     await sendSubscriptionToBackend(subscription);
-    alert("成功開啟到價通知！");
+    alert("開啟到價通知！");
     // 更新按鈕的狀態
     updateSubscriptionButton(true);
   } catch (err) {
@@ -82,7 +82,7 @@ async function unsubscribeUser(subscription) {
     if (successful) {
       //console.log("成功取消訂閱通知");
       await sendUnsubscriptionToBackend(subscription);
-      alert("成功取消到價通知！");
+      alert("取消到價通知！");
       // 更新按鈕的狀態
       updateSubscriptionButton(false);
     }
@@ -96,10 +96,16 @@ async function unsubscribeUser(subscription) {
 // 更新訂閱按鈕的狀態
 function updateSubscriptionButton(isSubscribed) {
   const button = document.getElementById("toggle-subscription");
+
+  // 清除先前的按鈕類別
+  button.classList.remove("btn-outline-primary", "btn-outline-danger");
+
   if (isSubscribed) {
     button.textContent = "取消到價通知";
+    button.classList.add("btn-outline-danger"); // 添加紅色按鈕類別
   } else {
     button.textContent = "開啟到價通知";
+    button.classList.add("btn-outline-primary"); // 添加藍色按鈕類別
   }
 }
 
@@ -210,6 +216,12 @@ document
     const hasPermission = await requestNotificationPermission();
     if (!hasPermission) {
       alert("未獲得您的通知許可權，請至瀏覽器設定開啟通知許可權");
+      return;
+    }
+
+    const button = document.getElementById("toggle-subscription").textContent;
+    if (button == "開啟到價通知") {
+      alert("尚未開啟到價通知！");
       return;
     }
 
