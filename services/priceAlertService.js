@@ -11,15 +11,14 @@ const trackPrices = async () => {
   const alerts = await PriceAlert.find({}).populate("user");
 
   if (alerts.length === 0) {
-    // 更正變量名稱
-    console.log("沒有找到任何目標價格的設定。");
+    //console.log("沒有找到任何目標價格的設定。");
     return;
   }
   alerts.forEach((alert) => {
     const { _id, symbol, targetPrice, notificationMethod, telegramId, user } =
       alert;
-    // 檢查是否已有執行中的 WebSocket 連接
 
+    // 檢查是否已有執行中的 WebSocket 連接
     if (activeWebSockets.has(_id.toString())) {
       return;
     }
@@ -30,7 +29,7 @@ const trackPrices = async () => {
     activeWebSockets.set(_id.toString(), ws); // 將 WebSocket 連接儲存到 Map 中
 
     ws.on("open", function open() {
-      console.log(`WebSocket連線開啟: ${symbol}`);
+      //console.log(`WebSocket連線開啟: ${symbol}`);
     });
 
     let initialPrice = null; //設定當下價格
@@ -68,9 +67,8 @@ const trackPrices = async () => {
           hasNotified = true; // 更新已發送通知的狀態
           lastNotificationTime = now; // 更新發送通知的時間戳
 
-          console.log(`${symbol} 達到目標價格 ${currentPrice}`);
-          await PriceAlert.deleteOne({ _id }); // 更正模型名稱
-          //console.log("已移除追踪：", tracking); 這行可以被註解掉，因為tracking變量不存在
+          //console.log(`${symbol} 達到目標價格 ${currentPrice}`);
+          await PriceAlert.deleteOne({ _id });
           ws.close(); // 關閉 WebSocket 連接
         }
       }

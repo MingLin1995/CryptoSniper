@@ -34,6 +34,7 @@ app.use("/telegram-updates", telegramBotRoutes);
 
 //更新redis資料庫
 updateSymbolData.initialUpdate();
+
 //建立webSocket連線
 trackPrices();
 

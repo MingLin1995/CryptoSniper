@@ -9,7 +9,6 @@ const {
   checkSubscription,
 } = require("../controllers/subscriptionController");
 
-// 現在 "/subscribe" 和 "/unsubscribe" 路徑前會自動添加 "/api/subscription"
 router.post("/subscribe", verifyToken, subscribe);
 router.post("/unsubscribe", verifyToken, unsubscribe);
 router.get("/check", verifyToken, checkSubscription);

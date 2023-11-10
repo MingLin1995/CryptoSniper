@@ -90,13 +90,13 @@ async function register() {
     const data = await response.json();
 
     if (response.ok) {
-      alert("註冊成功！" + JSON.stringify(data));
+      alert("註冊成功！");
     } else {
       alert("註冊失敗：" + data.message);
     }
   } catch (error) {
-    console.error("Error:", error);
-    alert("註冊失敗！");
+    //console.error("Error:", error);
+    alert("伺服器錯誤");
   }
 }
 
@@ -114,7 +114,7 @@ async function login() {
     const data = await response.json();
 
     if (response.ok) {
-      alert("登入成功！" + data.message);
+      alert("登入成功！");
       localStorage.setItem("token", data.token);
 
       if (data.telegramId) {
@@ -128,7 +128,7 @@ async function login() {
       alert("登入失敗：" + data.error);
     }
   } catch (error) {
-    console.error("Error:", error);
+    //console.error("Error:", error);
     alert("伺服器錯誤");
   }
 }

@@ -1,18 +1,25 @@
 /* public/css/index.css */
 
-/* 確保表格的文字居中 */
+/* 表格文字置中 */
 #results-table th,
 #results-table td {
   text-align: center;
   vertical-align: middle;
 }
 
-/* 為深色模式下的文字設定一個亮色 */
+/* 表頭固定寬度 */
+#results-table th:nth-child(1) {
+  width: 50%;
+}
+#results-table th:nth-child(2) {
+  width: 50%;
+}
+
+/* 深色模式文字亮色 */
 body.night-mode #results-table th,
 body.night-mode #results-table td {
   color: white;
 }
-
 body.night-mode {
   background-color: #343a40;
   color: white;
@@ -27,24 +34,15 @@ body.night-mode {
   border-color: #6c757d;
 }
 
-/* 表頭固定寬度 */
-#results-table th:nth-child(1) {
-  width: 50%;
-}
-#results-table th:nth-child(2) {
-  width: 50%;
-}
-
 #volume-header:hover,
 #symbol-column:hover {
   cursor: pointer;
-  color: #007bff; /* 將文字顏色更改為淺藍色 */
+  color: #007bff;
 }
 
-/* 為深色模式下的懸停效果設定不同的顏色 */
 body.night-mode #volume-header:hover,
 body.night-mode #symbol-column:hover {
-  color: #00d2ff; /* 將文字顏色更改為亮藍色 */
+  color: #00d2ff;
 }
 
 /* 圖片容器 */
@@ -53,7 +51,7 @@ body.night-mode #symbol-column:hover {
   text-align: center;
 }
 
-/* 搜尋圖片樣式 */
+/* 搜尋中圖片樣式 */
 .searching-gif {
   max-width: 100%;
   height: auto;
@@ -70,4 +68,49 @@ body.night-mode #symbol-column:hover {
 
 .hidden {
   display: none !important;
+}
+
+/* 按鈕效果 */
+.toggle-modal-link {
+  margin-left: 5px;
+  transition: all 0.5s ease;
+}
+
+.toggle-modal-link:hover,
+.toggle-modal-link:focus {
+  text-decoration: none;
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+/* 登入/註冊按鈕樣式 */
+#loginBtn {
+  transition: all 0.3s ease-in-out;
+}
+
+#loginBtn:hover {
+  background-color: #0056b3;
+  color: #fff;
+  border-color: #0056b3;
+}
+
+/* 登出按鈕樣式 */
+#logoutBtn {
+  transition: all 0.3s ease-in-out;
+}
+
+#logoutBtn:hover {
+  background-color: #dc3545;
+  color: #fff;
+  border-color: #dc3545;
+}
+
+/* 背景切換按鈕樣式 */
+#toggleThemeBtn {
+  transition: all 0.3s ease-in-out;
+}
+
+#toggleThemeBtn:hover {
+  background-color: #6c757d;
+  color: #fff;
+  border-color: #6c757d;
 }

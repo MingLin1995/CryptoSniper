@@ -1,13 +1,13 @@
-// public/js/notifications.js
+// public/js/services/notifications.js
 
-// 獲取圖片元素
-const subscriptionElement = document.getElementById("toggle-subscription");
+// 獲取圖片元素和按鈕元素
+const notificationImage = document.getElementById("NotificationPermissio");
+const toggleSubscriptionButton = document.getElementById("toggle-subscription");
 
 // 檢查瀏覽器支持
 function checkBrowserSupport() {
   if (!("serviceWorker" in navigator) || !("PushManager" in window)) {
     console.warn("Push messaging is not supported");
-    subscriptionElement.textContent = "Push Not Supported";
     return false;
   }
   return true;
@@ -17,12 +17,13 @@ function checkBrowserSupport() {
 async function registerServiceWorker() {
   try {
     const registration = await navigator.serviceWorker.register(
-      "/js/service-worker.js"
+      "/js/services/service-worker.js"
     );
-    console.log("Service Worker 註冊成功");
+    //console.log("Service Worker 註冊成功");
     return registration;
   } catch (error) {
     console.error("Service Worker 註冊失敗", error);
+    return null;
   }
 }
 
@@ -30,17 +31,22 @@ async function registerServiceWorker() {
 async function requestNotificationPermission() {
   const permission = await Notification.requestPermission();
   if (permission !== "granted") {
-    console.log("用戶拒絕了通知許可權");
+    //console.log("用戶拒絕了通知許可權");
     return false;
   }
-  console.log("通知許可權獲得成功");
+  //console.log("通知許可權獲得成功");
   return true;
 }
 
 // 主要訂閱邏輯
 async function manageSubscription(registration) {
+  if (!registration) {
+    console.log("Service Worker 註冊不成功，無法管理訂閱");
+    return;
+  }
   const subscription = await registration.pushManager.getSubscription();
   if (subscription) {
+    //console.log("已訂閱: ", subscription);
     await unsubscribeUser(subscription);
   } else {
     await subscribeUser(registration);
@@ -57,15 +63,14 @@ async function subscribeUser(registration) {
       userVisibleOnly: true,
       applicationServerKey: applicationServerKey,
     });
-    console.log("用戶已訂閱");
+    //console.log("成功開啟到價通知");
     await sendSubscriptionToBackend(subscription);
-    // 顯示訂閱成功的訊息
-    alert("您已成功訂閱通知！");
+    alert("成功開啟到價通知！");
     // 更新按鈕的狀態
     updateSubscriptionButton(true);
   } catch (err) {
-    console.log("用戶訂閱失敗", err);
-    alert("訂閱失敗：", err);
+    //console.log("用戶訂閱失敗", err);
+    alert("開啟到價通知失敗：", err);
     updateSubscriptionButton(false);
   }
 }
@@ -75,16 +80,15 @@ async function unsubscribeUser(subscription) {
   try {
     const successful = await subscription.unsubscribe();
     if (successful) {
-      console.log("用戶已取消訂閱");
+      //console.log("成功取消訂閱通知");
       await sendUnsubscriptionToBackend(subscription);
-      // 顯示取消訂閱成功的訊息
-      alert("您已取消訂閱通知！");
+      alert("成功取消到價通知！");
       // 更新按鈕的狀態
       updateSubscriptionButton(false);
     }
   } catch (e) {
-    console.log("取消訂閱失敗", e);
-    alert("取消訂閱失敗：", e);
+    //console.log("取消訂閱失敗", e);
+    alert("取消到價通知失敗：", e);
     updateSubscriptionButton(true);
   }
 }
@@ -93,29 +97,42 @@ async function unsubscribeUser(subscription) {
 function updateSubscriptionButton(isSubscribed) {
   const button = document.getElementById("toggle-subscription");
   if (isSubscribed) {
-    button.textContent = "取消訂閱";
+    button.textContent = "取消到價通知";
   } else {
-    button.textContent = "訂閱";
+    button.textContent = "開啟到價通知";
   }
 }
 
-// 點擊元素時的處理函數
+// 點擊時的許可通知
 async function onClick() {
   const hasPermission = await requestNotificationPermission();
-  if (!hasPermission) return;
-
+  if (!hasPermission) {
+    alert("未獲得您的通知許可權，請至瀏覽器設定開啟通知許可權");
+    return;
+  }
   const registration = await registerServiceWorker();
   if (registration) {
     await manageSubscription(registration);
   }
 }
 
-// 初始化函數
-function init() {
-  if (!checkBrowserSupport()) return;
+// 按鈕點擊時處理訂閱邏輯
+toggleSubscriptionButton.addEventListener("click", async function () {
+  await onClick();
+});
 
-  // 監聽點擊事件
-  subscriptionElement.addEventListener("click", onClick);
+// 點擊圖片時，請求通知許可
+notificationImage.addEventListener("click", async function () {
+  await requestNotificationPermission();
+});
+
+// 初始化函數
+async function init() {
+  if (!checkBrowserSupport()) {
+    alert("此瀏覽器不支持推送通知。");
+    return;
+  }
+  await registerServiceWorker();
 }
 
 init();
@@ -133,7 +150,7 @@ function urlB64ToUint8Array(base64String) {
   return outputArray;
 }
 
-// 一個通用的函數來處理與後端的通信
+// 處理訂閱狀態
 async function communicateWithBackend(endpoint, subscription) {
   const token = localStorage.getItem("token");
 
@@ -156,7 +173,7 @@ async function communicateWithBackend(endpoint, subscription) {
       throw new Error(responseData.error);
     }
 
-    console.log(`Response from ${endpoint}:`, responseData);
+    //console.log(`Response from ${endpoint}:`, responseData);
   } catch (error) {
     console.error(`Could not communicate with backend (${endpoint})`, error);
   }
@@ -171,16 +188,15 @@ async function sendUnsubscriptionToBackend(subscription) {
   await communicateWithBackend("/api/subscription/unsubscribe", subscription);
 }
 
-// 全局變量來存儲當前選擇的通知方法
-let currentNotificationMethod = "Web"; // 預設值，根據需要修改
+// 前選擇的通知方法
+let currentNotificationMethod = "Web"; // 預設值
 
 // 綁定事件到所有帶有特定data-toggle的圖片
 document.querySelectorAll('img[data-toggle="modal"]').forEach((img) => {
   img.addEventListener("click", function () {
     // 根據點擊的圖片設置通知方式
     currentNotificationMethod = this.getAttribute("data-notification-method");
-
-    // 根據通知方式顯示相應的模態視窗
+    // 根據選擇的通知方式顯示相應的視窗
     let targetModal = this.getAttribute("data-target");
     $(targetModal).modal("show");
   });
@@ -188,8 +204,15 @@ document.querySelectorAll('img[data-toggle="modal"]').forEach((img) => {
 
 document
   .getElementById("targetPriceForm")
-  .addEventListener("submit", function (event) {
+  .addEventListener("submit", async function (event) {
     event.preventDefault();
+
+    const hasPermission = await requestNotificationPermission();
+    if (!hasPermission) {
+      alert("未獲得您的通知許可權，請至瀏覽器設定開啟通知許可權");
+      return;
+    }
+
     const symbol = document.getElementById("symbol-Notification").value; // 獲取使用者輸入的幣種
     const targetPrice = document.getElementById(
       "targetPrice-Notification"
@@ -209,13 +232,12 @@ document
         symbol: symbol,
         targetPrice: targetPrice,
         notificationMethod: notificationMethod,
-      }), // 添加symbol字段到body數據中
+      }),
     })
       .then((response) => response.json())
       .then((data) => {
         //console.log(data);
-        // 處理成功設置目標價格的邏輯，例如通知用戶
-        alert("成功設定追蹤");
+        alert("到價通知設定成功！");
       })
       .catch((error) => {
         console.error("Error:", error);
