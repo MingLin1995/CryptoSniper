@@ -1,6 +1,6 @@
 // models/loadKlinesData.js
 
-const { loadKlinesDataFromRedis } = require("./redisModel");
+const { loadKlinesDataFromRedis } = require("./redis");
 
 async function getKlinesData(timeIntervals) {
   const allKlinesData = {};

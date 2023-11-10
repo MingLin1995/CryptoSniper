@@ -1,28 +1,35 @@
 // controllers/trackingController.js
 
-const Tracking = require("../models/Tracking");
-const { trackPrices } = require("../services/priceTracker");
+const PriceAlert = require("../models/PriceAlert");
+const { trackPrices } = require("../services/priceAlertService.js");
 
 const addTracking = async (req, res) => {
-  const { telegramId, targetSymbol, targetPrice } = req.body;
+  const { symbol, targetPrice, notificationMethod, telegramId } = req.body;
+  const userId = req.user._id; // 從 verifyToken 中間件獲取用戶ID
 
   try {
-    const tracking = new Tracking({
-      telegramId,
-      targetSymbol,
+    let alertData = {
+      user: userId,
+      symbol,
       targetPrice,
-    });
+      notificationMethod,
+    };
 
-    await tracking.save();
+    if (notificationMethod === "Telegram") {
+      alertData.telegramId = telegramId; // 只有當使用 Telegram 通知時才添加
+    }
 
-    res.json({
-      message: "追蹤設定成功",
-      telegramId: tracking.telegramId,
-    });
+    const priceAlert = new PriceAlert(alertData);
+    await priceAlert.save();
+    // 如果追蹤成功保存，啟動價格追蹤
+    if (priceAlert) {
+      trackPrices();
+    }
+
+    res.status(201).json({ message: "追蹤成功設置！", priceAlert });
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: "設定追蹤時發生錯誤" });
+    res.status(400).json({ error: "無法設置追蹤", details: error.message });
   }
 };
 
-module.exports = { addTracking, trackPrices };
+module.exports = { addTracking };

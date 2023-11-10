@@ -23,6 +23,7 @@
     "node-fetch": "^3.3.2",
     "node-notifier": "^10.0.1",
     "node-schedule": "^2.1.1",
+    "web-push": "^3.6.6",
     "ws": "^8.14.2"
   },
   "keywords": []
