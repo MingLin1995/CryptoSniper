@@ -2,9 +2,19 @@
 
 document.addEventListener("DOMContentLoaded", () => {
   checkLoginStatus();
+  applyThemePreference();
 });
 
-function checkLoginStatus() {
+function applyThemePreference() {
+  const theme = localStorage.getItem("theme");
+  if (theme === "day-mode") {
+    document.body.classList.remove("night-mode");
+  } else {
+    document.body.classList.add("night-mode");
+  }
+}
+
+async function checkLoginStatus() {
   const token = localStorage.getItem("token");
   const loginBtn = document.getElementById("loginBtn");
   const logoutBtn = document.getElementById("logoutBtn");
@@ -14,6 +24,28 @@ function checkLoginStatus() {
   );
 
   if (token) {
+    // 驗證token是否有效
+    try {
+      const response = await fetch("/api/user/verifyToken", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: token,
+        },
+      });
+
+      if (!response.ok) {
+        // token無效，清除token並返回
+        localStorage.removeItem("token");
+        localStorage.removeItem("telegramId");
+        throw new Error("Token expired");
+      }
+    } catch (error) {
+      // 處理token過期或其他錯誤
+      console.error(error);
+      return checkLoginStatus(); // 重新檢查登錄狀態
+    }
+
     loginBtn.style.display = "none";
     logoutBtn.style.display = "inline-block";
     trackingForm.style.display = "block";
@@ -49,7 +81,7 @@ async function register() {
   const password = document.getElementById("registerPassword").value;
 
   try {
-    const response = await fetch("/api/users/register", {
+    const response = await fetch("/api/user/register", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ name, email, password }),
@@ -58,13 +90,13 @@ async function register() {
     const data = await response.json();
 
     if (response.ok) {
-      alert("註冊成功！" + JSON.stringify(data));
+      alert("註冊成功！");
     } else {
       alert("註冊失敗：" + data.message);
     }
   } catch (error) {
-    console.error("Error:", error);
-    alert("註冊失敗！");
+    //console.error("Error:", error);
+    alert("伺服器錯誤");
   }
 }
 
@@ -73,7 +105,7 @@ async function login() {
   const password = document.getElementById("loginPassword").value;
 
   try {
-    const response = await fetch("/api/users/login", {
+    const response = await fetch("/api/user/login", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email, password }),
@@ -82,7 +114,7 @@ async function login() {
     const data = await response.json();
 
     if (response.ok) {
-      alert("登入成功！" + data.message);
+      alert("登入成功！");
       localStorage.setItem("token", data.token);
 
       if (data.telegramId) {
@@ -96,14 +128,14 @@ async function login() {
       alert("登入失敗：" + data.error);
     }
   } catch (error) {
-    console.error("Error:", error);
+    //console.error("Error:", error);
     alert("伺服器錯誤");
   }
 }
 
 async function logout() {
   try {
-    const response = await fetch("/api/users/logout", {
+    const response = await fetch("/api/user/logout", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -118,10 +150,10 @@ async function logout() {
       checkLoginStatus();
     } else {
       const data = await response.json();
-      alert("登出失敗：" + data.error);
+      window.location.href = "/";
     }
   } catch (error) {
     console.error("Error:", error);
-    alert("伺服器錯誤");
+    window.location.href = "/";
   }
 }

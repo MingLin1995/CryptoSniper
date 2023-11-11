@@ -1,5 +1,14 @@
 // public/js/Tracking.js
 
+// 綁定事件到所有通知管道的圖片
+document
+  .querySelectorAll('img[data-target="#trackingModal"]')
+  .forEach((img) => {
+    img.addEventListener("click", function () {
+      currentNotificationMethod = this.getAttribute("data-notification-method");
+    });
+  });
+
 function trackPrice(event) {
   event.preventDefault();
 
@@ -7,19 +16,25 @@ function trackPrice(event) {
   const targetSymbolInput = document.getElementById("targetSymbol");
   const targetPriceInput = document.getElementById("targetPrice");
 
-  // 獲取用戶輸入的值
+  // 獲取使用者輸入的值
   const telegramId = telegramIdInput.value;
-  const targetSymbol = targetSymbolInput.value;
+  const symbol = targetSymbolInput.value;
   const targetPrice = targetPriceInput.value;
 
+  // 選擇的通知方式
+  const notificationMethod = currentNotificationMethod;
+
+  const token = localStorage.getItem("token");
   fetch("/api/track", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
+      Authorization: token,
     },
     body: JSON.stringify({
       telegramId,
-      targetSymbol,
+      notificationMethod,
+      symbol,
       targetPrice,
     }),
   })
@@ -30,8 +45,8 @@ function trackPrice(event) {
       return response.json();
     })
     .then((data) => {
-      console.log("Success:", data);
-      alert("成功設定追蹤");
+      //console.log("Success:", data);
+      alert("到價通知設定成功！");
 
       // 更新用戶的 Telegram ID
       updateUserTelegramId(telegramId);
@@ -41,13 +56,12 @@ function trackPrice(event) {
     })
     .catch((error) => {
       console.error("Error:", error);
-      alert("設定追蹤時發生錯誤");
     });
 }
 
 function updateUserTelegramId(telegramId) {
   // 發送請求更新用戶的 Telegram ID
-  fetch("/api/users/updateTelegramId", {
+  fetch("/api/user/updateTelegramId", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -57,7 +71,7 @@ function updateUserTelegramId(telegramId) {
   })
     .then((response) => response.json())
     .then((data) => {
-      console.log(data);
+      //console.log(data);
       // 如果有新的Telegram ID，則更新資料庫和輸入框
       if (data.telegramId) {
         localStorage.setItem("telegramId", data.telegramId);

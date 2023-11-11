@@ -11,25 +11,24 @@
       rel="stylesheet"
     />
   </head>
-  <body class="night-mode">
+  <body>
     <div id="mainContainer" class="container mt-5">
       <h1 class="text-center mb-4">Crypto Sniper</h1>
-      <!-- 增加底部間距 -->
+
       <div class="text-center mb-4">
-        <!-- 增加底部間距 -->
         <!-- 登入和註冊按鈕 -->
         <button
-          class="btn btn-primary"
+          class="btn btn-outline-primary"
           id="loginBtn"
           data-toggle="modal"
           data-target="#loginModal"
         >
-          註冊/登入
+          登入/註冊
         </button>
 
         <!-- 登出按鈕 -->
         <button
-          class="btn btn-danger"
+          class="btn btn-outline-danger"
           id="logoutBtn"
           onclick="logout()"
           style="display: none"
@@ -37,7 +36,9 @@
           登出
         </button>
 
-        <button class="btn btn-secondary" id="toggleThemeBtn">背景切換</button>
+        <button class="btn btn-outline-secondary" id="toggleThemeBtn">
+          背景切換
+        </button>
       </div>
 
       <!-- Login Modal -->
@@ -45,15 +46,15 @@
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title">登入</h5>
+              <h5 class="modal-title">會員登入</h5>
               <button type="button" class="close" data-dismiss="modal">
                 &times;
               </button>
             </div>
             <div class="modal-body">
-              <form id="loginForm">
+              <form id="loginForm" onsubmit="event.preventDefault(); login();">
                 <div class="form-group">
-                  <label for="loginEmail">電子郵件：</label>
+                  <label for="loginEmail">電子信箱：</label>
                   <input
                     type="email"
                     class="form-control"
@@ -70,7 +71,10 @@
                     required
                   />
                 </div>
-                <button type="button" class="btn btn-primary" onclick="login()">
+                <button
+                  type="submit"
+                  class="btn toggle-modal-link btn-outline-success btn-sm"
+                >
                   登入
                 </button>
               </form>
@@ -78,6 +82,7 @@
                 還沒有帳戶?
                 <a
                   href="#"
+                  class="toggle-modal-link btn btn-outline-primary btn-sm"
                   data-dismiss="modal"
                   data-toggle="modal"
                   data-target="#registerModal"
@@ -100,9 +105,12 @@
               </button>
             </div>
             <div class="modal-body">
-              <form id="registerForm">
+              <form
+                id="registerForm"
+                onsubmit="event.preventDefault(); register();"
+              >
                 <div class="form-group">
-                  <label for="registerName">姓名:</label>
+                  <label for="registerName">姓名：</label>
                   <input
                     type="text"
                     class="form-control"
@@ -112,7 +120,7 @@
                   />
                 </div>
                 <div class="form-group">
-                  <label for="registerEmail">電子郵件:</label>
+                  <label for="registerEmail">電子信箱：</label>
                   <input
                     type="email"
                     class="form-control"
@@ -122,7 +130,7 @@
                   />
                 </div>
                 <div class="form-group">
-                  <label for="registerPassword">密碼:</label>
+                  <label for="registerPassword">密碼：</label>
                   <input
                     type="password"
                     class="form-control"
@@ -132,9 +140,8 @@
                   />
                 </div>
                 <button
-                  type="button"
-                  class="btn btn-primary"
-                  onclick="register()"
+                  type="submit"
+                  class="btn toggle-modal-link btn-outline-primary btn-sm"
                 >
                   註冊
                 </button>
@@ -143,6 +150,7 @@
                 已經有帳戶了?
                 <a
                   href="#"
+                  class="toggle-modal-link btn btn-outline-success btn-sm"
                   data-dismiss="modal"
                   data-toggle="modal"
                   data-target="#loginModal"
@@ -154,50 +162,10 @@
         </div>
       </div>
 
-      <!-- 到價通知 -->
-      <form id="trackingForm" class="mb-4" style="display: none">
-        <div class="form-group">
-          <label for="telegramId">Telegram ID:</label>
-          <input
-            type="text"
-            id="telegramId"
-            name="telegramId"
-            class="form-control"
-            required
-          />
-        </div>
-
-        <div class="form-group">
-          <label for="targetSymbol">Target Symbol (e.g., BTCUSDT):</label>
-          <input
-            type="text"
-            id="targetSymbol"
-            name="targetSymbol"
-            class="form-control"
-            required
-          />
-        </div>
-
-        <div class="form-group">
-          <label for="targetPrice">Target Price:</label>
-          <input
-            type="number"
-            id="targetPrice"
-            name="targetPrice"
-            class="form-control"
-            required
-          />
-        </div>
-
-        <button onclick="trackPrice(event)" class="btn btn-primary">
-          Track Price
-        </button>
-      </form>
-
       <!-- 篩選器、圖表 -->
       <h2 class="mb-3">幣安U本位合約篩選器</h2>
       <div class="main">
-        <form name="filterForm" onsubmit="return false">
+        <form name="filterForm" class="mb-4">
           <!-- 第一组參數 -->
           <div class="filter-group">
             <div class="form-group">
@@ -213,11 +181,7 @@
                 <option value="1h">1小時</option>
                 <option value="2h">2小時</option>
                 <option value="4h">4小時</option>
-                <option value="6h">6小時</option>
-                <option value="8h">8小時</option>
-                <option value="12h">12小時</option>
                 <option value="1d">1天</option>
-                <option value="3d">3天</option>
                 <option value="1w">1周</option>
                 <option value="1M">1個月</option>
               </select>
@@ -230,7 +194,7 @@
                   id="MA1-1"
                   name="MA1-1"
                   class="form-control"
-                  placeholder="MA參數一"
+                  placeholder="請輸入MA"
                   value="25"
                 />
               </div>
@@ -256,14 +220,23 @@
                   id="MA1-2"
                   name="MA1-2"
                   class="form-control"
-                  placeholder="MA參數二"
+                  placeholder="請輸入MA"
                   value="60"
                 />
               </div>
 
+              <!-- 增加篩選條件的按鈕 -->
+              <button
+                id="toggle-filters-btn-1"
+                type="button"
+                class="btn btn-outline-info btn-block my-3"
+              >
+                增加篩選條件
+              </button>
+
               <div class="w-100"></div>
 
-              <div class="form-group col-md-3">
+              <div class="form-group col-md-3 hidden toggle-element-1">
                 <select
                   id="logical-operator-1"
                   name="logical-operator-1"
@@ -275,14 +248,14 @@
               </div>
             </div>
 
-            <div class="form-row">
+            <div class="form-row hidden toggle-element-1">
               <div class="form-group col-md-3">
                 <input
                   type="text"
                   id="MA1-3"
                   name="MA1-3"
                   class="form-control"
-                  placeholder="MA參數三"
+                  placeholder="請輸入MA"
                 />
               </div>
 
@@ -307,13 +280,23 @@
                   id="MA1-4"
                   name="MA1-4"
                   class="form-control"
-                  placeholder="MA參數四"
+                  placeholder="請輸入MA"
                 />
               </div>
             </div>
+
+            <!-- 增加時間週期的按鈕 -->
+            <button
+              id="add-time-period-1"
+              type="button"
+              class="btn btn-outline-primary btn-block my-3 hidden-before-login"
+            >
+              增加時間週期
+            </button>
           </div>
+
           <!-- 第二组參數 -->
-          <div class="filter-group hidden-before-login" style="display: none">
+          <div class="filter-group hidden-before-login hidden toggle-element-5">
             <div class="form-group">
               <label for="time-interval-2">時間週期：</label>
               <select
@@ -327,11 +310,7 @@
                 <option value="1h" selected>1小時</option>
                 <option value="2h">2小時</option>
                 <option value="4h">4小時</option>
-                <option value="6h">6小時</option>
-                <option value="8h">8小時</option>
-                <option value="12h">12小時</option>
                 <option value="1d">1天</option>
-                <option value="3d">3天</option>
                 <option value="1w">1周</option>
                 <option value="1M">1個月</option>
               </select>
@@ -343,7 +322,7 @@
                   type="text"
                   id="MA2-1"
                   name="MA2-1"
-                  placeholder="MA參數一"
+                  placeholder="請輸入MA"
                   class="form-control"
                 />
               </div>
@@ -368,14 +347,23 @@
                   type="text"
                   id="MA2-2"
                   name="MA2-2"
-                  placeholder="MA參數二"
+                  placeholder="請輸入MA"
                   class="form-control"
                 />
               </div>
 
+              <!-- 增加篩選條件的按鈕 -->
+              <button
+                id="toggle-filters-btn-2"
+                type="button"
+                class="btn btn-outline-info btn-block my-3"
+              >
+                增加篩選條件
+              </button>
+
               <div class="w-100"></div>
 
-              <div class="form-group col-md-3">
+              <div class="form-group col-md-3 hidden toggle-element-2">
                 <select
                   id="logical-operator-2"
                   name="logical-operator-2"
@@ -387,13 +375,13 @@
               </div>
             </div>
 
-            <div class="form-row">
+            <div class="form-row hidden toggle-element-2">
               <div class="form-group col-md-3">
                 <input
                   type="text"
                   id="MA2-3"
                   name="MA2-3"
-                  placeholder="MA參數三"
+                  placeholder="請輸入MA"
                   class="form-control"
                 />
               </div>
@@ -418,14 +406,24 @@
                   type="text"
                   id="MA2-4"
                   name="MA2-4"
-                  placeholder="MA參數四"
+                  placeholder="請輸入MA"
                   class="form-control"
                 />
               </div>
             </div>
+
+            <!-- 增加時間週期的按鈕 -->
+            <button
+              id="add-time-period-2"
+              type="button"
+              class="btn btn-outline-primary btn-block my-3 hidden-before-login"
+            >
+              增加時間週期
+            </button>
           </div>
+
           <!-- 第三组參數 -->
-          <div class="filter-group hidden-before-login" style="display: none">
+          <div class="filter-group hidden-before-login hidden toggle-element-6">
             <div class="form-group">
               <label for="time-interval-3">時間週期：</label>
               <select
@@ -439,22 +437,19 @@
                 <option value="1h">1小時</option>
                 <option value="2h">2小時</option>
                 <option value="4h" selected>4小時</option>
-                <option value="6h">6小時</option>
-                <option value="8h">8小時</option>
-                <option value="12h">12小時</option>
                 <option value="1d">1天</option>
-                <option value="3d">3天</option>
                 <option value="1w">1周</option>
                 <option value="1M">1個月</option>
               </select>
             </div>
+
             <div class="form-row">
               <div class="form-group col-md-3">
                 <input
                   type="text"
                   id="MA3-1"
                   name="MA3-1"
-                  placeholder="MA參數一"
+                  placeholder="請輸入MA"
                   class="form-control"
                 />
               </div>
@@ -477,12 +472,21 @@
                   type="text"
                   id="MA3-2"
                   name="MA3-2"
-                  placeholder="MA參數二"
+                  placeholder="請輸入MA"
                   class="form-control"
                 />
               </div>
+              <!-- 增加篩選條件的按鈕 -->
+              <button
+                id="toggle-filters-btn-3"
+                type="button"
+                class="btn btn-outline-info btn-block my-3"
+              >
+                增加篩選條件
+              </button>
               <div class="w-100"></div>
-              <div class="form-group col-md-3">
+
+              <div class="form-group col-md-3 hidden toggle-element-3">
                 <select
                   id="logical-operator-3"
                   name="logical-operator-3"
@@ -493,13 +497,14 @@
                 </select>
               </div>
             </div>
-            <div class="form-row">
+
+            <div class="form-row hidden toggle-element-3">
               <div class="form-group col-md-3">
                 <input
                   type="text"
                   id="MA3-3"
                   name="MA3-3"
-                  placeholder="MA參數三"
+                  placeholder="請輸入MA"
                   class="form-control"
                 />
               </div>
@@ -522,14 +527,24 @@
                   type="text"
                   id="MA3-4"
                   name="MA3-4"
-                  placeholder="MA參數四"
+                  placeholder="請輸入MA"
                   class="form-control"
                 />
               </div>
             </div>
+
+            <!-- 增加時間週期的按鈕 -->
+            <button
+              id="add-time-period-3"
+              type="button"
+              class="btn btn-outline-primary btn-block my-3 hidden-before-login"
+            >
+              增加時間週期
+            </button>
           </div>
+
           <!-- 第四组參數 -->
-          <div class="filter-group hidden-before-login" style="display: none">
+          <div class="filter-group hidden-before-login hidden toggle-element-7">
             <div class="form-group">
               <label for="time-interval-4">時間週期：</label>
               <select
@@ -543,11 +558,7 @@
                 <option value="1h">1小時</option>
                 <option value="2h">2小時</option>
                 <option value="4h">4小時</option>
-                <option value="6h">6小時</option>
-                <option value="8h">8小時</option>
-                <option value="12h">12小時</option>
                 <option value="1d" selected>1天</option>
-                <option value="3d">3天</option>
                 <option value="1w">1周</option>
                 <option value="1M">1個月</option>
               </select>
@@ -558,7 +569,7 @@
                   type="text"
                   id="MA4-1"
                   name="MA4-1"
-                  placeholder="MA參數一"
+                  placeholder="請輸入MA"
                   class="form-control"
                 />
               </div>
@@ -581,12 +592,21 @@
                   type="text"
                   id="MA4-2"
                   name="MA4-2"
-                  placeholder="MA參數二"
+                  placeholder="請輸入MA"
                   class="form-control"
                 />
               </div>
+              <!-- 增加篩選條件的按鈕 -->
+              <button
+                id="toggle-filters-btn-4"
+                type="button"
+                class="btn btn-outline-info btn-block my-3"
+              >
+                增加篩選條件
+              </button>
               <div class="w-100"></div>
-              <div class="form-group col-md-3">
+
+              <div class="form-group col-md-3 hidden toggle-element-4">
                 <select
                   id="logical-operator-4"
                   name="logical-operator-4"
@@ -597,13 +617,13 @@
                 </select>
               </div>
             </div>
-            <div class="form-row">
+            <div class="form-row hidden toggle-element-4">
               <div class="form-group col-md-3">
                 <input
                   type="text"
                   id="MA4-3"
                   name="MA4-3"
-                  placeholder="MA參數三"
+                  placeholder="請輸入MA"
                   class="form-control"
                 />
               </div>
@@ -626,18 +646,209 @@
                   type="text"
                   id="MA4-4"
                   name="MA4-4"
-                  placeholder="MA參數四"
+                  placeholder="請輸入MA"
                   class="form-control"
                 />
               </div>
             </div>
           </div>
-          <button class="btn btn-primary filterForm">開始篩選</button>
+          <button type="submit" class="btn btn-outline-primary">
+            開始篩選
+          </button>
         </form>
 
+        <!-- 到價通知 -->
+        <div class="hidden-before-login">
+          <h2 class="mb-3">到價通知設定</h2>
+          <div class="d-flex justify-content-around align-items-center mb-3">
+            <!-- Web到價通知 -->
+            <img
+              src="/images/notification.png"
+              alt="Web Notification"
+              class="img-fluid mb-3"
+              data-toggle="modal"
+              data-target="#webTrackingModal"
+              data-notification-method="Web"
+              style="cursor: pointer; max-width: 50px"
+              id="NotificationPermissio"
+            />
+            <!-- Modal -->
+            <div
+              class="modal fade"
+              id="webTrackingModal"
+              tabindex="-1"
+              role="dialog"
+              aria-labelledby="notificationModalLabel"
+              aria-hidden="true"
+            >
+              <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="notificationModalLabel">
+                      到價通知設定
+                    </h5>
+                    <button
+                      type="button"
+                      class="close"
+                      data-dismiss="modal"
+                      aria-label="Close"
+                    >
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    <button
+                      id="toggle-subscription"
+                      type="button"
+                      class="btn mb-2"
+                    >
+                      開啟到價通知
+                    </button>
+                    <form id="targetPriceForm">
+                      <div class="form-group">
+                        <label for="targetSymbol">標的名稱：</label>
+                        <input
+                          name="targetSymbol"
+                          type="text"
+                          class="form-control mb-2"
+                          id="symbol-Notification"
+                          required
+                        />
+                      </div>
+                      <label for="targetPrice">目標價：</label>
+
+                      <div class="form-group">
+                        <input
+                          name="targetPrice"
+                          type="number"
+                          class="form-control mb-2"
+                          id="targetPrice-Notification"
+                          required
+                        />
+                      </div>
+                      <button
+                        type="submit"
+                        class="btn toggle-modal-link btn-outline-success"
+                      >
+                        到價通知
+                      </button>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- TG到價通知 -->
+            <img
+              src="/images/telegram.png"
+              alt="Telegram"
+              class="img-fluid mb-3"
+              data-toggle="modal"
+              data-target="#telegramTrackingModal"
+              data-notification-method="Telegram"
+              style="cursor: pointer; max-width: 50px"
+            />
+            <!-- Modal -->
+            <div
+              class="modal fade"
+              id="telegramTrackingModal"
+              tabindex="-1"
+              role="dialog"
+              aria-labelledby="trackingModalLabel"
+              aria-hidden="true"
+            >
+              <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="trackingModalLabel">
+                      到價通知設定
+                    </h5>
+                    <button
+                      type="button"
+                      class="close"
+                      data-dismiss="modal"
+                      aria-label="Close"
+                    >
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    <!-- 機器人表單 -->
+                    <form id="trackingForm" style="display: none">
+                      <div class="instructions mb-4">
+                        <h5>TG到價通知設定教學：</h5>
+                        <ol>
+                          <li>
+                            先點選
+                            <a
+                              href="https://t.me/CryptoSniper_MLvip_Bot"
+                              target="_blank"
+                              >CryptoSniper </a
+                            >加入機器人。
+                          </li>
+                          <li>
+                            點選開始按鈕，會收到歡迎通知，即可看到您的 Telegram
+                            ID。
+                          </li>
+                          <li>輸入Telegram ID、標的名稱、目標價即可。</li>
+                        </ol>
+                      </div>
+
+                      <div class="form-group">
+                        <label for="telegramId">Telegram ID：</label>
+                        <input
+                          type="text"
+                          id="telegramId"
+                          name="telegramId"
+                          class="form-control"
+                          required
+                        />
+                      </div>
+
+                      <div class="form-group">
+                        <label for="targetSymbol">標的名稱：</label>
+                        <input
+                          type="text"
+                          id="targetSymbol"
+                          name="targetSymbol"
+                          class="form-control"
+                          required
+                        />
+                      </div>
+
+                      <div class="form-group">
+                        <label for="targetPrice">目標價：</label>
+                        <input
+                          type="number"
+                          id="targetPrice"
+                          name="targetPrice"
+                          class="form-control"
+                          required
+                        />
+                      </div>
+
+                      <button
+                        onclick="trackPrice(event)"
+                        class="btn toggle-modal-link btn-outline-success"
+                      >
+                        到價通知
+                      </button>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
         <!-- TradingView Widget BEGIN -->
-        <div class="tradingview-widget-container">
+        <div
+          class="tradingview-widget-container mb-4"
+          id="tradingViewContainer"
+          style="display: none"
+        >
           <div id="tradingview_0aab0"></div>
+          <div>※部分『季度合約』、『BUSD交易對』不支援</div>
           <script
             type="text/javascript"
             src="https://s3.tradingview.com/tv.js"
@@ -649,12 +860,52 @@
         </div>
         <!-- TradingView Widget END -->
       </div>
-      <div id="message"></div>
+
+      <!-- 篩選結果 -->
+      <div class="result-container" id="resultContainer" style="display: none">
+        <div class="card">
+          <div class="card-header">
+            <h5 class="centered-text">篩選結果</h5>
+          </div>
+          <div class="card-body">
+            <!-- 新增一個用於顯示「搜尋中」訊息和圖片的 div -->
+            <div
+              id="loading-message"
+              style="display: none"
+              class="searching-gif"
+            >
+              <div class="loading-image-container">
+                <p>搜尋中．．．</p>
+                <img
+                  src="/images/searching.gif"
+                  alt="Searching"
+                  class="searching-gif"
+                />
+              </div>
+            </div>
+            <table class="table" id="results-table">
+              <thead>
+                <tr>
+                  <th scope="col">標的</th>
+                  <th scope="col" class="sortable" id="volume-header">
+                    成交量
+                  </th>
+                </tr>
+              </thead>
+              <tbody id="results-tbody">
+                <!-- 您的篩選結果將在這裡顯示 -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
     </div>
 
     <script type="module" src="/js/index.js"></script>
     <script src="js/User.js"></script>
     <script src="js/Tracking.js"></script>
+    <script src="/js/services/service-worker.js"></script>
+    <script src="/js/services/notifications.js"></script>
     <script src="js/Bootstrap.js"></script>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
