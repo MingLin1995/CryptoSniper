@@ -32,6 +32,26 @@ function extractFilterConditions() {
 
   for (let i = 1; i <= parameterGroups; i++) {
     const timeInterval = document.getElementById(`time-interval-${i}`).value;
+
+    for (let j = 1; j <= parameterGroups; j++) {
+      const maParamElement = document.getElementById(`MA${i}-${j}`);
+      const maParamValue = maParamElement.value;
+
+      if (maParamValue !== "") {
+        const maValueNum = parseInt(maParamValue);
+
+        if (
+          !Number.isInteger(maValueNum) ||
+          maValueNum <= 0 ||
+          maValueNum > 240
+        ) {
+          alert("請輸入正整數，最多支援到240MA");
+          maParamElement.focus();
+          return null;
+        }
+      }
+    }
+
     const maParameters = Array.from({ length: parameterGroups }, (_, j) => {
       const maParamValue = document.getElementById(`MA${i}-${j + 1}`).value;
       return { value: maParamValue ? parseInt(maParamValue) : null };
@@ -58,7 +78,6 @@ function extractFilterConditions() {
       logical_operator: logicalOperator,
     });
   }
-
   return intervalsData;
 }
 
