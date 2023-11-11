@@ -16,7 +16,7 @@ const addTracking = async (req, res) => {
     };
 
     if (notificationMethod === "Telegram") {
-      alertData.telegramId = telegramId; // 只有當使用 Telegram 通知時才添加
+      alertData.telegramId = telegramId; // 只有當使用 Telegram 通知時才寫入
     }
 
     const priceAlert = new PriceAlert(alertData);

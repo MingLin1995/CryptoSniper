@@ -1,21 +1,19 @@
-// public/js/service-worker.js
+// public/js/services/service-worker.js
 
 self.addEventListener("install", (event) => {
-  console.log("Service worker 安裝成功");
-  // 在此可執行 cache 資源的操作
+  //console.log("Service worker 安裝成功");
 });
 
 self.addEventListener("activate", (event) => {
-  console.log("Service worker 激活成功");
-  // 在此可執行清理舊 cache 的操作
+  //console.log("Service worker 啟動成功");
 });
 
 self.addEventListener("push", function (event) {
-  console.log("Received push event:", event);
+  //console.log("Received push event:", event);
   try {
     if (event.data) {
       const data = event.data.json();
-      console.log("Push data:", data);
+      // console.log("Push data:", data);
       event.waitUntil(
         self.registration.showNotification(data.title, {
           body: data.body,
@@ -30,8 +28,6 @@ self.addEventListener("push", function (event) {
     console.error("Error parsing push event data:", e);
   }
 });
-
-// public/js/service-worker.js
 
 self.addEventListener("notificationclick", function (event) {
   event.notification.close(); // 關閉通知

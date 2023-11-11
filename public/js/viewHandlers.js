@@ -7,11 +7,11 @@ let indexObject = { currentIndex: 0 };
 
 //建立表格
 function createTableRow(item, intervalsData) {
-  // 創建一個表格行並填充數據
+  // 創建表格的行
   const tr = document.createElement("tr");
-
-  // 創建標的名稱的列
+  // 創建表格的的列
   const tdSymbol = document.createElement("td");
+  //填入值
   tdSymbol.textContent = item.symbol;
   tdSymbol.id = "symbol-column";
   tdSymbol.addEventListener("click", function () {
@@ -22,11 +22,10 @@ function createTableRow(item, intervalsData) {
   const tdVolume = document.createElement("td");
   tdVolume.textContent = formatVolume(item.quote_volume);
 
-  // 將這兩列添加到行中
   tr.appendChild(tdSymbol);
   tr.appendChild(tdVolume);
 
-  return tr; // 返回已創建的行
+  return tr;
 }
 
 // 載入更多
@@ -87,8 +86,9 @@ function handleSymbolClick(symbol, intervalsData) {
   const clickedSymbol = `BINANCE:${symbol}.P`;
   createTradingViewWidget(intervalsData, clickedSymbol);
   document.getElementById("targetSymbol").value = symbol;
+  document.getElementById("symbol-Notification").value = symbol;
 
-  // 增加一個延遲，以確保頁面已經動態加載並渲染
+  // 增加延遲，以確保頁面已經加載
   setTimeout(() => {
     const targetElement = document.getElementById("tradingViewContainer");
 
@@ -155,43 +155,6 @@ function displayResults(allResultsVolume, intervalsData) {
     loadCount
   );
   handleScroll(tbody, allResultsVolume, intervalsData, indexObject, loadCount);
-}
-// // 綁定模態視窗打開事件
-// $("#notificationModal").on("show.bs.modal", function (e) {
-//   checkUserSubscription();
-// });
-
-// 檢查用戶的訂閱狀態
-async function checkUserSubscription() {
-  const token = localStorage.getItem("token");
-  try {
-    // 這裡的'/api/check-subscription'是假設的端點，您需要替換為您實際的API路徑
-    const response = await fetch("/api/subscription/check", {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: token,
-        // 添加其他需要的頭部，如認證令牌等
-      },
-    });
-
-    if (!response.ok) {
-      throw new Error("Server response 錯誤");
-    }
-
-    const { isSubscribed } = await response.json();
-
-    // 更新按鈕文字
-    updateSubscriptionButton(isSubscribed);
-  } catch (error) {
-    console.error("Failed to check subscription status:", error);
-  }
-}
-
-// 更新訂閱按鈕的狀態
-function updateSubscriptionButton(isSubscribed) {
-  const button = document.getElementById("toggle-subscription");
-  button.textContent = isSubscribed ? "取消訂閱" : "訂閱";
 }
 
 export { displayResults };

@@ -18,17 +18,17 @@
       <div class="text-center mb-4">
         <!-- 登入和註冊按鈕 -->
         <button
-          class="btn btn-primary"
+          class="btn btn-outline-primary"
           id="loginBtn"
           data-toggle="modal"
           data-target="#loginModal"
         >
-          註冊/登入
+          登入/註冊
         </button>
 
         <!-- 登出按鈕 -->
         <button
-          class="btn btn-danger"
+          class="btn btn-outline-danger"
           id="logoutBtn"
           onclick="logout()"
           style="display: none"
@@ -36,7 +36,9 @@
           登出
         </button>
 
-        <button class="btn btn-secondary" id="toggleThemeBtn">背景切換</button>
+        <button class="btn btn-outline-secondary" id="toggleThemeBtn">
+          背景切換
+        </button>
       </div>
 
       <!-- Login Modal -->
@@ -44,7 +46,7 @@
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title">登入</h5>
+              <h5 class="modal-title">會員登入</h5>
               <button type="button" class="close" data-dismiss="modal">
                 &times;
               </button>
@@ -52,7 +54,7 @@
             <div class="modal-body">
               <form id="loginForm" onsubmit="event.preventDefault(); login();">
                 <div class="form-group">
-                  <label for="loginEmail">電子郵件：</label>
+                  <label for="loginEmail">電子信箱：</label>
                   <input
                     type="email"
                     class="form-control"
@@ -69,12 +71,18 @@
                     required
                   />
                 </div>
-                <button type="submit" class="btn btn-primary">登入</button>
+                <button
+                  type="submit"
+                  class="btn toggle-modal-link btn-outline-success btn-sm"
+                >
+                  登入
+                </button>
               </form>
               <p class="mt-3">
                 還沒有帳戶?
                 <a
                   href="#"
+                  class="toggle-modal-link btn btn-outline-primary btn-sm"
                   data-dismiss="modal"
                   data-toggle="modal"
                   data-target="#registerModal"
@@ -102,7 +110,7 @@
                 onsubmit="event.preventDefault(); register();"
               >
                 <div class="form-group">
-                  <label for="registerName">姓名:</label>
+                  <label for="registerName">姓名：</label>
                   <input
                     type="text"
                     class="form-control"
@@ -112,7 +120,7 @@
                   />
                 </div>
                 <div class="form-group">
-                  <label for="registerEmail">電子郵件:</label>
+                  <label for="registerEmail">電子信箱：</label>
                   <input
                     type="email"
                     class="form-control"
@@ -122,7 +130,7 @@
                   />
                 </div>
                 <div class="form-group">
-                  <label for="registerPassword">密碼:</label>
+                  <label for="registerPassword">密碼：</label>
                   <input
                     type="password"
                     class="form-control"
@@ -131,12 +139,18 @@
                     required
                   />
                 </div>
-                <button type="submit" class="btn btn-primary">註冊</button>
+                <button
+                  type="submit"
+                  class="btn toggle-modal-link btn-outline-primary btn-sm"
+                >
+                  註冊
+                </button>
               </form>
               <p class="mt-3">
                 已經有帳戶了?
                 <a
                   href="#"
+                  class="toggle-modal-link btn btn-outline-success btn-sm"
                   data-dismiss="modal"
                   data-toggle="modal"
                   data-target="#loginModal"
@@ -215,7 +229,7 @@
               <button
                 id="toggle-filters-btn-1"
                 type="button"
-                class="btn btn-info btn-lg btn-block mt-3 mb-3"
+                class="btn btn-outline-info btn-block my-3"
               >
                 增加篩選條件
               </button>
@@ -275,7 +289,7 @@
             <button
               id="add-time-period-1"
               type="button"
-              class="btn btn-primary btn-lg btn-block mt-3 mb-3 hidden-before-login"
+              class="btn btn-outline-primary btn-block my-3 hidden-before-login"
             >
               增加時間週期
             </button>
@@ -338,10 +352,11 @@
                 />
               </div>
 
+              <!-- 增加篩選條件的按鈕 -->
               <button
                 id="toggle-filters-btn-2"
                 type="button"
-                class="btn btn-info btn-lg btn-block mt-3 mb-3"
+                class="btn btn-outline-info btn-block my-3"
               >
                 增加篩選條件
               </button>
@@ -397,10 +412,11 @@
               </div>
             </div>
 
+            <!-- 增加時間週期的按鈕 -->
             <button
               id="add-time-period-2"
               type="button"
-              class="btn btn-primary btn-lg btn-block mt-3 mb-3 hidden-before-login"
+              class="btn btn-outline-primary btn-block my-3 hidden-before-login"
             >
               增加時間週期
             </button>
@@ -460,10 +476,11 @@
                   class="form-control"
                 />
               </div>
+              <!-- 增加篩選條件的按鈕 -->
               <button
                 id="toggle-filters-btn-3"
                 type="button"
-                class="btn btn-info btn-lg btn-block mt-3 mb-3"
+                class="btn btn-outline-info btn-block my-3"
               >
                 增加篩選條件
               </button>
@@ -516,10 +533,11 @@
               </div>
             </div>
 
+            <!-- 增加時間週期的按鈕 -->
             <button
               id="add-time-period-3"
               type="button"
-              class="btn btn-primary btn-lg btn-block mt-3 mb-3 hidden-before-login"
+              class="btn btn-outline-primary btn-block my-3 hidden-before-login"
             >
               增加時間週期
             </button>
@@ -578,10 +596,11 @@
                   class="form-control"
                 />
               </div>
+              <!-- 增加篩選條件的按鈕 -->
               <button
                 id="toggle-filters-btn-4"
                 type="button"
-                class="btn btn-info btn-lg btn-block mt-3 mb-3"
+                class="btn btn-outline-info btn-block my-3"
               >
                 增加篩選條件
               </button>
@@ -633,176 +652,189 @@
               </div>
             </div>
           </div>
-          <button type="submit" class="btn btn-primary submitButton">
+          <button type="submit" class="btn btn-outline-primary">
             開始篩選
           </button>
         </form>
 
         <!-- 到價通知 -->
         <div class="hidden-before-login">
-          <h2 class="mb-3">到價通知機器人</h2>
-          <!-- TG到價通知 -->
-          <img
-            src="/images/telegram.png"
-            alt="Telegram"
-            class="img-fluid mb-3"
-            data-toggle="modal"
-            data-target="#telegramTrackingModal"
-            data-notification-method="Telegram"
-            style="cursor: pointer; max-width: 50px"
-          />
-          <!-- Modal -->
-          <div
-            class="modal fade"
-            id="telegramTrackingModal"
-            tabindex="-1"
-            role="dialog"
-            aria-labelledby="trackingModalLabel"
-            aria-hidden="true"
-          >
-            <div class="modal-dialog" role="document">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h5 class="modal-title" id="trackingModalLabel">
-                    到價通知設定
-                  </h5>
-                  <button
-                    type="button"
-                    class="close"
-                    data-dismiss="modal"
-                    aria-label="Close"
-                  >
-                    <span aria-hidden="true">&times;</span>
-                  </button>
-                </div>
-                <div class="modal-body">
-                  <!-- 機器人表單 -->
-                  <form id="trackingForm" class="mb-4" style="display: none">
-                    <div class="instructions mb-4">
-                      <h5>到價通知機器人設定教學：</h5>
-                      <ol>
-                        <li>
-                          先點選<a
-                            href="https://t.me/CryptoSniper_MLvip_Bot"
-                            target="_blank"
-                            >CryptoSniper</a
-                          >加入機器人。
-                        </li>
-                        <li>
-                          點選開始按鈕，會收到歡迎通知，即可看到您的 Telegram
-                          ID。
-                        </li>
-                        <li>輸入Telegram ID、標的名稱、目標價即可。</li>
-                      </ol>
-                    </div>
-
-                    <div class="form-group">
-                      <label for="telegramId">Telegram ID：</label>
-                      <input
-                        type="text"
-                        id="telegramId"
-                        name="telegramId"
-                        class="form-control"
-                        required
-                      />
-                    </div>
-
-                    <div class="form-group">
-                      <label for="targetSymbol">交易對：</label>
-                      <input
-                        type="text"
-                        id="targetSymbol"
-                        name="targetSymbol"
-                        class="form-control"
-                        required
-                      />
-                    </div>
-
-                    <div class="form-group">
-                      <label for="targetPrice">目標價：</label>
-                      <input
-                        type="number"
-                        id="targetPrice"
-                        name="targetPrice"
-                        class="form-control"
-                        required
-                      />
-                    </div>
-
-                    <button onclick="trackPrice(event)" class="btn btn-primary">
-                      到價通知
+          <h2 class="mb-3">到價通知設定</h2>
+          <div class="d-flex justify-content-around align-items-center mb-3">
+            <!-- Web到價通知 -->
+            <img
+              src="/images/notification.png"
+              alt="Web Notification"
+              class="img-fluid mb-3"
+              data-toggle="modal"
+              data-target="#webTrackingModal"
+              data-notification-method="Web"
+              style="cursor: pointer; max-width: 50px"
+              id="NotificationPermissio"
+            />
+            <!-- Modal -->
+            <div
+              class="modal fade"
+              id="webTrackingModal"
+              tabindex="-1"
+              role="dialog"
+              aria-labelledby="notificationModalLabel"
+              aria-hidden="true"
+            >
+              <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="notificationModalLabel">
+                      到價通知設定
+                    </h5>
+                    <button
+                      type="button"
+                      class="close"
+                      data-dismiss="modal"
+                      aria-label="Close"
+                    >
+                      <span aria-hidden="true">&times;</span>
                     </button>
-                  </form>
+                  </div>
+                  <div class="modal-body">
+                    <button
+                      id="toggle-subscription"
+                      type="button"
+                      class="btn mb-2"
+                    >
+                      開啟到價通知
+                    </button>
+                    <form id="targetPriceForm">
+                      <div class="form-group">
+                        <label for="targetSymbol">標的名稱：</label>
+                        <input
+                          name="targetSymbol"
+                          type="text"
+                          class="form-control mb-2"
+                          id="symbol-Notification"
+                          required
+                        />
+                      </div>
+                      <label for="targetPrice">目標價：</label>
+
+                      <div class="form-group">
+                        <input
+                          name="targetPrice"
+                          type="number"
+                          class="form-control mb-2"
+                          id="targetPrice-Notification"
+                          required
+                        />
+                      </div>
+                      <button
+                        type="submit"
+                        class="btn toggle-modal-link btn-outline-success"
+                      >
+                        到價通知
+                      </button>
+                    </form>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
 
-          <!-- Web到價通知 -->
-          <img
-            src="/images/notification.png"
-            alt="Web Notification"
-            class="img-fluid mb-3"
-            data-toggle="modal"
-            data-target="#webTrackingModal"
-            data-notification-method="Web"
-            style="cursor: pointer; max-width: 50px"
-          />
-          <!-- Modal -->
-          <div
-            class="modal fade"
-            id="webTrackingModal"
-            tabindex="-1"
-            role="dialog"
-            aria-labelledby="notificationModalLabel"
-            aria-hidden="true"
-          >
-            <div class="modal-dialog" role="document">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h5 class="modal-title" id="notificationModalLabel">
-                    設定目標價格
-                  </h5>
-                  <button
-                    type="button"
-                    class="close"
-                    data-dismiss="modal"
-                    aria-label="Close"
-                  >
-                    <span aria-hidden="true">&times;</span>
-                  </button>
-                </div>
-                <div class="modal-body">
-                  <button
-                    id="toggle-subscription"
-                    type="button"
-                    class="btn btn-secondary mb-2"
-                  >
-                    訂閱/取消訂閱
-                  </button>
-                  <form id="targetPriceForm">
-                    <div class="form-group">
-                      <input
-                        type="text"
-                        class="form-control mb-2"
-                        id="symbol-Notification"
-                        placeholder="輸入標的代碼 (例如 BTCUSDT)"
-                        required
-                      />
-                    </div>
-                    <div class="form-group">
-                      <input
-                        type="number"
-                        class="form-control mb-2"
-                        id="targetPrice-Notification"
-                        placeholder="輸入目標價格"
-                        required
-                      />
-                    </div>
-                    <button type="submit" class="btn btn-primary">
-                      設定目標價格
+            <!-- TG到價通知 -->
+            <img
+              src="/images/telegram.png"
+              alt="Telegram"
+              class="img-fluid mb-3"
+              data-toggle="modal"
+              data-target="#telegramTrackingModal"
+              data-notification-method="Telegram"
+              style="cursor: pointer; max-width: 50px"
+            />
+            <!-- Modal -->
+            <div
+              class="modal fade"
+              id="telegramTrackingModal"
+              tabindex="-1"
+              role="dialog"
+              aria-labelledby="trackingModalLabel"
+              aria-hidden="true"
+            >
+              <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="trackingModalLabel">
+                      到價通知設定
+                    </h5>
+                    <button
+                      type="button"
+                      class="close"
+                      data-dismiss="modal"
+                      aria-label="Close"
+                    >
+                      <span aria-hidden="true">&times;</span>
                     </button>
-                  </form>
+                  </div>
+                  <div class="modal-body">
+                    <!-- 機器人表單 -->
+                    <form id="trackingForm" style="display: none">
+                      <div class="instructions mb-4">
+                        <h5>TG到價通知設定教學：</h5>
+                        <ol>
+                          <li>
+                            先點選
+                            <a
+                              href="https://t.me/CryptoSniper_MLvip_Bot"
+                              target="_blank"
+                              >CryptoSniper </a
+                            >加入機器人。
+                          </li>
+                          <li>
+                            點選開始按鈕，會收到歡迎通知，即可看到您的 Telegram
+                            ID。
+                          </li>
+                          <li>輸入Telegram ID、標的名稱、目標價即可。</li>
+                        </ol>
+                      </div>
+
+                      <div class="form-group">
+                        <label for="telegramId">Telegram ID：</label>
+                        <input
+                          type="text"
+                          id="telegramId"
+                          name="telegramId"
+                          class="form-control"
+                          required
+                        />
+                      </div>
+
+                      <div class="form-group">
+                        <label for="targetSymbol">標的名稱：</label>
+                        <input
+                          type="text"
+                          id="targetSymbol"
+                          name="targetSymbol"
+                          class="form-control"
+                          required
+                        />
+                      </div>
+
+                      <div class="form-group">
+                        <label for="targetPrice">目標價：</label>
+                        <input
+                          type="number"
+                          id="targetPrice"
+                          name="targetPrice"
+                          class="form-control"
+                          required
+                        />
+                      </div>
+
+                      <button
+                        onclick="trackPrice(event)"
+                        class="btn toggle-modal-link btn-outline-success"
+                      >
+                        到價通知
+                      </button>
+                    </form>
+                  </div>
                 </div>
               </div>
             </div>
@@ -843,7 +875,7 @@
               class="searching-gif"
             >
               <div class="loading-image-container">
-                <p>搜尋中...</p>
+                <p>搜尋中．．．</p>
                 <img
                   src="/images/searching.gif"
                   alt="Searching"
@@ -868,12 +900,6 @@
         </div>
       </div>
     </div>
-
-    <!-- <label for="notificationMethod">選擇通知方式:</label>
-    <select id="notificationMethod">
-      <option value="Telegram">Telegram</option>
-      <option value="Web">網站通知</option>
-    </select> -->
 
     <script type="module" src="/js/index.js"></script>
     <script src="js/User.js"></script>
