@@ -2,10 +2,11 @@
 
 const PriceAlert = require("../models/PriceAlert");
 const { trackPrices } = require("../services/priceAlertService.js");
+const User = require("../models/User");
 
 const addTracking = async (req, res) => {
   const { symbol, targetPrice, notificationMethod, telegramId } = req.body;
-  const userId = req.user._id; // 從 verifyToken 中間件獲取用戶ID
+  const userId = req.user._id;
 
   try {
     let alertData = {
@@ -17,6 +18,15 @@ const addTracking = async (req, res) => {
 
     if (notificationMethod === "Telegram") {
       alertData.telegramId = telegramId; // 只有當使用 Telegram 通知時才寫入
+    }
+
+    if (notificationMethod === "Line") {
+      const user = await User.findById(userId);
+      if (user && user.lineAccessToken) {
+        alertData.lineAccessToken = user.lineAccessToken;
+      } else {
+        throw new Error("Line Access Token not found for the user");
+      }
     }
 
     const priceAlert = new PriceAlert(alertData);

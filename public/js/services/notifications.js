@@ -1,8 +1,14 @@
 // public/js/services/notifications.js
 
 // 獲取圖片元素和按鈕元素
-const notificationImage = document.getElementById("NotificationPermissio");
+const notificationImage = document.getElementById("NotificationPermissio-web");
 const toggleSubscriptionButton = document.getElementById("toggle-subscription");
+
+// 點擊圖片時，請求通知許可
+notificationImage.addEventListener("click", async function () {
+  await requestNotificationPermission();
+  checkUserSubscription();
+});
 
 // 檢查瀏覽器支持
 function checkBrowserSupport() {
@@ -101,10 +107,10 @@ function updateSubscriptionButton(isSubscribed) {
   button.classList.remove("btn-outline-primary", "btn-outline-danger");
 
   if (isSubscribed) {
-    button.textContent = "取消到價通知";
+    button.textContent = "關閉 Web 到價通知";
     button.classList.add("btn-outline-danger"); // 添加紅色按鈕類別
   } else {
-    button.textContent = "開啟到價通知";
+    button.textContent = "開啟 Web 到價通知";
     button.classList.add("btn-outline-primary"); // 添加藍色按鈕類別
   }
 }
@@ -125,11 +131,6 @@ async function onClick() {
 // 按鈕點擊時處理訂閱邏輯
 toggleSubscriptionButton.addEventListener("click", async function () {
   await onClick();
-});
-
-// 點擊圖片時，請求通知許可
-notificationImage.addEventListener("click", async function () {
-  await requestNotificationPermission();
 });
 
 // 初始化函數
@@ -220,7 +221,7 @@ document
     }
 
     const button = document.getElementById("toggle-subscription").textContent;
-    if (button == "開啟到價通知") {
+    if (button == "開啟 Web 到價通知") {
       alert("尚未開啟到價通知！");
       return;
     }
@@ -246,7 +247,16 @@ document
         notificationMethod: notificationMethod,
       }),
     })
-      .then((response) => response.json())
+      .then((response) => {
+        if (!response.ok) {
+          const errorResponse = response.json();
+          if (errorResponse.error === "jwt expired") {
+            window.location.href = "/";
+            return;
+          }
+          throw new Error("無法獲取訂閱狀態");
+        }
+      })
       .then((data) => {
         //console.log(data);
         alert("到價通知設定成功！");
@@ -254,12 +264,6 @@ document
       .catch((error) => {
         console.error("Error:", error);
       });
-  });
-
-document
-  .getElementById("NotificationPermissio")
-  .addEventListener("click", function () {
-    checkUserSubscription();
   });
 
 // 檢查用戶的訂閱狀態
@@ -275,6 +279,11 @@ async function checkUserSubscription() {
     });
 
     if (!response.ok) {
+      const errorResponse = await response.json();
+      if (errorResponse.error === "jwt expired") {
+        window.location.href = "/";
+        return;
+      }
       throw new Error("無法獲取訂閱狀態");
     }
 

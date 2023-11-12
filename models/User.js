@@ -9,6 +9,8 @@ const UserSchema = new mongoose.Schema({
   password: { type: String, required: true },
   token: { type: String },
   telegramId: { type: String },
+  lineAccessToken: { type: String },
+  lineNotificationsEnabled: { type: Boolean, default: true },
 });
 
 // 在用戶數據被儲存到資料庫之前進行預處理

@@ -119,6 +119,7 @@ async function login() {
 
       if (data.telegramId) {
         localStorage.setItem("telegramId", data.telegramId);
+        localStorage.setItem("userId", data.userId);
         document.getElementById("telegramId").value = data.telegramId;
       }
 

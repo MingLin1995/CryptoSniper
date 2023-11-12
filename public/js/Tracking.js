@@ -40,9 +40,13 @@ function trackPrice(event) {
   })
     .then((response) => {
       if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+        const errorResponse = response.json();
+        if (errorResponse.error === "jwt expired") {
+          window.location.href = "/";
+          return;
+        }
+        throw new Error("無法獲取訂閱狀態");
       }
-      return response.json();
     })
     .then((data) => {
       //console.log("Success:", data);

@@ -670,7 +670,7 @@
               data-target="#webTrackingModal"
               data-notification-method="Web"
               style="cursor: pointer; max-width: 50px"
-              id="NotificationPermissio"
+              id="NotificationPermissio-web"
             />
             <!-- Modal -->
             <div
@@ -685,7 +685,7 @@
                 <div class="modal-content">
                   <div class="modal-header">
                     <h5 class="modal-title" id="notificationModalLabel">
-                      到價通知設定
+                      Web 到價通知設定
                     </h5>
                     <button
                       type="button"
@@ -761,7 +761,7 @@
                 <div class="modal-content">
                   <div class="modal-header">
                     <h5 class="modal-title" id="trackingModalLabel">
-                      到價通知設定
+                      Telegram 到價通知設定
                     </h5>
                     <button
                       type="button"
@@ -829,6 +829,90 @@
 
                       <button
                         onclick="trackPrice(event)"
+                        class="btn toggle-modal-link btn-outline-success"
+                      >
+                        到價通知
+                      </button>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Line到價通知 -->
+            <img
+              src="/images/line.png"
+              alt="Line"
+              class="img-fluid mb-3"
+              data-toggle="modal"
+              data-target="#lineTrackingModal"
+              data-notification-method="Line"
+              style="cursor: pointer; max-width: 50px"
+              id="NotificationPermissio-line"
+            />
+            <!-- Modal -->
+            <div
+              class="modal fade"
+              id="lineTrackingModal"
+              tabindex="-1"
+              role="dialog"
+              aria-labelledby="lineModalLabel"
+              aria-hidden="true"
+            >
+              <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="lineModalLabel">
+                      Line 到價通知設定
+                    </h5>
+                    <button
+                      type="button"
+                      class="close"
+                      data-dismiss="modal"
+                      aria-label="Close"
+                    >
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    <button
+                      id="line-subscription"
+                      type="button"
+                      class="btn mb-2 btn-outline-primary"
+                    >
+                      建立Line Notify
+                    </button>
+                    <button
+                      id="toggle-line-notification"
+                      type="button"
+                      class="btn mb-2"
+                    >
+                      開啟到價通知
+                    </button>
+                    <form id="targetPriceForm-line">
+                      <div class="form-group">
+                        <label for="targetSymbol">標的名稱：</label>
+                        <input
+                          name="targetSymbol"
+                          type="text"
+                          class="form-control mb-2"
+                          id="symbol-line"
+                          required
+                        />
+                      </div>
+                      <label for="targetPrice">目標價：</label>
+
+                      <div class="form-group">
+                        <input
+                          name="targetPrice"
+                          type="number"
+                          class="form-control mb-2"
+                          id="targetPrice-line"
+                          required
+                        />
+                      </div>
+                      <button
+                        type="submit"
                         class="btn toggle-modal-link btn-outline-success"
                       >
                         到價通知
@@ -906,6 +990,7 @@
     <script src="js/Tracking.js"></script>
     <script src="/js/services/service-worker.js"></script>
     <script src="/js/services/notifications.js"></script>
+    <script src="/js/services/lineNotify.js"></script>
     <script src="js/Bootstrap.js"></script>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>

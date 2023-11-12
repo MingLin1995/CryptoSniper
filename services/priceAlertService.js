@@ -15,8 +15,15 @@ const trackPrices = async () => {
     return;
   }
   alerts.forEach((alert) => {
-    const { _id, symbol, targetPrice, notificationMethod, telegramId, user } =
-      alert;
+    const {
+      _id,
+      symbol,
+      targetPrice,
+      notificationMethod,
+      telegramId,
+      user,
+      lineAccessToken,
+    } = alert;
 
     // 檢查是否已有執行中的 WebSocket 連接
     if (activeWebSockets.has(_id.toString())) {
@@ -62,7 +69,8 @@ const trackPrices = async () => {
             targetPrice,
             notificationMethod,
             telegramId,
-            user
+            user,
+            lineAccessToken
           );
           hasNotified = true; // 更新已發送通知的狀態
           lastNotificationTime = now; // 更新發送通知的時間戳

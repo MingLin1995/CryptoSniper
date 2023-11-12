@@ -11,5 +11,10 @@ router.post("/login", userController.login);
 router.post("/logout", verifyToken, userController.logout);
 router.post("/updateTelegramId", verifyToken, userController.updateTelegramId);
 router.post("/verifyToken", verifyToken, userController.verifyToken);
-
+router.get("/checkNotification", verifyToken, userController.checkNotification);
+router.post(
+  "/toggleNotification",
+  verifyToken,
+  userController.toggleNotification
+);
 module.exports = router;
