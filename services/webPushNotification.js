@@ -2,7 +2,7 @@
 
 const webpush = require("web-push");
 require("dotenv").config();
-const SubscriptionModel = require("../models/Subscription");
+const User = require("../models/User");
 
 const publicVapidKey = process.env.PUBLIC_VAPID_KEY;
 const privateVapidKey = process.env.PRIVATE_VAPID_KEY;
@@ -15,28 +15,37 @@ webpush.setVapidDetails(
 
 // 推送通知
 async function sendWebPushNotification(symbol, targetPrice, user) {
-  const userId = user.id;
-  const userSubscription = await SubscriptionModel.findOne({ user: userId });
-
-  const payload = JSON.stringify({
-    title: `${symbol.toUpperCase()}`,
-    body: `已達到目標價: ${targetPrice}`,
-  });
   try {
-    // 發送通知
-    if (userSubscription) {
+    // 從資料庫獲取最新的用戶資訊
+    const updatedUser = await User.findById(user._id);
+    if (!updatedUser) {
+      console.log("User not found");
+      return;
+    }
+
+    const userSubscription = updatedUser.webSubscription;
+
+    // 日誌輸出用於調試
+    console.log("userSubscription object:", userSubscription);
+    console.log("Enabled status:", userSubscription?.enabled);
+
+    // 檢查 userSubscription 對象和它的 enabled 屬性
+    if (userSubscription && userSubscription.enabled) {
+      const payload = JSON.stringify({
+        title: `${symbol.toUpperCase()}`,
+        body: `已達到目標價: ${targetPrice}`,
+      });
+
       await webpush.sendNotification(userSubscription, payload);
-      //console.log("Notification sent to user");
+    } else {
+      console.log("Web push notification is disabled for this user.");
     }
   } catch (error) {
     console.error("Error sending notification:", error);
-    if (error.statusCode === 410) {
-      await SubscriptionModel.deleteOne({ user: userId }); // 移除無效的訂閱
-      console.log(
-        `Subscription for user has expired or is no longer valid. Deleted from database.`
-      );
-    }
+    // 其他錯誤處理代碼...
   }
 }
+
+module.exports = sendWebPushNotification;
 
 module.exports = sendWebPushNotification;

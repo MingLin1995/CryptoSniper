@@ -7,7 +7,6 @@ const User = require("../models/User");
 const addTracking = async (req, res) => {
   const { symbol, targetPrice, notificationMethod, telegramId } = req.body;
   const userId = req.user._id;
-
   try {
     let alertData = {
       user: userId,
@@ -22,8 +21,8 @@ const addTracking = async (req, res) => {
 
     if (notificationMethod === "Line") {
       const user = await User.findById(userId);
-      if (user && user.lineAccessToken) {
-        alertData.lineAccessToken = user.lineAccessToken;
+      if (user && user.lineSubscription && user.lineSubscription.accessToken) {
+        alertData.lineAccessToken = user.lineSubscription.accessToken;
       } else {
         throw new Error("Line Access Token not found for the user");
       }

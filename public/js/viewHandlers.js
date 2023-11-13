@@ -157,4 +157,83 @@ function displayResults(allResultsVolume, intervalsData) {
   handleScroll(tbody, allResultsVolume, intervalsData, indexObject, loadCount);
 }
 
-export { displayResults };
+// 检查订阅状态
+async function checkSubscriptionStatus(currentNotificationMethod) {
+  const token = localStorage.getItem("token");
+  try {
+    const response = await fetch("/api/subscription/check", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: token,
+      },
+      body: JSON.stringify({
+        notificationType: currentNotificationMethod,
+      }),
+    });
+
+    if (!response.ok) {
+      throw new Error("无法获取通知状态");
+    }
+
+    const data = await response.json();
+    updateToggleButtonText(data.isEnabled, currentNotificationMethod);
+  } catch (error) {
+    console.error("检查通知状态失败：", error);
+  }
+}
+
+// 更新切换通知按钮的文本
+function updateToggleButtonText(isEnabled, currentNotificationMethod) {
+  let button;
+  if (currentNotificationMethod === "Line") {
+    button = document.getElementById("toggle-line-notification");
+  } else if (currentNotificationMethod === "Web") {
+    button = document.getElementById("toggle-subscription");
+  }
+
+  if (button) {
+    button.textContent = isEnabled
+      ? `關閉 ${currentNotificationMethod} 到價通知`
+      : `開啟 ${currentNotificationMethod} 到價通知`;
+    button.classList.toggle("btn-outline-danger", isEnabled);
+    button.classList.toggle("btn-outline-primary", !isEnabled);
+  }
+}
+
+//切換訂閱
+async function toggleNotification(currentNotificationMethod) {
+  const token = localStorage.getItem("token");
+
+  try {
+    const response = await fetch("/api/subscription/toggle", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: token,
+      },
+      body: JSON.stringify({
+        notificationType: currentNotificationMethod,
+      }),
+    });
+
+    if (!response.ok) {
+      throw new Error("无法切换通知状态");
+    }
+
+    const data = await response.json();
+    updateToggleButtonText(data.isEnabled, currentNotificationMethod);
+  } catch (error) {
+    console.error(
+      `切换 ${currentNotificationMethod.toUpperCase()} 通知状态失败：`,
+      error
+    );
+  }
+}
+
+export {
+  displayResults,
+  checkSubscriptionStatus,
+  updateToggleButtonText,
+  toggleNotification,
+};

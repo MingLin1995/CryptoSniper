@@ -94,57 +94,10 @@ const verifyToken = (req, res) => {
   res.status(200).json({ status: "success", message: "Token 驗證成功" });
 };
 
-const checkNotification = async (req, res) => {
-  try {
-    const userId = req.user._id;
-    const user = await User.findById(userId);
-
-    if (!user) {
-      return res.status(404).send({ message: "用户未找到" });
-    }
-
-    if (user.lineNotificationsEnabled) {
-      return res
-        .status(200)
-        .send({ message: "line有開啟通知", lineNotificationsEnabled: true });
-    } else {
-      return res
-        .status(200)
-        .send({ message: "line為開啟通知", lineNotificationsEnabled: false });
-    }
-  } catch (error) {
-    console.error("檢查通知狀態錯誤：", error);
-    res.status(500).json({ error: "檢查通知狀態失敗" });
-  }
-};
-
-// 啟動/取消 LINE 通知
-const toggleNotification = async (req, res) => {
-  const userId = req.user._id;
-  try {
-    const user = await User.findById(userId);
-    if (!user) {
-      return res.status(404).json({ message: "用户未找到" });
-    }
-
-    user.lineNotificationsEnabled = !user.lineNotificationsEnabled;
-    await user.save();
-
-    res.json({
-      message: `LINE 通知已${user.lineNotificationsEnabled ? "啟動" : "取消"}`,
-    });
-  } catch (error) {
-    console.error("切換 LINE 通知狀態錯誤：", error);
-    res.status(500).json({ message: "切换 LINE 通知狀態失敗" });
-  }
-};
-
 module.exports = {
   register,
   login,
   logout,
   updateTelegramId,
   verifyToken,
-  checkNotification,
-  toggleNotification,
 };

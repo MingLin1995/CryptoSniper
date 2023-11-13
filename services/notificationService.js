@@ -9,8 +9,7 @@ async function sendNotification(
   targetPrice,
   notificationMethod,
   telegramId,
-  user,
-  lineAccessToken
+  user
 ) {
   switch (notificationMethod) {
     case "Telegram":
@@ -21,9 +20,7 @@ async function sendNotification(
       await sendWebPushNotification(symbol, targetPrice, user);
       break;
     case "Line":
-      if (user.lineNotificationsEnabled) {
-        await sendLineNotification(symbol, targetPrice, lineAccessToken);
-      }
+      await sendLineNotification(symbol, targetPrice, user);
       break;
     default:
       throw new Error(`Unsupported notification type: ${notificationMethod}`);

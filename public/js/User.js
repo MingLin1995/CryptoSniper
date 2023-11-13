@@ -116,10 +116,10 @@ async function login() {
     if (response.ok) {
       alert("登入成功！");
       localStorage.setItem("token", data.token);
+      localStorage.setItem("userId", data.userId);
 
       if (data.telegramId) {
         localStorage.setItem("telegramId", data.telegramId);
-        localStorage.setItem("userId", data.userId);
         document.getElementById("telegramId").value = data.telegramId;
       }
 
@@ -147,6 +147,7 @@ async function logout() {
     if (response.ok) {
       localStorage.removeItem("token");
       localStorage.removeItem("telegramId");
+      localStorage.removeItem("userId");
       alert("登出成功！");
       checkLoginStatus();
     } else {

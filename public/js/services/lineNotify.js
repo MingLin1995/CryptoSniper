@@ -1,4 +1,21 @@
 // CryptSniper/public/js/lineNotify.js
+import {
+  checkSubscriptionStatus,
+  toggleNotification,
+} from "../viewHandlers.js";
+
+let currentNotificationMethod;
+
+// 綁定事件到所有帶有特定data-toggle的圖片
+document.querySelectorAll('img[data-toggle="modal"]').forEach((img) => {
+  img.addEventListener("click", function () {
+    // 根據點擊的圖片設置通知方式
+    currentNotificationMethod = this.getAttribute("data-notification-method");
+    // 根據選擇的通知方式顯示相應的視窗
+    let targetModal = this.getAttribute("data-target");
+    $(targetModal).modal("show");
+  });
+});
 
 function subscribeToPriceAlert() {
   const clientId = "tdsp4jfRPzQK90hInBMNWU";
@@ -27,27 +44,12 @@ document
   .getElementById("line-subscription")
   .addEventListener("click", subscribeToPriceAlert);
 
-// 綁定事件到所有帶有特定data-toggle的圖片
-document.querySelectorAll('img[data-toggle="modal"]').forEach((img) => {
-  img.addEventListener("click", function () {
-    // 根據點擊的圖片設置通知方式
-    currentNotificationMethod = this.getAttribute("data-notification-method");
-    // 根據選擇的通知方式顯示相應的視窗
-    let targetModal = this.getAttribute("data-target");
-    $(targetModal).modal("show");
-  });
-});
-
-const toggleLineSubscriptionButton = document.getElementById(
-  "toggle-line-notification"
-);
-
 document
   .getElementById("targetPriceForm-line")
   .addEventListener("submit", async function (event) {
     event.preventDefault();
 
-    if (toggleLineSubscriptionButton.textContent == "開啟 LINE 通知") {
+    if (toggleLineSubscriptionButton.textContent == "開啟 Line 到價通知") {
       alert("尚未開啟到價通知！");
       return;
     }
@@ -86,79 +88,27 @@ document
         alert("到價通知設定成功！");
       })
       .catch((error) => {
+        alert("請先建立 Line Notify 連動！");
         console.error("Error:", error);
       });
   });
 
-// 獲取圖片元素和按鈕元素
+// 圖片元素
 const notificationImageLine = document.getElementById(
   "NotificationPermissio-line"
 );
 
-// 點擊圖片時，請求通知許可
-notificationImageLine.addEventListener("click", async function () {
-  await updateToggleButtonText();
+// 檢查订阅状态
+notificationImageLine.addEventListener("click", function () {
+  checkSubscriptionStatus(currentNotificationMethod);
 });
 
-// 切换 LINE 通知狀態的函数
-async function toggleLineNotification() {
-  const token = localStorage.getItem("token");
-  try {
-    const response = await fetch("/api/user/toggleNotification", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: token,
-      },
-    });
+//按鈕元素
+const toggleLineSubscriptionButton = document.getElementById(
+  "toggle-line-notification"
+);
 
-    if (!response.ok) {
-      throw new Error("無法切換通知狀態");
-    }
-
-    const data = await response.json();
-    updateToggleButtonText(); // 更新按鈕資訊
-  } catch (error) {
-    console.error("切换 LINE 通知狀態失敗：", error);
-  }
-}
-
-// 更新切换通知按钮
-async function updateToggleButtonText() {
-  const token = localStorage.getItem("token");
-  try {
-    const response = await fetch("/api/user/checkNotification", {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: token,
-      },
-    });
-
-    if (!response.ok) {
-      throw new Error("無法切換通知狀態");
-    }
-
-    const data = await response.json();
-
-    // 清除先前的按钮class
-    toggleLineSubscriptionButton.classList.remove(
-      "btn-outline-primary",
-      "btn-outline-danger"
-    );
-
-    if (data.lineNotificationsEnabled) {
-      toggleLineSubscriptionButton.textContent = "關閉 LINE 通知";
-      toggleLineSubscriptionButton.classList.add("btn-outline-danger"); // 红色按鈕
-    } else {
-      toggleLineSubscriptionButton.textContent = "開啟 LINE 通知";
-      toggleLineSubscriptionButton.classList.add("btn-outline-primary"); // 藍色按鈕
-    }
-  } catch (error) {
-    console.error("取得 LINE 通知狀態失敗：", error);
-  }
-}
-
+// 切换订阅状态
 toggleLineSubscriptionButton.addEventListener("click", function () {
-  toggleLineNotification();
+  toggleNotification(currentNotificationMethod);
 });
