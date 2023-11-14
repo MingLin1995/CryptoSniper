@@ -114,3 +114,12 @@ body.night-mode #symbol-column:hover {
   color: #fff;
   border-color: #6c757d;
 }
+
+.ma-input-container {
+  display: flex;
+  align-items: center;
+}
+
+.ma {
+  margin-left: 5px; /* 或者根據需要調整間距 */
+}

@@ -55,7 +55,7 @@ document
     event.preventDefault();
 
     if (toggleLineSubscriptionButton.textContent == "開啟 Line 到價通知") {
-      alert("尚未開啟到價通知！");
+      alert("尚未開啟 Line 到價通知！");
       return;
     }
 

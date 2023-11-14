@@ -109,7 +109,7 @@ document
 
     const button = document.getElementById("toggle-subscription").textContent;
     if (button == "開啟 Web 到價通知") {
-      alert("尚未開啟到價通知！");
+      alert("尚未開啟 Web 到價通知！");
       return;
     }
 

@@ -10,7 +10,7 @@ document
     if (
       toggleTelegramSubscriptionButton.textContent == "開啟 Telegram 到價通知"
     ) {
-      alert("尚未開啟到價通知！");
+      alert("尚未開啟 Telegram 到價通知！");
       return;
     }
 
