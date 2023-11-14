@@ -35,7 +35,7 @@ async function handleLineNotifyCallback(req, res) {
     //根據ID將lineAccessToken存入資料庫
     const user = await User.findById(userId);
     if (!user) {
-      return res.status(404).json({ message: "用户未找到" });
+      return res.status(404).json({ message: "找不到用戶" });
     }
 
     if (!user.lineSubscription) {

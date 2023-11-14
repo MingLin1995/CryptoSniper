@@ -157,7 +157,7 @@ function displayResults(allResultsVolume, intervalsData) {
   handleScroll(tbody, allResultsVolume, intervalsData, indexObject, loadCount);
 }
 
-// 检查订阅状态
+// 檢查訂閱狀態
 async function checkSubscriptionStatus(currentNotificationMethod) {
   const token = localStorage.getItem("token");
   try {
@@ -203,7 +203,7 @@ function updateToggleButtonText(isEnabled, currentNotificationMethod) {
   }
 }
 
-//切換訂閱
+//切換訂閱狀態
 async function toggleNotification(currentNotificationMethod) {
   const token = localStorage.getItem("token");
 
@@ -220,14 +220,14 @@ async function toggleNotification(currentNotificationMethod) {
     });
 
     if (!response.ok) {
-      throw new Error("无法切换通知状态");
+      throw new Error("無法切換通知狀態");
     }
 
     const data = await response.json();
     updateToggleButtonText(data.isEnabled, currentNotificationMethod);
   } catch (error) {
     console.error(
-      `切换 ${currentNotificationMethod.toUpperCase()} 通知状态失败：`,
+      `切換 ${currentNotificationMethod.toUpperCase()} 通知狀態失敗：`,
       error
     );
   }

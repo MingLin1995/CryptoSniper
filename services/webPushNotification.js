@@ -13,7 +13,6 @@ webpush.setVapidDetails(
   privateVapidKey
 );
 
-// 推送通知
 async function sendWebPushNotification(symbol, targetPrice, user) {
   try {
     // 從資料庫獲取最新的用戶資訊
@@ -25,7 +24,7 @@ async function sendWebPushNotification(symbol, targetPrice, user) {
 
     const userSubscription = updatedUser.webSubscription;
 
-    // 檢查 userSubscription 對象和它的 enabled 屬性
+    // 檢查 userSubscription 和 enabled 狀態
     if (userSubscription && userSubscription.enabled) {
       const payload = JSON.stringify({
         title: `${symbol.toUpperCase()}`,
@@ -38,7 +37,6 @@ async function sendWebPushNotification(symbol, targetPrice, user) {
     }
   } catch (error) {
     console.error("Error sending notification:", error);
-    // 其他錯誤處理代碼...
   }
 }
 

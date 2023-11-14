@@ -1,7 +1,11 @@
-// public/js/Tracking.js
+// public/js/services/telegramNotify.js
 
-import { checkSubscriptionStatus, toggleNotification } from "./viewHandlers.js";
+import {
+  checkSubscriptionStatus,
+  toggleNotification,
+} from "../viewHandlers.js";
 
+// 建立通知
 document
   .getElementById("targetPriceForm-telegram")
   .addEventListener("submit", async function (event) {
@@ -65,6 +69,7 @@ document
       });
   });
 
+// 更新Telegram ID
 function updateUserTelegramId(telegramId) {
   // 發送請求更新用戶的 Telegram ID
   fetch("/api/user/updateTelegramId", {
@@ -104,9 +109,6 @@ document.querySelectorAll('img[data-toggle="modal"]').forEach((img) => {
   img.addEventListener("click", function () {
     // 根據點擊的圖片設置通知方式
     currentNotificationMethod = this.getAttribute("data-notification-method");
-    // 根據選擇的通知方式顯示相應的視窗
-    let targetModal = this.getAttribute("data-target");
-    $(targetModal).modal("show");
   });
 });
 

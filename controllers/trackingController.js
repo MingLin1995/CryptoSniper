@@ -24,7 +24,7 @@ const addTracking = async (req, res) => {
       ) {
         alertData.telegramId = user.telegramSubscription.telegramId;
       } else {
-        throw new Error("Telegram notifications are disabled for the user");
+        throw new Error("用戶停用通知");
       }
     }
 
@@ -33,7 +33,7 @@ const addTracking = async (req, res) => {
       if (user && user.lineSubscription && user.lineSubscription.accessToken) {
         alertData.lineAccessToken = user.lineSubscription.accessToken;
       } else {
-        throw new Error("Line Access Token not found for the user");
+        throw new Error("找不到用戶的 Line Access Token");
       }
     }
 
