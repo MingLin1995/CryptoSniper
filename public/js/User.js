@@ -18,7 +18,6 @@ async function checkLoginStatus() {
   const token = localStorage.getItem("token");
   const loginBtn = document.getElementById("loginBtn");
   const logoutBtn = document.getElementById("logoutBtn");
-  const trackingForm = document.getElementById("trackingForm");
   const hiddenBeforeLoginElements = document.querySelectorAll(
     ".hidden-before-login"
   );
@@ -48,7 +47,6 @@ async function checkLoginStatus() {
 
     loginBtn.style.display = "none";
     logoutBtn.style.display = "inline-block";
-    trackingForm.style.display = "block";
     getTelegramId();
 
     // 顯示所有需要在登入後顯示的元素
@@ -59,7 +57,6 @@ async function checkLoginStatus() {
     loginBtn.style.display = "inline-block";
     logoutBtn.style.display = "none";
     document.getElementById("telegramId").value = "";
-    trackingForm.style.display = "none";
     // 隱藏所有需要在登入前隱藏的元素
     hiddenBeforeLoginElements.forEach((el) => {
       el.style.display = "none";
@@ -116,6 +113,7 @@ async function login() {
     if (response.ok) {
       alert("登入成功！");
       localStorage.setItem("token", data.token);
+      localStorage.setItem("userId", data.userId);
 
       if (data.telegramId) {
         localStorage.setItem("telegramId", data.telegramId);
@@ -146,6 +144,7 @@ async function logout() {
     if (response.ok) {
       localStorage.removeItem("token");
       localStorage.removeItem("telegramId");
+      localStorage.removeItem("userId");
       alert("登出成功！");
       checkLoginStatus();
     } else {

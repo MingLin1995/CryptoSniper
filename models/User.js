@@ -8,7 +8,22 @@ const UserSchema = new mongoose.Schema({
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
   token: { type: String },
-  telegramId: { type: String },
+  telegramSubscription: {
+    telegramId: { type: String },
+    notificationsEnabled: { type: Boolean, default: true },
+  },
+  lineSubscription: {
+    accessToken: { type: String },
+    notificationsEnabled: { type: Boolean, default: false },
+  },
+  webSubscription: {
+    endpoint: String,
+    keys: {
+      p256dh: String,
+      auth: String,
+    },
+    enabled: { type: Boolean, default: true },
+  },
 });
 
 // 在用戶數據被儲存到資料庫之前進行預處理

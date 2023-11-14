@@ -55,7 +55,8 @@ const login = async (req, res) => {
     res.status(200).json({
       message: "登入成功",
       token,
-      telegramId: user.telegramId,
+      telegramId: user.telegramSubscription.telegramId,
+      userId: user._id,
     });
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -81,7 +82,9 @@ const updateTelegramId = async (req, res) => {
   const { telegramId } = req.body;
 
   try {
-    await User.findByIdAndUpdate(userId, { telegramId });
+    await User.findByIdAndUpdate(userId, {
+      "telegramSubscription.telegramId": telegramId,
+    });
     res.json({ message: "Telegram ID 更新成功" });
   } catch (error) {
     console.error(error);
@@ -93,4 +96,10 @@ const verifyToken = (req, res) => {
   res.status(200).json({ status: "success", message: "Token 驗證成功" });
 };
 
-module.exports = { register, login, logout, updateTelegramId, verifyToken };
+module.exports = {
+  register,
+  login,
+  logout,
+  updateTelegramId,
+  verifyToken,
+};

@@ -20,13 +20,7 @@ const priceAlertSchema = new mongoose.Schema(
     notificationMethod: {
       type: String,
       required: true,
-      enum: ["Telegram", "Web"],
-    },
-    telegramId: {
-      type: String,
-      required: function () {
-        return this.notificationMethod === "Telegram";
-      },
+      enum: ["Telegram", "Web", "Line"],
     },
   },
   {
