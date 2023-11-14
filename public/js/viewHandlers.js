@@ -190,6 +190,8 @@ function updateToggleButtonText(isEnabled, currentNotificationMethod) {
     button = document.getElementById("toggle-line-notification");
   } else if (currentNotificationMethod === "Web") {
     button = document.getElementById("toggle-subscription");
+  } else if (currentNotificationMethod === "Telegram") {
+    button = document.getElementById("toggle-telegram-notification");
   }
 
   if (button) {

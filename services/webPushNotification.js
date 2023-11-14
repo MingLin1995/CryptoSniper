@@ -25,10 +25,6 @@ async function sendWebPushNotification(symbol, targetPrice, user) {
 
     const userSubscription = updatedUser.webSubscription;
 
-    // 日誌輸出用於調試
-    console.log("userSubscription object:", userSubscription);
-    console.log("Enabled status:", userSubscription?.enabled);
-
     // 檢查 userSubscription 對象和它的 enabled 屬性
     if (userSubscription && userSubscription.enabled) {
       const payload = JSON.stringify({
@@ -38,7 +34,7 @@ async function sendWebPushNotification(symbol, targetPrice, user) {
 
       await webpush.sendNotification(userSubscription, payload);
     } else {
-      console.log("Web push notification is disabled for this user.");
+      //console.log("Web push notification is disabled for this user.");
     }
   } catch (error) {
     console.error("Error sending notification:", error);

@@ -14,9 +14,7 @@ async function sendLineNotification(symbol, targetPrice, user) {
     }
 
     const userSubscription = updatedUser.lineSubscription;
-    console.log(userSubscription);
     if (userSubscription && userSubscription.notificationsEnabled) {
-      console.log(userSubscription.notificationsEnabled);
       const message = `${symbol.toUpperCase()}－已達到目標價：${targetPrice}`;
       const response = await axios.post(
         "https://notify-api.line.me/api/notify",

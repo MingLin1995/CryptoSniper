@@ -41,6 +41,9 @@ async function checkSubscription(req, res) {
       case "Web":
         isEnabled = user.webSubscription.enabled;
         break;
+      case "Telegram":
+        isEnabled = user.telegramSubscription.notificationsEnabled;
+        break;
       default:
         return res.status(400).json({ message: "未知的通知类型" });
     }
@@ -76,6 +79,13 @@ async function toggleSubscription(req, res) {
         user.webSubscription.enabled = !user.webSubscription.enabled;
         //當前狀態
         isEnabled = user.webSubscription.enabled;
+        break;
+      case "Telegram":
+        //切換訂閱狀態
+        user.telegramSubscription.notificationsEnabled =
+          !user.telegramSubscription.notificationsEnabled;
+        //當前狀態
+        isEnabled = user.telegramSubscription.notificationsEnabled;
         break;
       default:
         return res.status(400).json({ message: "未知的通知类型" });

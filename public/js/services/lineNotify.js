@@ -44,6 +44,11 @@ document
   .getElementById("line-subscription")
   .addEventListener("click", subscribeToPriceAlert);
 
+//按鈕元素
+const toggleLineSubscriptionButton = document.getElementById(
+  "toggle-line-notification"
+);
+
 document
   .getElementById("targetPriceForm-line")
   .addEventListener("submit", async function (event) {
@@ -102,11 +107,6 @@ const notificationImageLine = document.getElementById(
 notificationImageLine.addEventListener("click", function () {
   checkSubscriptionStatus(currentNotificationMethod);
 });
-
-//按鈕元素
-const toggleLineSubscriptionButton = document.getElementById(
-  "toggle-line-notification"
-);
 
 // 切换订阅状态
 toggleLineSubscriptionButton.addEventListener("click", function () {

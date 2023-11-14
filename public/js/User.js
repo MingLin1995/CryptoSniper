@@ -18,7 +18,6 @@ async function checkLoginStatus() {
   const token = localStorage.getItem("token");
   const loginBtn = document.getElementById("loginBtn");
   const logoutBtn = document.getElementById("logoutBtn");
-  const trackingForm = document.getElementById("trackingForm");
   const hiddenBeforeLoginElements = document.querySelectorAll(
     ".hidden-before-login"
   );
@@ -48,7 +47,6 @@ async function checkLoginStatus() {
 
     loginBtn.style.display = "none";
     logoutBtn.style.display = "inline-block";
-    trackingForm.style.display = "block";
     getTelegramId();
 
     // 顯示所有需要在登入後顯示的元素
@@ -59,7 +57,6 @@ async function checkLoginStatus() {
     loginBtn.style.display = "inline-block";
     logoutBtn.style.display = "none";
     document.getElementById("telegramId").value = "";
-    trackingForm.style.display = "none";
     // 隱藏所有需要在登入前隱藏的元素
     hiddenBeforeLoginElements.forEach((el) => {
       el.style.display = "none";

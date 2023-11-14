@@ -16,7 +16,16 @@ const addTracking = async (req, res) => {
     };
 
     if (notificationMethod === "Telegram") {
-      alertData.telegramId = telegramId; // 只有當使用 Telegram 通知時才寫入
+      const user = await User.findById(userId);
+      if (
+        user &&
+        user.telegramSubscription &&
+        user.telegramSubscription.notificationsEnabled
+      ) {
+        alertData.telegramId = user.telegramSubscription.telegramId;
+      } else {
+        throw new Error("Telegram notifications are disabled for the user");
+      }
     }
 
     if (notificationMethod === "Line") {

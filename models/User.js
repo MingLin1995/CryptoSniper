@@ -8,7 +8,10 @@ const UserSchema = new mongoose.Schema({
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
   token: { type: String },
-  telegramId: { type: String },
+  telegramSubscription: {
+    telegramId: { type: String },
+    notificationsEnabled: { type: Boolean, default: true },
+  },
   lineSubscription: {
     accessToken: { type: String },
     notificationsEnabled: { type: Boolean, default: false },
