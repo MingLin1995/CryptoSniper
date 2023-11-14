@@ -7,7 +7,7 @@ require("dotenv").config();
 async function handleLineNotifyCallback(req, res) {
   const clientId = process.env.CLIENT_ID;
   const clientSecret = process.env.CLIENT_SECRET;
-  const redirectUri = "http://127.0.0.1:8000/line-notify-callback";
+  const redirectUri = "https://crypto-sniper.minglin.vip//line-notify-callback";
   const code = req.query.code;
   const state = req.query.state;
   const parts = state.split("|");
@@ -49,7 +49,7 @@ async function handleLineNotifyCallback(req, res) {
     await user.save();
 
     // 導回首頁
-    res.redirect("http://127.0.0.1:8000/");
+    res.redirect("https://crypto-sniper.minglin.vip/");
   } catch (error) {
     console.error("Error getting access token:", error);
     res.status(500).json({ error: "獲取 Access Token 時出錯。" });

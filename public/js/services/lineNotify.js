@@ -20,7 +20,7 @@ document.querySelectorAll('img[data-toggle="modal"]').forEach((img) => {
 function subscribeToPriceAlert() {
   const clientId = "tdsp4jfRPzQK90hInBMNWU";
   const redirectUri = encodeURIComponent(
-    "http://127.0.0.1:8000/line-notify-callback"
+    "https://crypto-sniper.minglin.vip/line-notify-callback"
   );
   const userId = localStorage.getItem("userId");
   const state = encodeURIComponent(generateRandomState(16) + "|" + userId);
