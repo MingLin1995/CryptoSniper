@@ -4,13 +4,13 @@ const express = require("express");
 const router = express.Router();
 const verifyToken = require("../auth");
 const {
-  subscribe,
-  unsubscribe,
+  handleSubscription,
   checkSubscription,
+  toggleSubscription,
 } = require("../controllers/subscriptionController");
 
-router.post("/subscribe", verifyToken, subscribe);
-router.post("/unsubscribe", verifyToken, unsubscribe);
-router.get("/check", verifyToken, checkSubscription);
+router.post("/subscribe", verifyToken, handleSubscription);
+router.post("/check", verifyToken, checkSubscription);
+router.post("/toggle", verifyToken, toggleSubscription);
 
 module.exports = router;

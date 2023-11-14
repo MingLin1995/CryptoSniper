@@ -15,8 +15,7 @@ const trackPrices = async () => {
     return;
   }
   alerts.forEach((alert) => {
-    const { _id, symbol, targetPrice, notificationMethod, telegramId, user } =
-      alert;
+    const { _id, symbol, targetPrice, notificationMethod, user } = alert;
 
     // 檢查是否已有執行中的 WebSocket 連接
     if (activeWebSockets.has(_id.toString())) {
@@ -39,7 +38,6 @@ const trackPrices = async () => {
     ws.on("message", async function incoming(message) {
       const data = JSON.parse(message);
       const currentPrice = parseFloat(data.p);
-      const now = Date.now();
       const debounceTime = 5000; // 通知間隔設為 5 秒
 
       if (initialPrice === null) {
@@ -57,13 +55,7 @@ const trackPrices = async () => {
         // 判斷是否已經通知過，以及是否已經超過防抖時間
         if (!hasNotified && now - lastNotificationTime > debounceTime) {
           // 發送通知
-          sendNotification(
-            symbol,
-            targetPrice,
-            notificationMethod,
-            telegramId,
-            user
-          );
+          sendNotification(symbol, targetPrice, notificationMethod, user);
           hasNotified = true; // 更新已發送通知的狀態
           lastNotificationTime = now; // 更新發送通知的時間戳
 

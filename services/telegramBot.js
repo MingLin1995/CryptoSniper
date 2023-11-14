@@ -9,8 +9,8 @@ function processUpdate(update) {
     const text = update.message.text;
 
     if (text === "/start") {
-      const welcomeMessage = `歡迎使用 CryptoSniper 機器人！您的 Telegram ID 是 ${chatId}。`;
-      sendTelegramNotification(chatId, welcomeMessage);
+      const messageText = `歡迎使用 CryptoSniper 機器人！您的 Telegram ID 是 ${chatId}。`;
+      sendTelegramNotification(messageText, chatId);
     }
   }
 }

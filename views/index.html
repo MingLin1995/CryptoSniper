@@ -670,7 +670,7 @@
               data-target="#webTrackingModal"
               data-notification-method="Web"
               style="cursor: pointer; max-width: 50px"
-              id="NotificationPermissio"
+              id="NotificationPermissio-web"
             />
             <!-- Modal -->
             <div
@@ -685,7 +685,7 @@
                 <div class="modal-content">
                   <div class="modal-header">
                     <h5 class="modal-title" id="notificationModalLabel">
-                      到價通知設定
+                      Web 到價通知設定
                     </h5>
                     <button
                       type="button"
@@ -747,6 +747,7 @@
               data-target="#telegramTrackingModal"
               data-notification-method="Telegram"
               style="cursor: pointer; max-width: 50px"
+              id="NotificationPermissio-telegram"
             />
             <!-- Modal -->
             <div
@@ -761,7 +762,7 @@
                 <div class="modal-content">
                   <div class="modal-header">
                     <h5 class="modal-title" id="trackingModalLabel">
-                      到價通知設定
+                      Telegram 到價通知設定
                     </h5>
                     <button
                       type="button"
@@ -774,26 +775,36 @@
                   </div>
                   <div class="modal-body">
                     <!-- 機器人表單 -->
-                    <form id="trackingForm" style="display: none">
-                      <div class="instructions mb-4">
-                        <h5>TG到價通知設定教學：</h5>
-                        <ol>
-                          <li>
-                            先點選
-                            <a
-                              href="https://t.me/CryptoSniper_MLvip_Bot"
-                              target="_blank"
-                              >CryptoSniper </a
-                            >加入機器人。
-                          </li>
-                          <li>
-                            點選開始按鈕，會收到歡迎通知，即可看到您的 Telegram
-                            ID。
-                          </li>
-                          <li>輸入Telegram ID、標的名稱、目標價即可。</li>
-                        </ol>
-                      </div>
+                    <div class="instructions mb-4">
+                      <h5>TG到價通知設定教學：</h5>
+                      <ol>
+                        <li>
+                          先點選
+                          <a
+                            href="https://t.me/CryptoSniper_MLvip_Bot"
+                            target="_blank"
+                            >CryptoSniper </a
+                          >加入機器人。
+                        </li>
+                        <li>
+                          點選開始按鈕，會收到歡迎通知，即可看到您的 Telegram
+                          ID。
+                        </li>
+                        <li>
+                          輸入Telegram ID、標的名稱、目標價，即可設定到價通知。
+                        </li>
+                      </ol>
+                    </div>
 
+                    <button
+                      id="toggle-telegram-notification"
+                      type="button"
+                      class="btn mb-2"
+                    >
+                      開啟到價通知
+                    </button>
+
+                    <form id="targetPriceForm-telegram">
                       <div class="form-group">
                         <label for="telegramId">Telegram ID：</label>
                         <input
@@ -828,7 +839,91 @@
                       </div>
 
                       <button
-                        onclick="trackPrice(event)"
+                        type="submit"
+                        class="btn toggle-modal-link btn-outline-success"
+                      >
+                        到價通知
+                      </button>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Line到價通知 -->
+            <img
+              src="/images/line.png"
+              alt="Line"
+              class="img-fluid mb-3"
+              data-toggle="modal"
+              data-target="#lineTrackingModal"
+              data-notification-method="Line"
+              style="cursor: pointer; max-width: 50px"
+              id="NotificationPermissio-line"
+            />
+            <!-- Modal -->
+            <div
+              class="modal fade"
+              id="lineTrackingModal"
+              tabindex="-1"
+              role="dialog"
+              aria-labelledby="lineModalLabel"
+              aria-hidden="true"
+            >
+              <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="lineModalLabel">
+                      Line 到價通知設定
+                    </h5>
+                    <button
+                      type="button"
+                      class="close"
+                      data-dismiss="modal"
+                      aria-label="Close"
+                    >
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    <button
+                      id="line-subscription"
+                      type="button"
+                      class="btn mb-2 btn-outline-primary"
+                    >
+                      建立Line Notify
+                    </button>
+                    <button
+                      id="toggle-line-notification"
+                      type="button"
+                      class="btn mb-2"
+                    >
+                      開啟到價通知
+                    </button>
+                    <form id="targetPriceForm-line">
+                      <div class="form-group">
+                        <label for="targetSymbol">標的名稱：</label>
+                        <input
+                          name="targetSymbol"
+                          type="text"
+                          class="form-control mb-2"
+                          id="symbol-line"
+                          required
+                        />
+                      </div>
+                      <label for="targetPrice">目標價：</label>
+
+                      <div class="form-group">
+                        <input
+                          name="targetPrice"
+                          type="number"
+                          class="form-control mb-2"
+                          id="targetPrice-line"
+                          required
+                        />
+                      </div>
+                      <button
+                        type="submit"
                         class="btn toggle-modal-link btn-outline-success"
                       >
                         到價通知
@@ -903,9 +998,10 @@
 
     <script type="module" src="/js/index.js"></script>
     <script src="js/User.js"></script>
-    <script src="js/Tracking.js"></script>
+    <script type="module" src="js/Tracking.js"></script>
     <script src="/js/services/service-worker.js"></script>
-    <script src="/js/services/notifications.js"></script>
+    <script type="module" src="/js/services/notifications.js"></script>
+    <script type="module" src="/js/services/lineNotify.js"></script>
     <script src="js/Bootstrap.js"></script>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>

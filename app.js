@@ -11,6 +11,7 @@ const telegramBotRoutes = require("./routes/telegramBotRoutes");
 const updateSymbolData = require("./services/updateSymbolData");
 const subscriptionRoutes = require("./routes/subscriptionRoutes");
 const { trackPrices } = require("./services/priceAlertService.js");
+const lineNotifyRoutes = require("./routes/lineNotifyRoutes");
 
 const app = express();
 connectDB();
@@ -28,6 +29,9 @@ app.use("/api/loadVolumeData", volumeDataRoutes);
 app.use("/api/user", userRoutes);
 app.use("/api/track", trackingRoutes);
 app.use("/api/subscription", subscriptionRoutes);
+
+//建立Line通知
+app.use("/line-notify-callback", lineNotifyRoutes);
 
 //webhooks
 app.use("/telegram-updates", telegramBotRoutes);
