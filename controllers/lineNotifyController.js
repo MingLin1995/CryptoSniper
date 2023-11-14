@@ -7,7 +7,7 @@ require("dotenv").config();
 async function handleLineNotifyCallback(req, res) {
   const clientId = process.env.CLIENT_ID;
   const clientSecret = process.env.CLIENT_SECRET;
-  const redirectUri = "https://crypto-sniper.minglin.vip//line-notify-callback";
+  const redirectUri = "https://crypto-sniper.minglin.vip/line-notify-callback";
   const code = req.query.code;
   const state = req.query.state;
   const parts = state.split("|");
