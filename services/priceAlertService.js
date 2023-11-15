@@ -62,6 +62,7 @@ const trackPrices = async () => {
           //console.log(`${symbol} 達到目標價格 ${currentPrice}`);
           await PriceAlert.deleteOne({ _id });
           ws.close(); // 關閉 WebSocket 連接
+          activeWebSockets.delete(_id.toString()); // 從 Map 中移除 WebSocket 連接
         }
       }
     });
@@ -72,4 +73,4 @@ const trackPrices = async () => {
   });
 };
 
-module.exports = { trackPrices };
+module.exports = { trackPrices, activeWebSockets };

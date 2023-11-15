@@ -673,7 +673,7 @@
           </button>
         </form>
 
-        <!-- 到價通知 -->
+        <!-- web到價通知 -->
         <div class="hidden-before-login">
           <h2 class="mb-3">到價通知設定</h2>
           <div class="d-flex justify-content-around align-items-center mb-3">
@@ -749,6 +749,14 @@
                         建立通知
                       </button>
                     </form>
+                    <div class="notification-list mt-4">
+                      <h6 id="notificationHeader-Web" class="mb-3">
+                        已建立的通知：
+                      </h6>
+                      <ul id="notificationList-Web" class="list-group">
+                        <!-- 通知列表項目將會在這裡生成 -->
+                      </ul>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -860,6 +868,14 @@
                       >
                         建立通知
                       </button>
+                      <div class="notification-list mt-4">
+                        <h6 id="notificationHeader-Telegram" class="mb-3">
+                          已建立的通知：
+                        </h6>
+                        <ul id="notificationList-Telegram" class="list-group">
+                          <!-- 通知列表項目將會在這裡生成 -->
+                        </ul>
+                      </div>
                     </form>
                   </div>
                 </div>
@@ -905,7 +921,7 @@
                     <button
                       id="line-subscription"
                       type="button"
-                      class="btn mb-2 btn-outline-primary"
+                      class="btn mb-2 btn-outline-primary mr-2"
                     >
                       建立Line Notify
                     </button>
@@ -944,6 +960,14 @@
                       >
                         建立通知
                       </button>
+                      <div class="notification-list mt-4">
+                        <h6 id="notificationHeader-Line" class="mb-3">
+                          已建立的通知：
+                        </h6>
+                        <ul id="notificationList-Line" class="list-group">
+                          <!-- 通知列表項目將會在這裡生成 -->
+                        </ul>
+                      </div>
                     </form>
                   </div>
                 </div>

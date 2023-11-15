@@ -109,7 +109,7 @@ function handleSymbolClick(symbol, intervalsData) {
   }, 100);
 }
 
-// 前端畫面顯示
+// 前端畫面顯示標的
 function displayResults(allResultsVolume, intervalsData) {
   const tbody = document.getElementById("results-tbody");
   tbody.innerHTML = ""; // 清空表格
@@ -183,7 +183,7 @@ async function checkSubscriptionStatus(currentNotificationMethod) {
   }
 }
 
-// 更新切换通知按钮的文本
+// 更新切换通知按鈕
 function updateToggleButtonText(isEnabled, currentNotificationMethod) {
   let button;
   if (currentNotificationMethod === "Line") {
@@ -233,9 +233,98 @@ async function toggleNotification(currentNotificationMethod) {
   }
 }
 
+// 從後端獲取通知列表並顯示
+function loadNotifications(currentNotificationMethod) {
+  const token = localStorage.getItem("token");
+
+  fetch(`/api/track/load`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: token,
+    },
+    body: JSON.stringify({ notificationMethod: currentNotificationMethod }),
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      const notificationHeader = document.getElementById(
+        `notificationHeader-${currentNotificationMethod}`
+      );
+      const notificationListId = `notificationList-${currentNotificationMethod}`;
+      const notificationList = document.getElementById(notificationListId);
+
+      notificationList.innerHTML = ""; // 清空當前列表
+      // 檢查是否有通知列表
+      if (data.length === 0) {
+        notificationHeader.textContent = "尚未建立任何通知";
+      } else {
+        notificationHeader.textContent = "已建立的通知：";
+        data.forEach((notification) => {
+          const listItem = document.createElement("li");
+          listItem.classList.add(
+            "list-group-item",
+            "d-flex",
+            "justify-content-between",
+            "align-items-center"
+          );
+
+          // 建立容器
+          const textContainer = document.createElement("div");
+
+          // 標的名稱
+          const symbolText = document.createElement("div");
+          symbolText.textContent = `標的名稱：${notification.symbol.toUpperCase()}`;
+          textContainer.appendChild(symbolText);
+
+          // 目標價
+          const priceText = document.createElement("div");
+          priceText.textContent = `目標價：${notification.targetPrice}`;
+          textContainer.appendChild(priceText);
+
+          listItem.appendChild(textContainer);
+
+          // 刪除按鈕
+          const deleteButton = document.createElement("button");
+          deleteButton.setAttribute("type", "button");
+          deleteButton.textContent = "刪除";
+          deleteButton.classList.add("btn", "btn-outline-danger");
+          deleteButton.onclick = () =>
+            deleteNotification(notification._id, currentNotificationMethod);
+          listItem.appendChild(deleteButton);
+
+          notificationList.appendChild(listItem);
+        });
+      }
+    })
+    .catch((error) => console.error("Error:", error));
+}
+
+function deleteNotification(notificationId, currentNotificationMethod) {
+  alert("確定要刪除嗎？");
+  const token = localStorage.getItem("token");
+
+  fetch(`/api/track/delete`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: token,
+    },
+    body: JSON.stringify({ id: notificationId }),
+  })
+    .then((response) => {
+      if (response.ok) {
+        loadNotifications(currentNotificationMethod); // 重新加載通知，更新列表
+      } else {
+        throw new Error("刪除失敗");
+      }
+    })
+    .catch((error) => console.error("Error:", error));
+}
+
 export {
   displayResults,
   checkSubscriptionStatus,
   updateToggleButtonText,
   toggleNotification,
+  loadNotifications,
 };
