@@ -125,8 +125,8 @@ async function login() {
         document.getElementById("telegramId").value = data.telegramId;
       }
 
-      $("#loginModal").modal("hide");
       checkLoginStatus();
+      window.location.href = "/";
     } else {
       alert("登入失敗：" + data.error);
     }
@@ -152,6 +152,7 @@ async function logout() {
       localStorage.removeItem("userId");
       alert("登出成功！");
       checkLoginStatus();
+      window.location.href = "/";
     } else {
       const data = await response.json();
       window.location.href = "/";

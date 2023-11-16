@@ -357,16 +357,15 @@ function deleteNotification(notificationId, currentNotificationMethod) {
     .catch((error) => console.error("Error:", error));
 }
 
-function toggleFavorite(symbol, button) {
+function toggleFavorite(symbol, favoriteButton) {
   // 檢查是否有用戶ID，如果没有，返回首頁
   if (!userId) {
-    alert("請先登入才可以使用此功能");
-    window.location.href = "/";
+    alert("登入後即可使用此功能");
     return;
   }
 
   // 檢查狀態
-  const isFavorite = button.classList.contains("btn-primary");
+  const isFavorite = favoriteButton.classList.contains("btn-warning");
 
   const apiEndpoint = isFavorite ? "/api/favorite/remove" : "/api/favorite/add";
   const token = localStorage.getItem("token");
@@ -384,8 +383,8 @@ function toggleFavorite(symbol, button) {
         throw new Error("無法更新追蹤清單");
       }
       // 切换按鈕狀態
-      button.classList.toggle("btn-primary");
-      button.classList.toggle("btn-outline-primary");
+      favoriteButton.classList.toggle("btn-warning");
+      favoriteButton.classList.toggle("btn-outline-warning");
       return response.json();
     })
     .then((data) => {
@@ -399,13 +398,6 @@ function toggleFavorite(symbol, button) {
 // 取得追蹤清單
 function loadFavorites() {
   return new Promise((resolve, reject) => {
-    const userId = localStorage.getItem("userId");
-    if (!userId) {
-      alert("請先登入");
-      reject("用戶尚未登入");
-      return;
-    }
-
     const token = localStorage.getItem("token");
     fetch("/api/favorite/list", {
       method: "GET",
@@ -508,8 +500,8 @@ function removeFavorite(symbol, userId) {
       // 更新追蹤按鈕狀態
       document.querySelectorAll(".favorite-button").forEach((button) => {
         if (button.getAttribute("data-symbol") === symbol) {
-          button.classList.remove("btn-primary");
-          button.classList.add("btn-outline-primary");
+          button.classList.remove("btn-warning");
+          button.classList.add("btn-outline-warning");
         }
       });
     })
