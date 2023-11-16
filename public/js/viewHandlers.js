@@ -29,11 +29,11 @@ function createTableRow(item, intervalsData, userFavorites) {
   const favoriteButton = document.createElement("button");
   favoriteButton.classList.add("btn", "btn-sm", "favorite-button");
   favoriteButton.setAttribute("data-symbol", item.symbol);
-  favoriteButton.textContent = "⭐";
+  favoriteButton.textContent = "＋";
   if (userFavorites.includes(item.symbol)) {
-    favoriteButton.classList.add("btn-primary");
+    favoriteButton.classList.add("btn-warning");
   } else {
-    favoriteButton.classList.add("btn-outline-primary");
+    favoriteButton.classList.add("btn-outline-warning");
   }
   favoriteButton.onclick = () => toggleFavorite(item.symbol, favoriteButton);
   tdFavorite.appendChild(favoriteButton);
@@ -441,13 +441,43 @@ function updateFavoritesModal() {
             "justify-content-between",
             "align-items-center"
           );
-          li.textContent = symbol;
+
+          const symbolText = document.createElement("span");
+          symbolText.textContent = symbol;
+          symbolText.style.cursor = "pointer";
+          symbolText.onclick = () => {
+            const intervalsData = [
+              {
+                time_interval: document.getElementById("time-interval-1").value,
+                param_1: parseInt(document.getElementById("MA1-1").value),
+                param_2: parseInt(document.getElementById("MA1-2").value),
+                comparison_operator_1: document.getElementById(
+                  "comparison-operator-1-1"
+                ).value,
+                comparison_operator_2:
+                  document.getElementById("comparison-operator-1-2")?.value ||
+                  null,
+                logical_operator:
+                  document.querySelector(
+                    ".toggle-element-1:not(.hidden) #logical-operator-1"
+                  )?.value || null,
+                param_3:
+                  parseInt(document.getElementById("MA1-3")?.value) || null,
+                param_4:
+                  parseInt(document.getElementById("MA1-4")?.value) || null,
+              },
+            ];
+            handleSymbolClick(symbol, intervalsData);
+            $("#favoritesModal").modal("hide"); //關閉追蹤清單
+          };
+          li.appendChild(symbolText);
 
           const deleteButton = document.createElement("button");
-          deleteButton.classList.add("btn", "btn-outline-danger");
+          deleteButton.classList.add("btn", "btn-danger", "btn-sm");
           deleteButton.textContent = "刪除";
           deleteButton.onclick = () => removeFavorite(symbol, userId);
           li.appendChild(deleteButton);
+
           favoritesList.appendChild(li);
         });
       }
