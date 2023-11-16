@@ -37,6 +37,8 @@ async function checkLoginStatus() {
         // token無效，清除token並返回
         localStorage.removeItem("token");
         localStorage.removeItem("telegramId");
+        localStorage.removeItem("userId");
+
         throw new Error("Token expired");
       }
     } catch (error) {
@@ -61,6 +63,9 @@ async function checkLoginStatus() {
     hiddenBeforeLoginElements.forEach((el) => {
       el.style.display = "none";
     });
+    localStorage.removeItem("token");
+    localStorage.removeItem("telegramId");
+    localStorage.removeItem("userId");
   }
 }
 

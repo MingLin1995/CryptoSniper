@@ -3,6 +3,7 @@
 import {
   checkSubscriptionStatus,
   toggleNotification,
+  loadNotifications,
 } from "../viewHandlers.js";
 
 // 建立通知
@@ -63,6 +64,8 @@ document
 
         localStorage.setItem("telegramId", telegramId);
         telegramIdInput.value = telegramId; // 更新輸入框中的值
+
+        loadNotifications(currentNotificationMethod);
       })
       .catch((error) => {
         console.error("Error:", error);
@@ -120,6 +123,7 @@ const notificationImageTelegram = document.getElementById(
 // 點擊圖片時，請求通知許可
 notificationImageTelegram.addEventListener("click", async function () {
   await checkSubscriptionStatus(currentNotificationMethod);
+  loadNotifications(currentNotificationMethod);
 });
 
 //按鈕

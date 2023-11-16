@@ -3,6 +3,7 @@ import {
   checkSubscriptionStatus,
   updateToggleButtonText,
   toggleNotification,
+  loadNotifications,
 } from "../viewHandlers.js";
 
 // 註冊 service worker
@@ -93,6 +94,7 @@ document
       .then((data) => {
         //console.log(data);
         alert("到價通知設定成功！");
+        loadNotifications(currentNotificationMethod);
       })
       .catch((error) => {
         console.error("Error:", error);
@@ -215,6 +217,7 @@ const notificationImage = document.getElementById("NotificationPermissio-web");
 notificationImage.addEventListener("click", async function () {
   await onClick();
   await checkSubscriptionStatus(currentNotificationMethod);
+  loadNotifications(currentNotificationMethod);
 });
 
 //按鈕
