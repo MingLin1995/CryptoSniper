@@ -77,3 +77,43 @@ document.addEventListener("DOMContentLoaded", function () {
     toggleElement.classList.toggle("hidden");
   });
 });
+
+// 使列表可以拖動
+function makeDraggable(li) {
+  li.setAttribute("draggable", "true");
+  li.addEventListener("dragstart", handleDragStart);
+  li.addEventListener("dragover", handleDragOver);
+  li.addEventListener("drop", handleDrop);
+  li.addEventListener("dragend", handleDragEnd);
+}
+
+// 拖動開始
+let draggedItem = null;
+function handleDragStart(e) {
+  draggedItem = this;
+  e.dataTransfer.effectAllowed = "move";
+  e.dataTransfer.setData("text/html", this.innerHTML);
+}
+
+// 拖動經過其他選項
+function handleDragOver(e) {
+  e.preventDefault();
+  e.dataTransfer.dropEffect = "move";
+}
+
+// 放置時
+function handleDrop(e) {
+  e.stopPropagation();
+  if (draggedItem !== this) {
+    draggedItem.innerHTML = this.innerHTML;
+    this.innerHTML = e.dataTransfer.getData("text/html");
+  }
+  return false;
+}
+
+// 拖動結束
+function handleDragEnd(e) {
+  draggedItem = null;
+}
+
+export { makeDraggable };

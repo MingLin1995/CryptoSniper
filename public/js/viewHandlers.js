@@ -2,6 +2,7 @@
 
 import { createTradingViewWidget } from "./tradingViewConfig.js";
 import { formatVolume, sortResultsByVolume } from "./helpers.js";
+import { makeDraggable } from "./Bootstrap.js";
 
 let indexObject = { currentIndex: 0 };
 let userId = localStorage.getItem("userId");
@@ -382,7 +383,7 @@ function toggleFavorite(symbol, button) {
       if (!response.ok) {
         throw new Error("無法更新追蹤清單");
       }
-      // 切换按钮状态
+      // 切换按鈕狀態
       button.classList.toggle("btn-primary");
       button.classList.toggle("btn-outline-primary");
       return response.json();
@@ -441,6 +442,7 @@ function updateFavoritesModal() {
             "justify-content-between",
             "align-items-center"
           );
+          makeDraggable(li);
 
           const symbolText = document.createElement("span");
           symbolText.textContent = symbol;
