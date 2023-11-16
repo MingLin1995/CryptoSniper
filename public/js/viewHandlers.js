@@ -467,7 +467,7 @@ function updateFavoritesModal() {
           li.appendChild(symbolText);
 
           const deleteButton = document.createElement("button");
-          deleteButton.classList.add("btn", "btn-danger", "btn-sm");
+          deleteButton.classList.add("btn", "btn-outline-danger", "btn-sm");
           deleteButton.textContent = "刪除";
           deleteButton.onclick = () => removeFavorite(symbol, userId);
           li.appendChild(deleteButton);
