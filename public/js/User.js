@@ -125,7 +125,7 @@ async function login() {
         document.getElementById("telegramId").value = data.telegramId;
       }
 
-      $("#loginModal").modal("hide");
+      window.location.href = "/";
       checkLoginStatus();
     } else {
       alert("登入失敗：" + data.error);
