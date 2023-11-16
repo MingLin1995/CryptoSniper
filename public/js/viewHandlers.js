@@ -398,8 +398,6 @@ function toggleFavorite(symbol, favoriteButton) {
 // 取得追蹤清單
 function loadFavorites() {
   return new Promise((resolve, reject) => {
-    const userId = localStorage.getItem("userId");
-
     const token = localStorage.getItem("token");
     fetch("/api/favorite/list", {
       method: "GET",
