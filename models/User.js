@@ -8,6 +8,10 @@ const UserSchema = new mongoose.Schema({
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
   token: { type: String },
+  favorites: {
+    type: [String],
+    default: [], // 預設為空
+  },
   telegramSubscription: {
     telegramId: { type: String },
     notificationsEnabled: { type: Boolean, default: true },

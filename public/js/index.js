@@ -5,6 +5,7 @@ import { getKlinesData, getResultsVolume } from "./services/dataService.js";
 import { calculateMA, compareMAValues, findIntersection } from "./model.js";
 import { displayResults } from "./viewHandlers.js";
 import { createTradingViewWidget } from "./tradingViewConfig.js";
+import { updateFavoritesModal } from "./viewHandlers.js";
 
 // 取得篩選器表單
 const filterForm = document.querySelector('form[name="filterForm"]');
@@ -85,3 +86,8 @@ async function processForm() {
     //console.error("錯誤:", error);
   }
 }
+
+document.addEventListener("DOMContentLoaded", () => {
+  const favoritesButton = document.getElementById("favorites");
+  favoritesButton.addEventListener("click", updateFavoritesModal);
+});

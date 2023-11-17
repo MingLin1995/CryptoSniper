@@ -673,7 +673,7 @@
           </button>
         </form>
 
-        <!-- 到價通知 -->
+        <!-- web到價通知 -->
         <div class="hidden-before-login">
           <h2 class="mb-3">到價通知設定</h2>
           <div class="d-flex justify-content-around align-items-center mb-3">
@@ -749,6 +749,14 @@
                         建立通知
                       </button>
                     </form>
+                    <div class="notification-list mt-4">
+                      <h6 id="notificationHeader-Web" class="mb-3">
+                        已建立的通知：
+                      </h6>
+                      <ul id="notificationList-Web" class="list-group">
+                        <!-- 通知列表 -->
+                      </ul>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -860,6 +868,14 @@
                       >
                         建立通知
                       </button>
+                      <div class="notification-list mt-4">
+                        <h6 id="notificationHeader-Telegram" class="mb-3">
+                          已建立的通知：
+                        </h6>
+                        <ul id="notificationList-Telegram" class="list-group">
+                          <!-- 通知列表 -->
+                        </ul>
+                      </div>
                     </form>
                   </div>
                 </div>
@@ -905,7 +921,7 @@
                     <button
                       id="line-subscription"
                       type="button"
-                      class="btn mb-2 btn-outline-primary"
+                      class="btn mb-2 btn-outline-primary mr-2"
                     >
                       建立Line Notify
                     </button>
@@ -944,9 +960,55 @@
                       >
                         建立通知
                       </button>
+                      <div class="notification-list mt-4">
+                        <h6 id="notificationHeader-Line" class="mb-3">
+                          已建立的通知：
+                        </h6>
+                        <ul id="notificationList-Line" class="list-group">
+                          <!-- 通知列表 -->
+                        </ul>
+                      </div>
                     </form>
                   </div>
                 </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 追蹤清單 -->
+        <button
+          type="button"
+          class="btn btn-outline-warning mb-3 hidden-before-login"
+          data-toggle="modal"
+          data-target="#favoritesModal"
+          id="favorites"
+        >
+          追蹤清單
+        </button>
+        <div
+          class="modal fade"
+          id="favoritesModal"
+          tabindex="-1"
+          role="dialog"
+          aria-labelledby="favoritesModalLabel"
+          aria-hidden="true"
+        >
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="favoritesModalLabel">追蹤清單</h5>
+                <button
+                  type="button"
+                  class="close"
+                  data-dismiss="modal"
+                  aria-label="Close"
+                >
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <ul id="favoritesList" class="list-group"></ul>
               </div>
             </div>
           </div>
@@ -973,13 +1035,17 @@
       </div>
 
       <!-- 篩選結果 -->
-      <div class="result-container" id="resultContainer" style="display: none">
+      <div
+        class="result-container mt-3"
+        id="resultContainer"
+        style="display: none"
+      >
         <div class="card">
           <div class="card-header">
             <h5 class="centered-text">篩選結果</h5>
           </div>
           <div class="card-body">
-            <!-- 新增一個用於顯示「搜尋中」訊息和圖片的 div -->
+            <!-- 顯示「搜尋中」訊息和圖片 -->
             <div
               id="loading-message"
               style="display: none"
@@ -997,6 +1063,7 @@
             <table class="table" id="results-table">
               <thead>
                 <tr>
+                  <th scope="col">加入追蹤</th>
                   <th scope="col">標的</th>
                   <th scope="col" class="sortable" id="volume-header">
                     成交量
@@ -1004,7 +1071,7 @@
                 </tr>
               </thead>
               <tbody id="results-tbody">
-                <!-- 您的篩選結果將在這裡顯示 -->
+                <!-- 篩選結果 -->
               </tbody>
             </table>
           </div>
@@ -1012,13 +1079,13 @@
       </div>
     </div>
 
+    <script type="module" src="js/Bootstrap.js"></script>
     <script type="module" src="/js/index.js"></script>
     <script src="js/User.js"></script>
     <script type="module" src="js/services/telegramNotify.js"></script>
     <script src="/js/services/service-worker.js"></script>
     <script type="module" src="/js/services/notifications.js"></script>
     <script type="module" src="/js/services/lineNotify.js"></script>
-    <script src="js/Bootstrap.js"></script>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>

@@ -2,6 +2,7 @@
 import {
   checkSubscriptionStatus,
   toggleNotification,
+  loadNotifications,
 } from "../viewHandlers.js";
 
 function subscribeToPriceAlert() {
@@ -75,6 +76,7 @@ document
       .then((data) => {
         //console.log(data);
         alert("到價通知設定成功！");
+        loadNotifications(currentNotificationMethod);
       })
       .catch((error) => {
         alert("請先建立 Line Notify 連動！");
@@ -100,6 +102,7 @@ const notificationImageLine = document.getElementById(
 // 檢查訂閱狀態
 notificationImageLine.addEventListener("click", function () {
   checkSubscriptionStatus(currentNotificationMethod);
+  loadNotifications(currentNotificationMethod);
 });
 
 //按鈕元素
