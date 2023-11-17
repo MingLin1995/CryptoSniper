@@ -4,6 +4,6 @@ const express = require("express");
 const router = express.Router();
 const volumeDataController = require("../controllers/volumeDataController");
 
-router.post("/", volumeDataController.handleLoadVolumeRequest);
+router.get("/", volumeDataController.handleLoadVolumeRequest);
 
 module.exports = router;

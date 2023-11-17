@@ -26,7 +26,7 @@ async function handleSubscription(req, res) {
 //檢查訂閱狀態
 async function checkSubscription(req, res) {
   const userId = req.user._id;
-  const notificationType = req.body.notificationType;
+  const notificationType = req.query.notificationType;
 
   try {
     const user = await User.findById(userId);
@@ -59,7 +59,7 @@ async function checkSubscription(req, res) {
 //切換訂閱狀態
 async function toggleSubscription(req, res) {
   const userId = req.user._id;
-  const notificationType = req.body.notificationType;
+  const notificationType = req.query.notificationType;
 
   try {
     const user = await User.findById(userId);

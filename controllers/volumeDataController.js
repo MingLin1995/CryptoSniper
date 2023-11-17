@@ -3,7 +3,7 @@
 const loadVolumeData = require("../models/loadVolumeData");
 
 async function handleLoadVolumeRequest(req, res) {
-  const results = req.body;
+  const results = JSON.parse(req.query.results);
   try {
     const allVolumeData = await loadVolumeData.getVolumeData(results);
     res.status(200).json(allVolumeData);

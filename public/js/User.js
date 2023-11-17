@@ -26,7 +26,7 @@ async function checkLoginStatus() {
     // 驗證token是否有效
     try {
       const response = await fetch("/api/user/verifyToken", {
-        method: "POST",
+        method: "GET",
         headers: {
           "Content-Type": "application/json",
           Authorization: token,
@@ -139,7 +139,7 @@ async function login() {
 async function logout() {
   try {
     const response = await fetch("/api/user/logout", {
-      method: "POST",
+      method: "DELETE",
       headers: {
         "Content-Type": "application/json",
         Authorization: localStorage.getItem("token"),

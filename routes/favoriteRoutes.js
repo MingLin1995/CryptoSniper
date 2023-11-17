@@ -6,8 +6,8 @@ const verifyToken = require("../auth");
 
 const router = express.Router();
 
-router.post("/add", verifyToken, favoriteController.favoriteAdd);
-router.post("/remove", verifyToken, favoriteController.favoriteRemove);
-router.get("/list", verifyToken, favoriteController.favoriteList);
+router.post("/", verifyToken, favoriteController.favoriteAdd);
+router.delete("/", verifyToken, favoriteController.favoriteRemove);
+router.get("/", verifyToken, favoriteController.favoriteList);
 
 module.exports = router;
