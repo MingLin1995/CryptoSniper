@@ -32,6 +32,10 @@ document
     const notificationMethod = currentNotificationMethod;
 
     const token = localStorage.getItem("token");
+    if (!token) {
+      window.location.href = "/";
+      return;
+    }
     fetch("/api/track", {
       method: "POST",
       headers: {

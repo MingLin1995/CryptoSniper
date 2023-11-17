@@ -54,6 +54,13 @@ document
       return;
     }
 
+    const token = localStorage.getItem("token");
+
+    if (!token) {
+      window.location.href = "/";
+      return;
+    }
+
     const button = document.getElementById("toggle-subscription").textContent;
     if (button == "開啟 Web 到價通知") {
       alert("尚未開啟 Web 到價通知！");
@@ -64,7 +71,6 @@ document
     const targetPrice = document.getElementById(
       "targetPrice-Notification"
     ).value;
-    const token = localStorage.getItem("token");
 
     // 使用先前選擇的通知方式
     const notificationMethod = currentNotificationMethod;

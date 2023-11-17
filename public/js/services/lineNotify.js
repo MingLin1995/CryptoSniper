@@ -48,6 +48,11 @@ document
     const targetPrice = document.getElementById("targetPrice-line").value;
     const token = localStorage.getItem("token");
 
+    if (!token) {
+      window.location.href = "/";
+      return;
+    }
+
     // 使用先前選擇的通知方式
     const notificationMethod = currentNotificationMethod;
 
