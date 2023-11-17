@@ -442,28 +442,13 @@ function toggleFavorite(symbol, favoriteButton) {
 function loadFavorites() {
   return new Promise((resolve, reject) => {
     const token = localStorage.getItem("token");
-
-    if (!token) {
-      window.location.href = "/";
-      return;
-    }
-
     fetch("/api/favorite", {
       method: "GET",
       headers: {
         Authorization: token,
       },
     })
-      .then((response) => {
-        if (!response.ok) {
-          if (response.status === 401) {
-            window.location.href = "/";
-            return;
-          }
-          throw new Error("無法獲取追蹤清單");
-        }
-        return response.json();
-      })
+      .then((response) => response.json())
       .then((data) => resolve(data.favorites || []))
       .catch((error) => reject(error));
   });
