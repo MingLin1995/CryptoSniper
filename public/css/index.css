@@ -9,10 +9,13 @@
 
 /* 表頭固定寬度 */
 #results-table th:nth-child(1) {
-  width: 50%;
+  width: 10%;
 }
 #results-table th:nth-child(2) {
-  width: 50%;
+  width: 45%;
+}
+#results-table th:nth-child(3) {
+  width: 45%;
 }
 
 /* 深色模式文字亮色 */
@@ -113,4 +116,13 @@ body.night-mode #symbol-column:hover {
   background-color: #6c757d;
   color: #fff;
   border-color: #6c757d;
+}
+
+.ma-input-container {
+  display: flex;
+  align-items: center;
+}
+
+.ma {
+  margin-left: 5px; /* 或者根據需要調整間距 */
 }

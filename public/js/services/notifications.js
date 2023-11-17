@@ -3,62 +3,8 @@ import {
   checkSubscriptionStatus,
   updateToggleButtonText,
   toggleNotification,
+  loadNotifications,
 } from "../viewHandlers.js";
-
-let currentNotificationMethod;
-
-// 綁定事件到所有帶有特定data-toggle的圖片
-document.querySelectorAll('img[data-toggle="modal"]').forEach((img) => {
-  img.addEventListener("click", function () {
-    // 根據點擊的圖片設置通知方式
-    currentNotificationMethod = this.getAttribute("data-notification-method");
-    // 根據選擇的通知方式顯示相應的視窗
-    let targetModal = this.getAttribute("data-target");
-    $(targetModal).modal("show");
-  });
-});
-
-// 圖片
-const notificationImage = document.getElementById("NotificationPermissio-web");
-
-// 點擊圖片時，請求通知許可
-notificationImage.addEventListener("click", async function () {
-  await onClick();
-  await checkSubscriptionStatus(currentNotificationMethod);
-});
-
-// 通知許可權請求
-async function requestNotificationPermission() {
-  const permission = await Notification.requestPermission();
-  if (permission !== "granted") {
-    //console.log("用戶拒絕了通知許可權");
-    return false;
-  }
-  //console.log("通知許可權獲得成功");
-  return true;
-}
-
-//按鈕
-const toggleSubscriptionButton = document.getElementById("toggle-subscription");
-
-// 按鈕點擊時處理訂閱邏輯
-toggleSubscriptionButton.addEventListener("click", async function () {
-  toggleNotification(currentNotificationMethod);
-});
-
-// 點擊時的許可通知
-async function onClick() {
-  const hasPermission = await requestNotificationPermission();
-  if (!hasPermission) {
-    alert("未獲得您的通知許可權，請至瀏覽器設定開啟通知許可權");
-    window.location.href = "/";
-    return;
-  }
-  const registration = await registerServiceWorker();
-  if (registration) {
-    await manageSubscription(registration);
-  }
-}
 
 // 註冊 service worker
 async function registerServiceWorker() {
@@ -74,15 +20,6 @@ async function registerServiceWorker() {
   }
 }
 
-// 初始化函數
-async function init() {
-  if (!checkBrowserSupport()) {
-    alert("此瀏覽器不支持推送通知。");
-    return;
-  }
-  await registerServiceWorker();
-}
-
 // 檢查瀏覽器支持
 function checkBrowserSupport() {
   if (!("serviceWorker" in navigator) || !("PushManager" in window)) {
@@ -92,8 +29,18 @@ function checkBrowserSupport() {
   return true;
 }
 
+// 初始化函數
+async function init() {
+  if (!checkBrowserSupport()) {
+    alert("此瀏覽器不支持推送通知。");
+    return;
+  }
+  await registerServiceWorker();
+}
+
 init();
 
+// 建立通知
 document
   .getElementById("targetPriceForm")
   .addEventListener("submit", async function (event) {
@@ -109,7 +56,7 @@ document
 
     const button = document.getElementById("toggle-subscription").textContent;
     if (button == "開啟 Web 到價通知") {
-      alert("尚未開啟到價通知！");
+      alert("尚未開啟 Web 到價通知！");
       return;
     }
 
@@ -147,13 +94,25 @@ document
       .then((data) => {
         //console.log(data);
         alert("到價通知設定成功！");
+        loadNotifications(currentNotificationMethod);
       })
       .catch((error) => {
         console.error("Error:", error);
       });
   });
 
-// 主要訂閱邏輯
+// 通知許可權請求
+async function requestNotificationPermission() {
+  const permission = await Notification.requestPermission();
+  if (permission !== "granted") {
+    //console.log("用戶拒絕了通知許可權");
+    return false;
+  }
+  //console.log("通知許可權獲得成功");
+  return true;
+}
+
+// 判斷是否有訂閱
 async function manageSubscription(registration) {
   if (!registration) {
     console.log("Service Worker 註冊不成功，無法管理訂閱");
@@ -162,16 +121,14 @@ async function manageSubscription(registration) {
 
   let subscription = await registration.pushManager.getSubscription();
   if (!subscription) {
-    console.log("test");
     // 沒有訂閱，創建新的訂閱
     subscription = await subscribeUser(registration);
   } else {
-    // 已經有訂閱，可以選擇更新後端信息或直接返回
     //console.log("已經訂閱");
-    // 可以選擇在此處調用 sendSubscriptionToBackend 來更新後端資訊
   }
 }
 
+// 建立新的訂閱
 async function subscribeUser(registration) {
   try {
     const applicationServerKey = urlB64ToUint8Array(
@@ -228,3 +185,45 @@ async function sendSubscriptionToBackend(subscription) {
     console.error("發送訂閱詳情到後端失敗", error);
   }
 }
+
+// 點擊圖片時的許可通知
+async function onClick() {
+  const hasPermission = await requestNotificationPermission();
+  if (!hasPermission) {
+    alert("未獲得您的通知許可權，請至瀏覽器設定開啟通知許可權");
+    window.location.href = "/";
+    return;
+  }
+  const registration = await registerServiceWorker();
+  if (registration) {
+    await manageSubscription(registration);
+  }
+}
+
+let currentNotificationMethod;
+
+// 綁定事件到所有帶有特定data-toggle的圖片
+document.querySelectorAll('img[data-toggle="modal"]').forEach((img) => {
+  img.addEventListener("click", function () {
+    // 根據點擊的圖片設置通知方式
+    currentNotificationMethod = this.getAttribute("data-notification-method");
+  });
+});
+
+// 圖片
+const notificationImage = document.getElementById("NotificationPermissio-web");
+
+// 點擊圖片時，請求通知許可
+notificationImage.addEventListener("click", async function () {
+  await onClick();
+  await checkSubscriptionStatus(currentNotificationMethod);
+  loadNotifications(currentNotificationMethod);
+});
+
+//按鈕
+const toggleSubscriptionButton = document.getElementById("toggle-subscription");
+
+// 按鈕點擊時處理訂閱邏輯
+toggleSubscriptionButton.addEventListener("click", async function () {
+  toggleNotification(currentNotificationMethod);
+});

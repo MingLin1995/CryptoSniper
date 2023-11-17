@@ -9,8 +9,8 @@ const {
   toggleSubscription,
 } = require("../controllers/subscriptionController");
 
-router.post("/subscribe", verifyToken, handleSubscription);
-router.post("/check", verifyToken, checkSubscription);
-router.post("/toggle", verifyToken, toggleSubscription);
+router.post("/", verifyToken, handleSubscription);
+router.get("/", verifyToken, checkSubscription);
+router.patch("/", verifyToken, toggleSubscription);
 
 module.exports = router;

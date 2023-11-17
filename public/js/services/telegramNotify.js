@@ -1,7 +1,12 @@
-// public/js/Tracking.js
+// public/js/services/telegramNotify.js
 
-import { checkSubscriptionStatus, toggleNotification } from "./viewHandlers.js";
+import {
+  checkSubscriptionStatus,
+  toggleNotification,
+  loadNotifications,
+} from "../viewHandlers.js";
 
+// 建立通知
 document
   .getElementById("targetPriceForm-telegram")
   .addEventListener("submit", async function (event) {
@@ -10,7 +15,7 @@ document
     if (
       toggleTelegramSubscriptionButton.textContent == "開啟 Telegram 到價通知"
     ) {
-      alert("尚未開啟到價通知！");
+      alert("尚未開啟 Telegram 到價通知！");
       return;
     }
 
@@ -59,16 +64,19 @@ document
 
         localStorage.setItem("telegramId", telegramId);
         telegramIdInput.value = telegramId; // 更新輸入框中的值
+
+        loadNotifications(currentNotificationMethod);
       })
       .catch((error) => {
         console.error("Error:", error);
       });
   });
 
+// 更新Telegram ID
 function updateUserTelegramId(telegramId) {
   // 發送請求更新用戶的 Telegram ID
   fetch("/api/user/updateTelegramId", {
-    method: "POST",
+    method: "PATCH",
     headers: {
       "Content-Type": "application/json",
       Authorization: localStorage.getItem("token"),
@@ -104,9 +112,6 @@ document.querySelectorAll('img[data-toggle="modal"]').forEach((img) => {
   img.addEventListener("click", function () {
     // 根據點擊的圖片設置通知方式
     currentNotificationMethod = this.getAttribute("data-notification-method");
-    // 根據選擇的通知方式顯示相應的視窗
-    let targetModal = this.getAttribute("data-target");
-    $(targetModal).modal("show");
   });
 });
 
@@ -118,6 +123,7 @@ const notificationImageTelegram = document.getElementById(
 // 點擊圖片時，請求通知許可
 notificationImageTelegram.addEventListener("click", async function () {
   await checkSubscriptionStatus(currentNotificationMethod);
+  loadNotifications(currentNotificationMethod);
 });
 
 //按鈕

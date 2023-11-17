@@ -2,25 +2,13 @@
 import {
   checkSubscriptionStatus,
   toggleNotification,
+  loadNotifications,
 } from "../viewHandlers.js";
-
-let currentNotificationMethod;
-
-// 綁定事件到所有帶有特定data-toggle的圖片
-document.querySelectorAll('img[data-toggle="modal"]').forEach((img) => {
-  img.addEventListener("click", function () {
-    // 根據點擊的圖片設置通知方式
-    currentNotificationMethod = this.getAttribute("data-notification-method");
-    // 根據選擇的通知方式顯示相應的視窗
-    let targetModal = this.getAttribute("data-target");
-    $(targetModal).modal("show");
-  });
-});
 
 function subscribeToPriceAlert() {
   const clientId = "tdsp4jfRPzQK90hInBMNWU";
   const redirectUri = encodeURIComponent(
-    "http://127.0.0.1:8000/line-notify-callback"
+    "https://crypto-sniper.minglin.vip/line-notify-callback"
   );
   const userId = localStorage.getItem("userId");
   const state = encodeURIComponent(generateRandomState(16) + "|" + userId);
@@ -40,22 +28,19 @@ function generateRandomState(length) {
   return result;
 }
 
+//建立 Line Notify
 document
   .getElementById("line-subscription")
   .addEventListener("click", subscribeToPriceAlert);
 
-//按鈕元素
-const toggleLineSubscriptionButton = document.getElementById(
-  "toggle-line-notification"
-);
-
+//建立通知
 document
   .getElementById("targetPriceForm-line")
   .addEventListener("submit", async function (event) {
     event.preventDefault();
 
     if (toggleLineSubscriptionButton.textContent == "開啟 Line 到價通知") {
-      alert("尚未開啟到價通知！");
+      alert("尚未開啟 Line 到價通知！");
       return;
     }
 
@@ -91,6 +76,7 @@ document
       .then((data) => {
         //console.log(data);
         alert("到價通知設定成功！");
+        loadNotifications(currentNotificationMethod);
       })
       .catch((error) => {
         alert("請先建立 Line Notify 連動！");
@@ -98,17 +84,33 @@ document
       });
   });
 
+let currentNotificationMethod;
+
+// 綁定事件到所有帶有特定data-toggle的圖片
+document.querySelectorAll('img[data-toggle="modal"]').forEach((img) => {
+  img.addEventListener("click", function () {
+    // 根據點擊的圖片設置通知方式
+    currentNotificationMethod = this.getAttribute("data-notification-method");
+  });
+});
+
 // 圖片元素
 const notificationImageLine = document.getElementById(
   "NotificationPermissio-line"
 );
 
-// 檢查订阅状态
+// 檢查訂閱狀態
 notificationImageLine.addEventListener("click", function () {
   checkSubscriptionStatus(currentNotificationMethod);
+  loadNotifications(currentNotificationMethod);
 });
 
-// 切换订阅状态
+//按鈕元素
+const toggleLineSubscriptionButton = document.getElementById(
+  "toggle-line-notification"
+);
+
+// 切换訂閱狀態
 toggleLineSubscriptionButton.addEventListener("click", function () {
   toggleNotification(currentNotificationMethod);
 });

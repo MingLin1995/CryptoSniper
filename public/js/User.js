@@ -26,7 +26,7 @@ async function checkLoginStatus() {
     // 驗證token是否有效
     try {
       const response = await fetch("/api/user/verifyToken", {
-        method: "POST",
+        method: "GET",
         headers: {
           "Content-Type": "application/json",
           Authorization: token,
@@ -37,6 +37,8 @@ async function checkLoginStatus() {
         // token無效，清除token並返回
         localStorage.removeItem("token");
         localStorage.removeItem("telegramId");
+        localStorage.removeItem("userId");
+
         throw new Error("Token expired");
       }
     } catch (error) {
@@ -61,6 +63,9 @@ async function checkLoginStatus() {
     hiddenBeforeLoginElements.forEach((el) => {
       el.style.display = "none";
     });
+    localStorage.removeItem("token");
+    localStorage.removeItem("telegramId");
+    localStorage.removeItem("userId");
   }
 }
 
@@ -120,8 +125,8 @@ async function login() {
         document.getElementById("telegramId").value = data.telegramId;
       }
 
-      $("#loginModal").modal("hide");
       checkLoginStatus();
+      window.location.href = "/";
     } else {
       alert("登入失敗：" + data.error);
     }
@@ -134,7 +139,7 @@ async function login() {
 async function logout() {
   try {
     const response = await fetch("/api/user/logout", {
-      method: "POST",
+      method: "DELETE",
       headers: {
         "Content-Type": "application/json",
         Authorization: localStorage.getItem("token"),
@@ -147,6 +152,7 @@ async function logout() {
       localStorage.removeItem("userId");
       alert("登出成功！");
       checkLoginStatus();
+      window.location.href = "/";
     } else {
       const data = await response.json();
       window.location.href = "/";
