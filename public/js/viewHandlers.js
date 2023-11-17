@@ -289,7 +289,7 @@ function loadNotifications(currentNotificationMethod) {
     .then((response) => {
       if (!response.ok) {
         if (response.status === 401) {
-          window.location.href = "/"; // 如果響應是 401，重定向到登錄頁面
+          window.location.href = "/";
           return;
         }
         throw new Error("無法獲取通知");
@@ -370,7 +370,7 @@ function deleteNotification(notificationId, currentNotificationMethod) {
     .then((response) => {
       if (!response.ok) {
         if (response.status === 401) {
-          window.location.href = "/"; // 如果響應是 401，重定向到登錄頁面
+          window.location.href = "/";
           return;
         }
         throw new Error("無法獲取通知");
@@ -420,8 +420,7 @@ function toggleFavorite(symbol, favoriteButton) {
     .then((response) => {
       if (!response.ok) {
         if (response.status === 401) {
-          // 401 表示 Unauthorized
-          window.location.href = "/"; // 重新導向到登錄頁面
+          window.location.href = "/";
           return;
         }
         throw new Error("無法更新追蹤清單");
@@ -458,8 +457,7 @@ function loadFavorites() {
       .then((response) => {
         if (!response.ok) {
           if (response.status === 401) {
-            // 401 表示 Unauthorized
-            window.location.href = "/"; // 重新導向到登錄頁面
+            window.location.href = "/";
             return;
           }
           throw new Error("無法獲取追蹤清單");
@@ -562,8 +560,7 @@ function removeFavorite(symbol, userId) {
     .then((response) => {
       if (!response.ok) {
         if (response.status === 401) {
-          // 401 表示 Unauthorized
-          window.location.href = "/"; // 重新導向到登錄頁面
+          window.location.href = "/";
           return;
         }
         throw new Error("無法獲取追蹤清單");

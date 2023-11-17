@@ -57,7 +57,7 @@ document
     const token = localStorage.getItem("token");
 
     if (!token) {
-      window.location.href = "/login"; // 假設 '/login' 是您的登錄頁面路徑
+      window.location.href = "/";
       return;
     }
 
