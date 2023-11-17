@@ -195,26 +195,27 @@ function displayResults(allResultsVolume, intervalsData) {
 // 檢查訂閱狀態
 async function checkSubscriptionStatus(currentNotificationMethod) {
   const token = localStorage.getItem("token");
+  const queryParams = new URLSearchParams({
+    notificationType: currentNotificationMethod,
+  }).toString();
+
   try {
-    const response = await fetch("/api/subscription/check", {
-      method: "POST",
+    const response = await fetch(`/api/subscription?${queryParams}`, {
+      method: "GET",
       headers: {
         "Content-Type": "application/json",
         Authorization: token,
       },
-      body: JSON.stringify({
-        notificationType: currentNotificationMethod,
-      }),
     });
 
     if (!response.ok) {
-      throw new Error("无法获取通知状态");
+      throw new Error("無法獲取通知狀態");
     }
 
     const data = await response.json();
     updateToggleButtonText(data.isEnabled, currentNotificationMethod);
   } catch (error) {
-    console.error("检查通知状态失败：", error);
+    console.error("檢查通知狀態失敗：", error);
   }
 }
 
@@ -241,17 +242,17 @@ function updateToggleButtonText(isEnabled, currentNotificationMethod) {
 //切換訂閱狀態
 async function toggleNotification(currentNotificationMethod) {
   const token = localStorage.getItem("token");
+  const queryParams = new URLSearchParams({
+    notificationType: currentNotificationMethod,
+  }).toString();
 
   try {
-    const response = await fetch("/api/subscription/toggle", {
-      method: "POST",
+    const response = await fetch(`/api/subscription?${queryParams}`, {
+      method: "PATCH",
       headers: {
         "Content-Type": "application/json",
         Authorization: token,
       },
-      body: JSON.stringify({
-        notificationType: currentNotificationMethod,
-      }),
     });
 
     if (!response.ok) {
@@ -272,13 +273,13 @@ async function toggleNotification(currentNotificationMethod) {
 function loadNotifications(currentNotificationMethod) {
   const token = localStorage.getItem("token");
 
-  fetch(`/api/track/load`, {
-    method: "POST",
+  fetch(`/api/track?notificationMethod=${currentNotificationMethod}`, {
+    // 使用 GET 方法和查詢參數
+    method: "GET",
     headers: {
       "Content-Type": "application/json",
       Authorization: token,
     },
-    body: JSON.stringify({ notificationMethod: currentNotificationMethod }),
   })
     .then((response) => response.json())
     .then((data) => {
@@ -339,13 +340,13 @@ function deleteNotification(notificationId, currentNotificationMethod) {
   alert("確定要刪除嗎？");
   const token = localStorage.getItem("token");
 
-  fetch(`/api/track/delete`, {
-    method: "POST",
+  fetch(`/api/track?id=${notificationId}`, {
+    // 使用 DELETE 方法和查詢參數
+    method: "DELETE",
     headers: {
       "Content-Type": "application/json",
       Authorization: token,
     },
-    body: JSON.stringify({ id: notificationId }),
   })
     .then((response) => {
       if (response.ok) {
@@ -367,16 +368,20 @@ function toggleFavorite(symbol, favoriteButton) {
   // 檢查狀態
   const isFavorite = favoriteButton.classList.contains("btn-warning");
 
-  const apiEndpoint = isFavorite ? "/api/favorite/remove" : "/api/favorite/add";
+  const apiEndpoint = "/api/favorite";
+  const method = isFavorite ? "DELETE" : "POST";
   const token = localStorage.getItem("token");
 
-  fetch(apiEndpoint, {
-    method: "POST",
+  const queryParams = new URLSearchParams({ userId, symbol }).toString();
+  const url = isFavorite ? `${apiEndpoint}?${queryParams}` : apiEndpoint;
+
+  fetch(url, {
+    method: method,
     headers: {
       "Content-Type": "application/json",
       Authorization: token,
     },
-    body: JSON.stringify({ userId, symbol }),
+    body: isFavorite ? null : JSON.stringify({ userId, symbol }),
   })
     .then((response) => {
       if (!response.ok) {
@@ -399,7 +404,7 @@ function toggleFavorite(symbol, favoriteButton) {
 function loadFavorites() {
   return new Promise((resolve, reject) => {
     const token = localStorage.getItem("token");
-    fetch("/api/favorite/list", {
+    fetch("/api/favorite", {
       method: "GET",
       headers: {
         Authorization: token,
@@ -483,13 +488,15 @@ function updateFavoritesModal() {
 
 function removeFavorite(symbol, userId) {
   const token = localStorage.getItem("token");
-  fetch("/api/favorite/remove", {
-    method: "POST",
+  const queryParams = new URLSearchParams({ userId, symbol }).toString();
+  const url = `/api/favorite?${queryParams}`;
+
+  fetch(url, {
+    method: "DELETE",
     headers: {
       "Content-Type": "application/json",
       Authorization: token,
     },
-    body: JSON.stringify({ userId, symbol }),
   })
     .then((response) => {
       if (!response.ok) {

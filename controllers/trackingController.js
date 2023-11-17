@@ -56,7 +56,7 @@ const addTracking = async (req, res) => {
 
 //取得通知項目
 const getNotificationsByMethod = async (req, res) => {
-  const { notificationMethod } = req.body; // 從請求的body中獲取通知方法
+  const { notificationMethod } = req.query;
 
   try {
     const notifications = await PriceAlert.find({
@@ -71,7 +71,7 @@ const getNotificationsByMethod = async (req, res) => {
 
 //刪除通知項目
 const deleteNotification = async (req, res) => {
-  const { id } = req.body;
+  const { id } = req.query; // 從查詢參數中獲取通知的 ID
   try {
     const notification = await PriceAlert.findById(id);
     if (!notification) {
