@@ -48,6 +48,11 @@ document
     const targetPrice = document.getElementById("targetPrice-line").value;
     const token = localStorage.getItem("token");
 
+    if (!token) {
+      window.location.href = "/login"; // 假設 '/login' 是您的登錄頁面路徑
+      return;
+    }
+
     // 使用先前選擇的通知方式
     const notificationMethod = currentNotificationMethod;
 

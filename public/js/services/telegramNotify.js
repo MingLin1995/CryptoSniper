@@ -32,6 +32,10 @@ document
     const notificationMethod = currentNotificationMethod;
 
     const token = localStorage.getItem("token");
+    if (!token) {
+      window.location.href = "/login"; // 假設 '/login' 是您的登錄頁面路徑
+      return;
+    }
     fetch("/api/track", {
       method: "POST",
       headers: {
