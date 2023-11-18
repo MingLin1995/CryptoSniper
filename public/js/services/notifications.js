@@ -89,12 +89,16 @@ document
     })
       .then((response) => {
         if (!response.ok) {
-          const errorResponse = response.json();
-          if (errorResponse.error === "jwt expired") {
-            window.location.href = "/";
-            return;
-          }
-          throw new Error("無法獲取訂閱狀態");
+          response.json().then((errorResponse) => {
+            console.log(errorResponse);
+            if (errorResponse.error === "jwt expired") {
+              window.location.href = "/";
+              return;
+            }
+            throw new Error("無法獲取訂閱狀態");
+          });
+        } else {
+          return response.json();
         }
       })
       .then((data) => {
