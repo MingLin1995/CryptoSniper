@@ -288,13 +288,17 @@ function loadNotifications(currentNotificationMethod) {
   })
     .then((response) => {
       if (!response.ok) {
-        if (response.status === 401) {
-          window.location.href = "/";
-          return;
-        }
-        throw new Error("無法獲取通知");
+        response.json().then((errorResponse) => {
+          console.log(errorResponse);
+          if (errorResponse.error === "jwt expired") {
+            window.location.href = "/";
+            return;
+          }
+          throw new Error("無法獲取訂閱狀態");
+        });
+      } else {
+        return response.json();
       }
-      return response.json();
     })
     .then((data) => {
       const notificationHeader = document.getElementById(
@@ -369,13 +373,17 @@ function deleteNotification(notificationId, currentNotificationMethod) {
   })
     .then((response) => {
       if (!response.ok) {
-        if (response.status === 401) {
-          window.location.href = "/";
-          return;
-        }
-        throw new Error("無法獲取通知");
+        response.json().then((errorResponse) => {
+          console.log(errorResponse);
+          if (errorResponse.error === "jwt expired") {
+            window.location.href = "/";
+            return;
+          }
+          throw new Error("無法獲取訂閱狀態");
+        });
+      } else {
+        return response.json();
       }
-      return response.json();
     })
     .then((data) => {
       if (data.ok) {
@@ -419,16 +427,20 @@ function toggleFavorite(symbol, favoriteButton) {
   })
     .then((response) => {
       if (!response.ok) {
-        if (response.status === 401) {
-          window.location.href = "/";
-          return;
-        }
-        throw new Error("無法更新追蹤清單");
+        response.json().then((errorResponse) => {
+          console.log(errorResponse);
+          if (errorResponse.error === "jwt expired") {
+            window.location.href = "/";
+            return;
+          }
+          throw new Error("無法獲取訂閱狀態");
+        });
+      } else {
+        // 切换按鈕狀態
+        favoriteButton.classList.toggle("btn-warning");
+        favoriteButton.classList.toggle("btn-outline-warning");
+        return response.json();
       }
-      // 切换按鈕狀態
-      favoriteButton.classList.toggle("btn-warning");
-      favoriteButton.classList.toggle("btn-outline-warning");
-      return response.json();
     })
     .then((data) => {
       //console.log("追蹤清單已更新", data);
@@ -544,13 +556,17 @@ function removeFavorite(symbol, userId) {
   })
     .then((response) => {
       if (!response.ok) {
-        if (response.status === 401) {
-          window.location.href = "/";
-          return;
-        }
-        throw new Error("無法獲取追蹤清單");
+        response.json().then((errorResponse) => {
+          console.log(errorResponse);
+          if (errorResponse.error === "jwt expired") {
+            window.location.href = "/";
+            return;
+          }
+          throw new Error("無法獲取訂閱狀態");
+        });
+      } else {
+        return response.json();
       }
-      return response.json();
     })
     .then((data) => {
       updateFavoritesModal(); // 重新載入列表
