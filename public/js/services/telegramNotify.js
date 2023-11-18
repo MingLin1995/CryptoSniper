@@ -32,6 +32,10 @@ document
     const notificationMethod = currentNotificationMethod;
 
     const token = localStorage.getItem("token");
+    if (!token) {
+      window.location.href = "/";
+      return;
+    }
     fetch("/api/track", {
       method: "POST",
       headers: {
@@ -76,7 +80,7 @@ document
 function updateUserTelegramId(telegramId) {
   // 發送請求更新用戶的 Telegram ID
   fetch("/api/user/updateTelegramId", {
-    method: "POST",
+    method: "PATCH",
     headers: {
       "Content-Type": "application/json",
       Authorization: localStorage.getItem("token"),

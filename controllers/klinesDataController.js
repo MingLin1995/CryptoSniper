@@ -3,7 +3,8 @@
 const loadKlinesData = require("../models/loadKlinesData");
 
 async function handleLoadKlinesDataRequest(req, res) {
-  const intervalData = req.body;
+  const intervalData = JSON.parse(req.query.intervals);
+
   try {
     const allKlinesData = await loadKlinesData.getKlinesData(intervalData);
     res.status(200).json(allKlinesData);

@@ -9,13 +9,13 @@
 
 /* 表頭固定寬度 */
 #results-table th:nth-child(1) {
-  width: 10%;
+  width: 20%;
 }
 #results-table th:nth-child(2) {
-  width: 45%;
+  width: 40%;
 }
 #results-table th:nth-child(3) {
-  width: 45%;
+  width: 40%;
 }
 
 /* 深色模式文字亮色 */

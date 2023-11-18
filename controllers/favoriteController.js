@@ -19,7 +19,8 @@ const favoriteAdd = async (req, res) => {
 
 // 移除追蹤清單
 const favoriteRemove = async (req, res) => {
-  const { userId, symbol } = req.body;
+  const userId = req.user._id; // 可能直接從認證信息中獲取 userID
+  const { symbol } = req.query; // 從查詢參數中獲取 symbol
 
   try {
     // 从用户的 favorites 数组移除指定的标的

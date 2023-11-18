@@ -4,6 +4,6 @@ const express = require("express");
 const router = express.Router();
 const klinesDataController = require("../controllers/klinesDataController");
 
-router.post("/", klinesDataController.handleLoadKlinesDataRequest);
+router.get("/", klinesDataController.handleLoadKlinesDataRequest);
 
 module.exports = router;
