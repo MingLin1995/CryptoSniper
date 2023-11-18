@@ -273,6 +273,11 @@ async function toggleNotification(currentNotificationMethod) {
 function loadNotifications(currentNotificationMethod) {
   const token = localStorage.getItem("token");
 
+  if (!token) {
+    window.location.href = "/";
+    return;
+  }
+
   fetch(`/api/track?notificationMethod=${currentNotificationMethod}`, {
     // 使用 GET 方法和查詢參數
     method: "GET",
@@ -281,7 +286,20 @@ function loadNotifications(currentNotificationMethod) {
       Authorization: token,
     },
   })
-    .then((response) => response.json())
+    .then((response) => {
+      if (!response.ok) {
+        response.json().then((errorResponse) => {
+          console.log(errorResponse);
+          if (errorResponse.error === "jwt expired") {
+            window.location.href = "/";
+            return;
+          }
+          throw new Error("無法獲取訂閱狀態");
+        });
+      } else {
+        return response.json();
+      }
+    })
     .then((data) => {
       const notificationHeader = document.getElementById(
         `notificationHeader-${currentNotificationMethod}`
@@ -340,6 +358,11 @@ function deleteNotification(notificationId, currentNotificationMethod) {
   alert("確定要刪除嗎？");
   const token = localStorage.getItem("token");
 
+  if (!token) {
+    window.location.href = "/";
+    return;
+  }
+
   fetch(`/api/track?id=${notificationId}`, {
     // 使用 DELETE 方法和查詢參數
     method: "DELETE",
@@ -349,7 +372,21 @@ function deleteNotification(notificationId, currentNotificationMethod) {
     },
   })
     .then((response) => {
-      if (response.ok) {
+      if (!response.ok) {
+        response.json().then((errorResponse) => {
+          console.log(errorResponse);
+          if (errorResponse.error === "jwt expired") {
+            window.location.href = "/";
+            return;
+          }
+          throw new Error("無法獲取訂閱狀態");
+        });
+      } else {
+        return response.json();
+      }
+    })
+    .then((data) => {
+      if (data.ok) {
         loadNotifications(currentNotificationMethod); // 重新加載通知，更新列表
       } else {
         throw new Error("刪除失敗");
@@ -364,13 +401,18 @@ function toggleFavorite(symbol, favoriteButton) {
     alert("登入後即可使用此功能");
     return;
   }
+  const token = localStorage.getItem("token");
+
+  if (!token) {
+    window.location.href = "/";
+    return;
+  }
 
   // 檢查狀態
   const isFavorite = favoriteButton.classList.contains("btn-warning");
 
   const apiEndpoint = "/api/favorite";
   const method = isFavorite ? "DELETE" : "POST";
-  const token = localStorage.getItem("token");
 
   const queryParams = new URLSearchParams({ userId, symbol }).toString();
   const url = isFavorite ? `${apiEndpoint}?${queryParams}` : apiEndpoint;
@@ -385,12 +427,20 @@ function toggleFavorite(symbol, favoriteButton) {
   })
     .then((response) => {
       if (!response.ok) {
-        throw new Error("無法更新追蹤清單");
+        response.json().then((errorResponse) => {
+          console.log(errorResponse);
+          if (errorResponse.error === "jwt expired") {
+            window.location.href = "/";
+            return;
+          }
+          throw new Error("無法獲取訂閱狀態");
+        });
+      } else {
+        // 切换按鈕狀態
+        favoriteButton.classList.toggle("btn-warning");
+        favoriteButton.classList.toggle("btn-outline-warning");
+        return response.json();
       }
-      // 切换按鈕狀態
-      favoriteButton.classList.toggle("btn-warning");
-      favoriteButton.classList.toggle("btn-outline-warning");
-      return response.json();
     })
     .then((data) => {
       //console.log("追蹤清單已更新", data);
@@ -488,6 +538,12 @@ function updateFavoritesModal() {
 
 function removeFavorite(symbol, userId) {
   const token = localStorage.getItem("token");
+
+  if (!token) {
+    window.location.href = "/";
+    return;
+  }
+
   const queryParams = new URLSearchParams({ userId, symbol }).toString();
   const url = `/api/favorite?${queryParams}`;
 
@@ -500,8 +556,19 @@ function removeFavorite(symbol, userId) {
   })
     .then((response) => {
       if (!response.ok) {
-        throw new Error("Failed to remove favorite");
+        response.json().then((errorResponse) => {
+          console.log(errorResponse);
+          if (errorResponse.error === "jwt expired") {
+            window.location.href = "/";
+            return;
+          }
+          throw new Error("無法獲取訂閱狀態");
+        });
+      } else {
+        return response.json();
       }
+    })
+    .then((data) => {
       updateFavoritesModal(); // 重新載入列表
 
       // 更新追蹤按鈕狀態

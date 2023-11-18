@@ -116,7 +116,7 @@ async function login() {
     const data = await response.json();
 
     if (response.ok) {
-      alert("登入成功！");
+      //alert("登入成功！");
       localStorage.setItem("token", data.token);
       localStorage.setItem("userId", data.userId);
 
