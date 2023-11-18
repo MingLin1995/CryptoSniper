@@ -65,7 +65,7 @@ document
       })
       .then((data) => {
         //console.log("Success:", data);
-        alert("到價通知設定成功！");
+        //alert("到價通知設定成功！");
 
         // 更新用戶的 Telegram ID
         updateUserTelegramId(telegramId);

@@ -150,7 +150,7 @@ async function logout() {
       localStorage.removeItem("token");
       localStorage.removeItem("telegramId");
       localStorage.removeItem("userId");
-      alert("登出成功！");
+      //alert("登出成功！");
       checkLoginStatus();
       window.location.href = "/";
     } else {

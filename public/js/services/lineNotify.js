@@ -84,7 +84,7 @@ document
       })
       .then((data) => {
         //console.log(data);
-        alert("到價通知設定成功！");
+        //alert("到價通知設定成功！");
         loadNotifications(currentNotificationMethod);
       })
       .catch((error) => {

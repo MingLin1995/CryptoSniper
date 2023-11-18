@@ -355,7 +355,6 @@ function loadNotifications(currentNotificationMethod) {
 
 //刪除通知
 function deleteNotification(notificationId, currentNotificationMethod) {
-  alert("確定要刪除嗎？");
   const token = localStorage.getItem("token");
 
   if (!token) {
@@ -386,12 +385,13 @@ function deleteNotification(notificationId, currentNotificationMethod) {
       }
     })
     .then((data) => {
-      if (data.ok) {
+      if (data.message === "刪除成功") {
         loadNotifications(currentNotificationMethod); // 重新加載通知，更新列表
       } else {
         throw new Error("刪除失敗");
       }
     })
+
     .catch((error) => console.error("Error:", error));
 }
 
