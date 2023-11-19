@@ -668,19 +668,24 @@
               </div>
             </div>
           </div>
-          <button type="submit" class="btn btn-outline-primary mr-2">
-            開始篩選
-          </button>
 
-          <button
-            type="button"
-            class="btn btn-outline-warning"
-            data-toggle="modal"
-            data-target="#optionsModal"
-            id="options"
-          >
-            自訂策略
-          </button>
+          <div class="d-flex align-items-center justify-content-start">
+            <button type="submit" class="btn btn-outline-primary mr-2">
+              開始篩選
+            </button>
+
+            <!-- 自訂策略 -->
+            <button
+              type="button"
+              class="btn btn-outline-warning hidden-before-login"
+              data-toggle="modal"
+              data-target="#optionsModal"
+              id="options"
+            >
+              自訂策略
+            </button>
+          </div>
+
           <div
             class="modal fade"
             id="optionsModal"
