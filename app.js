@@ -13,6 +13,7 @@ const subscriptionRoutes = require("./routes/subscriptionRoutes");
 const { trackPrices } = require("./services/priceAlertService.js");
 const lineNotifyRoutes = require("./routes/lineNotifyRoutes");
 const favoriteRoutes = require("./routes/favoriteRoutes");
+const strategyRoutes = require("./routes/strategyRoutes");
 
 const app = express();
 connectDB();
@@ -31,6 +32,7 @@ app.use("/api/user", userRoutes);
 app.use("/api/track", trackingRoutes);
 app.use("/api/subscription", subscriptionRoutes);
 app.use("/api/favorite", favoriteRoutes);
+app.use("/api/strategy", strategyRoutes);
 
 //建立Line通知
 app.use("/line-notify-callback", lineNotifyRoutes);
