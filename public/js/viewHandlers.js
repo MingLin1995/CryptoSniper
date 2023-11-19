@@ -395,6 +395,7 @@ function deleteNotification(notificationId, currentNotificationMethod) {
     .catch((error) => console.error("Error:", error));
 }
 
+//切換追蹤按鈕
 function toggleFavorite(symbol, favoriteButton) {
   // 檢查是否有用戶ID，如果没有，返回首頁
   if (!userId) {
@@ -536,6 +537,7 @@ function updateFavoritesModal() {
     });
 }
 
+//移除追蹤
 function removeFavorite(symbol, userId) {
   const token = localStorage.getItem("token");
 
