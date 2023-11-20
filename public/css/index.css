@@ -154,5 +154,11 @@ body.night-mode #symbol-column:hover {
 }
 
 .modal-lg {
-  max-width: 95% !important;
+  max-width: 70% !important;
+}
+
+@media (max-width: 580px) {
+  .modal-lg {
+    max-width: 100% !important;
+  }
 }
