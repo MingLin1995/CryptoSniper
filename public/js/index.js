@@ -91,3 +91,11 @@ document.addEventListener("DOMContentLoaded", () => {
   const favoritesButton = document.getElementById("favorites");
   favoritesButton.addEventListener("click", updateFavoritesModal);
 });
+
+document.addEventListener("DOMContentLoaded", function () {
+  var tutorialModal = new bootstrap.Modal(
+    document.getElementById("tutorialModal"),
+    {}
+  );
+  tutorialModal.show();
+});
