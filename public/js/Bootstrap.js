@@ -105,10 +105,13 @@ function handleDragOver(e) {
 function handleDrop(e) {
   e.stopPropagation();
   if (draggedItem !== this) {
-    draggedItem.innerHTML = this.innerHTML;
-    this.innerHTML = e.dataTransfer.getData("text/html");
+    // 保存被拖動元素的引用
+    let tempDraggedItem = draggedItem;
+
+    // 交换元素
+    this.parentNode.insertBefore(draggedItem, this);
+    tempDraggedItem.parentNode.insertBefore(this, tempDraggedItem);
   }
-  return false;
 }
 
 // 拖動結束

@@ -3,6 +3,23 @@
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt"); //用來密碼加密
 
+// 定義策略的 Schema
+const StrategySchema = new mongoose.Schema({
+  name: { type: String, required: true },
+  conditions: [
+    {
+      time_interval: { type: String, required: true },
+      param_1: { type: Number, required: false },
+      param_2: { type: Number, required: false },
+      param_3: { type: Number, required: false },
+      param_4: { type: Number, required: false },
+      comparison_operator_1: { type: String, required: false },
+      comparison_operator_2: { type: String, required: false },
+      logical_operator: { type: String, required: false },
+    },
+  ],
+});
+
 const UserSchema = new mongoose.Schema({
   name: { type: String, required: true },
   email: { type: String, required: true, unique: true },
@@ -28,6 +45,7 @@ const UserSchema = new mongoose.Schema({
     },
     enabled: { type: Boolean, default: true },
   },
+  strategies: [StrategySchema], // 將策略 Schema 加入用戶 Schema
 });
 
 // 在用戶數據被儲存到資料庫之前進行預處理
