@@ -99,10 +99,3 @@ document.addEventListener("DOMContentLoaded", function () {
   );
   tutorialModal.show();
 });
-
-document.querySelectorAll(".carousel-item img").forEach((img) => {
-  img.addEventListener("click", function () {
-    var src = this.getAttribute("src");
-    // 這裡可以添加代碼來以全螢幕模式顯示圖片
-  });
-});
