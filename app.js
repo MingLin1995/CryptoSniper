@@ -1,32 +1,50 @@
 // app.js
 
-// 引入所需的模組
 const express = require("express");
-const app = express();
 const bodyParser = require("body-parser");
 const klinesDataRoutes = require("./routes/klinesDataRoutes");
 const volumeDataRoutes = require("./routes/volumeDataRoutes");
 const connectDB = require("./models/mongoDB");
 const userRoutes = require("./routes/userRoutes");
+const trackingRoutes = require("./routes/trackingRoutes");
+const telegramBotRoutes = require("./routes/telegramBotRoutes");
+const updateSymbolData = require("./services/updateSymbolData");
+const subscriptionRoutes = require("./routes/subscriptionRoutes");
+const { trackPrices } = require("./services/priceAlertService.js");
+const lineNotifyRoutes = require("./routes/lineNotifyRoutes");
+const favoriteRoutes = require("./routes/favoriteRoutes");
+const strategyRoutes = require("./routes/strategyRoutes");
 
-// Connect to MongoDB
+const app = express();
 connectDB();
 
-// 使用body-parser中間件來解析POST請求的JSON格式數據
 app.use(bodyParser.json());
 
-// 將public資料夾設定為靜態資料夾，讓public資料夾下的文件可以直接通過URL訪問(可直接使用/css/index.css")
 app.use(express.static("public"));
 
-// 當用戶訪問網站根目錄('/')時，伺服器返回public目錄下的index.html文件
 app.get("/", (req, res) => {
   res.sendFile(__dirname + "/views/index.html");
 });
 
-// 設定路由
 app.use("/api/loadKlinesData", klinesDataRoutes);
 app.use("/api/loadVolumeData", volumeDataRoutes);
-app.use("/api/users", userRoutes);
+app.use("/api/user", userRoutes);
+app.use("/api/track", trackingRoutes);
+app.use("/api/subscription", subscriptionRoutes);
+app.use("/api/favorite", favoriteRoutes);
+app.use("/api/strategy", strategyRoutes);
+
+//建立Line通知
+app.use("/line-notify-callback", lineNotifyRoutes);
+
+//webhooks
+app.use("/telegram-updates", telegramBotRoutes);
+
+//更新redis資料庫
+updateSymbolData.initialUpdate();
+
+//建立webSocket連線
+trackPrices();
 
 app.listen(8000, () => {
   console.log(`
