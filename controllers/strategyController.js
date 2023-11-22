@@ -7,6 +7,10 @@ const saveStrategy = async (req, res) => {
   const userId = req.user._id;
   const strategy = req.body;
 
+  if (!strategy) {
+    return res.status(400).send({ success: false, message: "缺少策略資料" });
+  }
+
   try {
     const updatedUser = await User.findByIdAndUpdate(
       userId,
@@ -14,15 +18,14 @@ const saveStrategy = async (req, res) => {
       { new: true, runValidators: true }
     );
 
-    // 檢查是否成功更新
     if (!updatedUser) {
-      return res.status(404).send({ success: false, message: "用戶未找到" });
+      return res.status(404).send({ success: false, message: "找不到用戶" });
     }
 
-    res.send({ success: true });
+    res.status(201).send({ success: true, message: "策略儲存成功" }); // 使用 201 Created
   } catch (err) {
     console.error(err);
-    res.status(500).send({ success: false, message: "內部伺服器錯誤" });
+    res.status(500).send({ success: false, message: "伺服器錯誤" });
   }
 };
 
@@ -33,13 +36,13 @@ const getStrategies = async (req, res) => {
   try {
     const user = await User.findById(userId).select("strategies");
     if (!user) {
-      return res.status(404).send({ success: false, message: "用戶未找到" });
+      return res.status(404).send({ success: false, message: "找不到用戶" });
     }
 
     res.send({ success: true, strategies: user.strategies });
   } catch (err) {
     console.error(err);
-    res.status(500).send({ success: false, message: "內部伺服器錯誤" });
+    res.status(500).send({ success: false, message: "伺服器錯誤" });
   }
 };
 
@@ -55,7 +58,7 @@ const deleteStrategy = async (req, res) => {
     res.send({ success: true, message: "策略刪除成功" });
   } catch (err) {
     console.error(err);
-    res.status(500).send({ success: false, message: "內部伺服器錯誤" });
+    res.status(500).send({ success: false, message: "伺服器錯誤" });
   }
 };
 

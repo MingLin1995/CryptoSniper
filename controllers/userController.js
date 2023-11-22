@@ -68,27 +68,12 @@ const logout = async (req, res) => {
     //根據userID找資料
     await User.findByIdAndUpdate(
       req.user._id,
-      { $unset: { token: 1 } }, //移除toker
+      { $unset: { token: 1 } }, //移除token
       { new: true } // 更新最新的用戶資料
     );
     res.status(200).json({ message: "登出成功" });
   } catch (error) {
     res.status(500).json({ error: error.message });
-  }
-};
-
-const updateTelegramId = async (req, res) => {
-  const userId = req.user.id; // 取得當前用戶的 ID
-  const { telegramId } = req.body;
-
-  try {
-    await User.findByIdAndUpdate(userId, {
-      "telegramSubscription.telegramId": telegramId,
-    });
-    res.json({ message: "Telegram ID 更新成功" });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: "Telegram ID 更新失敗" });
   }
 };
 
@@ -100,6 +85,5 @@ module.exports = {
   register,
   login,
   logout,
-  updateTelegramId,
   verifyToken,
 };

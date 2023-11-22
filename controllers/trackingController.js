@@ -11,6 +11,11 @@ const User = require("../models/User");
 const addTracking = async (req, res) => {
   const { symbol, targetPrice, notificationMethod, telegramId } = req.body;
   const userId = req.user._id;
+
+  if (!symbol || !targetPrice || !notificationMethod) {
+    return res.status(400).json({ error: "缺少必要的參數" });
+  }
+
   try {
     let alertData = {
       user: userId,
@@ -48,9 +53,14 @@ const addTracking = async (req, res) => {
       trackPrices();
     }
 
-    res.status(201).json({ message: "追蹤成功設置！", priceAlert });
+    if (priceAlert) {
+      trackPrices();
+      return res.status(200).json({ message: "追蹤成功設置！", priceAlert });
+    } else {
+      return res.status(404).json({ error: "無法設置追蹤" });
+    }
   } catch (error) {
-    res.status(400).json({ error: "無法設置追蹤", details: error.message });
+    res.status(500).json({ error: "伺服器錯誤", details: error.message });
   }
 };
 
