@@ -23,6 +23,8 @@
     "node-fetch": "^3.3.2",
     "node-notifier": "^10.0.1",
     "node-schedule": "^2.1.1",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.0",
     "web-push": "^3.6.6",
     "ws": "^8.14.2"
   },

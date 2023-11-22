@@ -25,7 +25,7 @@ async function checkLoginStatus() {
   if (token) {
     // 驗證token是否有效
     try {
-      const response = await fetch("/api/user/verifyToken", {
+      const response = await fetch("/api/user", {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -107,7 +107,7 @@ async function login() {
   const password = document.getElementById("loginPassword").value;
 
   try {
-    const response = await fetch("/api/user/login", {
+    const response = await fetch("/api/user", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email, password }),
@@ -138,7 +138,7 @@ async function login() {
 
 async function logout() {
   try {
-    const response = await fetch("/api/user/logout", {
+    const response = await fetch("/api/user", {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
