@@ -17,9 +17,13 @@
 
 [API doc](https://crypto-sniper.minglin.vip/api-docs/#/)
 
-## 系統架構圖
+## 系統架構
 
 ![系統架構圖](public/images/架構圖.jpeg)
+
+## 資料庫架構
+
+![系統架構圖](public/images/資料庫.jpeg)
 
 ## 聯絡我
 
