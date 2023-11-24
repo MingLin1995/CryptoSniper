@@ -1,8 +1,8 @@
 // controllers/webSubscriptionController.js
 
-const User = require("../models/User");
+const User = require("../models/userSchema");
+const WebSubscription = require("../models/webSubscriptionSchema");
 
-// Web通知資料儲存
 async function handleSubscription(req, res) {
   try {
     const userId = req.user._id;
@@ -17,10 +17,16 @@ async function handleSubscription(req, res) {
       return res.status(404).send("找不到用戶");
     }
 
-    user.webSubscription = subscriptionData;
-    await user.save();
+    const updatedSubscription = await WebSubscription.findOneAndUpdate(
+      { userId },
+      { ...subscriptionData, userId },
+      { upsert: true, new: true }
+    );
 
-    res.status(200).send("Web通知資料儲存成功");
+    res.status(200).send({
+      message: "Web通知資料儲存成功",
+      subscription: updatedSubscription,
+    });
   } catch (error) {
     console.error("Web通知資料儲存失敗:", error);
     res.status(500).send("伺服器錯誤");

@@ -3,21 +3,19 @@
 const axios = require("axios");
 require("dotenv").config();
 const BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN;
-const User = require("../models/User");
+const TelegramSubscription = require("../models/telegramSubscriptionSchema");
 
-async function sendTelegramNotification(messageText, telegramId, user = null) {
+async function sendTelegramNotification(messageText, telegramId) {
   const url = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`;
   try {
-    if (user) {
-      // 從資料庫獲取最新的用戶資訊
-      const updatedUser = await User.findById(user._id);
-      if (
-        !updatedUser ||
-        !updatedUser.telegramSubscription.notificationsEnabled
-      ) {
-        //console.log("User not found or notifications are disabled");
-        return;
-      }
+    // 從 TelegramSubscription 模型中獲取用戶的訂閱資訊
+    const telegramSubscription = await TelegramSubscription.findOne({
+      telegramId,
+    });
+
+    if (!telegramSubscription || !telegramSubscription.notificationsEnabled) {
+      //console.log("Telegram subscription not found or notifications are disabled");
+      return;
     }
 
     // 發送通知
