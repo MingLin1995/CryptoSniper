@@ -1,21 +1,21 @@
 // services/priceAlertService.js
 
 const WebSocket = require("ws");
-const PriceAlert = require("../models/PriceAlert");
+const PriceAlert = require("../models/priceAlertSchema");
 const sendNotification = require("./notificationService");
 
 // 儲存正在執行的 WebSocket 連接
 const activeWebSockets = new Map();
 
 const trackPrices = async () => {
-  const alerts = await PriceAlert.find({}).populate("user");
+  const alerts = await PriceAlert.find({}).populate("userId");
 
   if (alerts.length === 0) {
     //console.log("沒有找到任何目標價格的設定。");
     return;
   }
   alerts.forEach((alert) => {
-    const { _id, symbol, targetPrice, notificationMethod, user } = alert;
+    const { _id, symbol, targetPrice, notificationMethod, userId } = alert;
 
     // 檢查是否已有執行中的 WebSocket 連接
     if (activeWebSockets.has(_id.toString())) {
@@ -55,7 +55,7 @@ const trackPrices = async () => {
         // 判斷是否已經通知過，以及是否已經超過防抖時間
         if (!hasNotified && now - lastNotificationTime > debounceTime) {
           // 發送通知
-          sendNotification(symbol, targetPrice, notificationMethod, user);
+          sendNotification(symbol, targetPrice, notificationMethod, userId);
           hasNotified = true; // 更新已發送通知的狀態
           lastNotificationTime = now; // 更新發送通知的時間戳
 
