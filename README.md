@@ -23,7 +23,7 @@
 
 ## 資料庫架構
 
-![系統架構圖](public/images/資料庫.jpeg)
+![系統架構圖](public/images/資料庫.jpg)
 
 ## 聯絡我
 
