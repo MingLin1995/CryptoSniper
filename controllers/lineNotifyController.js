@@ -43,11 +43,11 @@ async function handleLineNotifyCallback(req, res) {
     );
 
     if (!lineSubscription) {
-      return res.status(500).json({ error: "無法更新 LINE 訂閱訊息。" });
+      return res.status(404).json({ error: "無法更新 LINE 訂閱訊息。" }); // 用戶不存在的情況
     }
 
     // 導回首頁
-    res.redirect("https://crypto-sniper.minglin.vip/");
+    res.redirect("https://crypto-sniper.minglin.vip/"); // 302 重定向
   } catch (error) {
     console.error("Error getting access token:", error);
     res.status(500).json({ error: "獲取 Access Token 時出錯。" });

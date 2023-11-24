@@ -27,7 +27,7 @@ const getStrategies = async (req, res) => {
 
   try {
     const strategies = await Strategy.find({ userId });
-    res.send({ success: true, strategies });
+    res.status(200).send({ success: true, strategies });
   } catch (err) {
     console.error(err);
     res.status(500).send({ success: false, message: "伺服器錯誤" });
@@ -42,7 +42,7 @@ const deleteStrategy = async (req, res) => {
     if (!result) {
       return res.status(404).send({ success: false, message: "找不到策略" });
     }
-    res.send({ success: true, message: "策略刪除成功" });
+    res.status(200).send({ success: true, message: "策略刪除成功" });
   } catch (err) {
     console.error(err);
     res.status(500).send({ success: false, message: "伺服器錯誤" });

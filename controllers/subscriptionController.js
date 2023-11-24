@@ -33,7 +33,7 @@ async function checkSubscription(req, res) {
       notificationType === "Web"
         ? subscription.enabled
         : subscription.notificationsEnabled;
-    res.json({ isEnabled });
+    res.status(200).json({ isEnabled });
   } catch (error) {
     console.error("檢查訂閱狀態失敗：", error);
     res.status(500).json({ message: "檢查訂閱狀態失敗" });
@@ -73,7 +73,7 @@ async function toggleSubscription(req, res) {
     }
     await subscription.save();
 
-    res.json({
+    rres.status(200).res.json({
       isEnabled:
         notificationType === "Web"
           ? subscription.enabled

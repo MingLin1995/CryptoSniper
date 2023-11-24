@@ -44,8 +44,10 @@ const router = express.Router();
  *               properties:
  *                 message:
  *                   type: string
+ *       404:
+ *         description: 無法更新 Telegram ID
  *       500:
- *         description: 伺服器錯誤或 Telegram ID 更新失敗
+ *         description: 伺服器錯誤 或 Telegram ID 更新失敗
  */
 
 router.patch("/", verifyToken, userController.updateTelegramId);
