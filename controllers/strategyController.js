@@ -1,27 +1,19 @@
 // CryptSniper/controllers/strategyController.js
 
-const User = require("../models/User");
+const Strategy = require("../models/strategySchema");
 
 // 儲存策略
 const saveStrategy = async (req, res) => {
   const userId = req.user._id;
-  const strategy = req.body;
+  const strategyData = { ...req.body, userId };
 
-  if (!strategy) {
+  if (!strategyData.name || !strategyData.conditions) {
     return res.status(400).send({ success: false, message: "缺少策略資料" });
   }
 
   try {
-    const updatedUser = await User.findByIdAndUpdate(
-      userId,
-      { $push: { strategies: strategy } },
-      { new: true, runValidators: true }
-    );
-
-    if (!updatedUser) {
-      return res.status(404).send({ success: false, message: "找不到用戶" });
-    }
-
+    const strategy = new Strategy(strategyData);
+    await strategy.save();
     res.status(201).send({ success: true, message: "策略儲存成功" }); // 使用 201 Created
   } catch (err) {
     console.error(err);
@@ -34,28 +26,23 @@ const getStrategies = async (req, res) => {
   const userId = req.user._id;
 
   try {
-    const user = await User.findById(userId).select("strategies");
-    if (!user) {
-      return res.status(404).send({ success: false, message: "找不到用戶" });
-    }
-
-    res.send({ success: true, strategies: user.strategies });
+    const strategies = await Strategy.find({ userId });
+    res.status(200).send({ success: true, strategies });
   } catch (err) {
     console.error(err);
     res.status(500).send({ success: false, message: "伺服器錯誤" });
   }
 };
 
-// 删除策略
+// 刪除策略
 const deleteStrategy = async (req, res) => {
-  const userId = req.user._id;
   const strategyId = req.query.strategyId;
   try {
-    await User.findByIdAndUpdate(userId, {
-      $pull: { strategies: { _id: strategyId } },
-    });
-
-    res.send({ success: true, message: "策略刪除成功" });
+    const result = await Strategy.findByIdAndDelete(strategyId);
+    if (!result) {
+      return res.status(404).send({ success: false, message: "找不到策略" });
+    }
+    res.status(200).send({ success: true, message: "策略刪除成功" });
   } catch (err) {
     console.error(err);
     res.status(500).send({ success: false, message: "伺服器錯誤" });

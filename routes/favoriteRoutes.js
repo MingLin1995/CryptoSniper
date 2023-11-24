@@ -73,6 +73,8 @@ router.post("/", verifyToken, favoriteController.favoriteAdd);
  *         description: 移除成功
  *       400:
  *         description: 缺少參數
+ *       403:
+ *         description: 用戶未設置追蹤清單
  *       500:
  *         description: 伺服器錯誤
  */
@@ -91,7 +93,7 @@ router.delete("/", verifyToken, favoriteController.favoriteRemove);
  *       200:
  *         description: 獲取追蹤清單成功
  *       404:
- *         description: 找不到用戶
+ *         description: 用戶未設置追蹤清單
  *       500:
  *         description: 伺服器錯誤
  */

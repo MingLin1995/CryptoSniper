@@ -1,11 +1,14 @@
 // controllers/trackingController.js
 
-const PriceAlert = require("../models/PriceAlert");
+const PriceAlert = require("../models/priceAlertSchema.js");
 const {
   trackPrices,
   activeWebSockets,
 } = require("../services/priceAlertService.js");
-const User = require("../models/User");
+
+const TelegramSubscription = require("../models/telegramSubscriptionSchema");
+const LineSubscription = require("../models/lineSubscriptionSchema");
+const WebSubscription = require("../models/webSubscriptionSchema");
 
 //建立通知
 const addTracking = async (req, res) => {
@@ -18,31 +21,34 @@ const addTracking = async (req, res) => {
 
   try {
     let alertData = {
-      user: userId,
+      userId,
       symbol,
       targetPrice,
       notificationMethod,
     };
 
     if (notificationMethod === "Telegram") {
-      const user = await User.findById(userId);
-      if (
-        user &&
-        user.telegramSubscription &&
-        user.telegramSubscription.notificationsEnabled
-      ) {
-        alertData.telegramId = user.telegramSubscription.telegramId;
+      const telegramSubscription = await TelegramSubscription.findOne({
+        userId,
+      });
+      if (telegramSubscription && telegramSubscription.notificationsEnabled) {
+        alertData.telegramId = telegramSubscription.telegramId;
       } else {
-        throw new Error("用戶停用通知");
+        throw new Error("用戶停用 Telegram 通知");
       }
-    }
-
-    if (notificationMethod === "Line") {
-      const user = await User.findById(userId);
-      if (user && user.lineSubscription && user.lineSubscription.accessToken) {
-        alertData.lineAccessToken = user.lineSubscription.accessToken;
+    } else if (notificationMethod === "Line") {
+      const lineSubscription = await LineSubscription.findOne({ userId });
+      if (lineSubscription && lineSubscription.accessToken) {
+        alertData.lineAccessToken = lineSubscription.accessToken;
       } else {
         throw new Error("找不到用戶的 Line Access Token");
+      }
+    } else if (notificationMethod === "Web") {
+      const webSubscription = await WebSubscription.findOne({ userId });
+      if (webSubscription && webSubscription.notificationsEnabled) {
+        alertData.webSubscription = webSubscription;
+      } else {
+        throw new Error("Web 通知未啟用");
       }
     }
 
@@ -70,10 +76,10 @@ const getNotificationsByMethod = async (req, res) => {
 
   try {
     const notifications = await PriceAlert.find({
-      user: req.user._id,
+      userId: req.user._id,
       notificationMethod,
     });
-    res.json(notifications);
+    res.status(200).json(notifications);
   } catch (error) {
     res.status(500).json({ message: "無法獲取通知", details: error.message });
   }
@@ -87,8 +93,8 @@ const deleteNotification = async (req, res) => {
     if (!notification) {
       return res.status(404).send({ message: "沒有任何通知" });
     }
-    if (notification.user.toString() !== req.user._id.toString()) {
-      return res.status(403).send({ message: "無權刪除此通知" });
+    if (notification.userId.toString() !== req.user._id.toString()) {
+      return res.status(403).send({ message: "沒有任何通知" });
     }
 
     // 關閉對應的 websocket
