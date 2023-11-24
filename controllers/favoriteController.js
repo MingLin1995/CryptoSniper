@@ -50,7 +50,7 @@ const favoriteList = async (req, res) => {
   try {
     const favorite = await Favorite.findOne({ userId });
     if (!favorite) {
-      return res.status(404).send({ message: "未找到追蹤清單" });
+      return res.status(404).send({ message: "用戶未設置追蹤清單" });
     }
     res.status(200).send({ favorites: favorite.symbols });
   } catch (error) {

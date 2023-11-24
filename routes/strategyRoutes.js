@@ -57,8 +57,6 @@ const verifyToken = require("../auth");
  *         description: 策略儲存成功
  *       400:
  *         description: 缺少策略資料
- *       404:
- *         description: 找不到用戶
  *       500:
  *         description: 伺服器錯誤
  */
@@ -76,8 +74,6 @@ router.post("/", verifyToken, strategyController.saveStrategy);
  *     responses:
  *       200:
  *         description: 成功取得策略清單
- *       404:
- *         description: 找不到用戶
  *       500:
  *         description: 伺服器錯誤
  */

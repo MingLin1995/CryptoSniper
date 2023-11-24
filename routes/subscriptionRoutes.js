@@ -4,7 +4,6 @@ const express = require("express");
 const router = express.Router();
 const verifyToken = require("../auth");
 const {
-  handleSubscription,
   checkSubscription,
   toggleSubscription,
 } = require("../controllers/subscriptionController");
@@ -38,7 +37,7 @@ const {
  *       400:
  *         description: 未知的通知類型
  *       404:
- *         description: 找不到用戶
+ *         description: 找不到訂閱信息
  *       500:
  *         description: 檢查訂閱狀態失敗
  */
@@ -66,7 +65,7 @@ router.get("/", verifyToken, checkSubscription);
  *       400:
  *         description: 未知的通知類型
  *       404:
- *         description: 找不到用戶
+ *         description: 找不到訂閱信息
  *       500:
  *         description: 切換訂閱狀態失敗
  */

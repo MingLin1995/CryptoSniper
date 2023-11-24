@@ -139,7 +139,7 @@ router.delete("/", verifyToken, userController.logout);
  *                 message:
  *                   type: string
  *       401:
- *         description: 無效的 Token 或未提供 Token
+ *         description: 無效的 Token 或 未提供 Token
  *       500:
  *         description: 伺服器錯誤
  */

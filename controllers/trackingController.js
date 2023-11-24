@@ -79,7 +79,7 @@ const getNotificationsByMethod = async (req, res) => {
       userId: req.user._id,
       notificationMethod,
     });
-    res.json(notifications);
+    res.status(200).json(notifications);
   } catch (error) {
     res.status(500).json({ message: "無法獲取通知", details: error.message });
   }
@@ -94,7 +94,7 @@ const deleteNotification = async (req, res) => {
       return res.status(404).send({ message: "沒有任何通知" });
     }
     if (notification.userId.toString() !== req.user._id.toString()) {
-      return res.status(403).send({ message: "無權刪除此通知" });
+      return res.status(403).send({ message: "沒有任何通知" });
     }
 
     // 關閉對應的 websocket
