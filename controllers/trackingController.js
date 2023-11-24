@@ -45,7 +45,7 @@ const addTracking = async (req, res) => {
       }
     } else if (notificationMethod === "Web") {
       const webSubscription = await WebSubscription.findOne({ userId });
-      if (webSubscription && webSubscription.enabled) {
+      if (webSubscription && webSubscription.notificationsEnabled) {
         alertData.webSubscription = webSubscription;
       } else {
         throw new Error("Web 通知未啟用");
