@@ -3,7 +3,7 @@
 import { createTradingViewWidget } from "./tradingViewConfig.js";
 import { formatVolume, sortResultsByVolume } from "./helpers.js";
 import { makeDraggable } from "./Bootstrap.js";
-
+import { fetchUserStrategies } from "./strategySettings.js";
 let indexObject = { currentIndex: 0 };
 let userId = localStorage.getItem("userId");
 
