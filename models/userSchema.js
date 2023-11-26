@@ -6,8 +6,9 @@ const bcrypt = require("bcrypt"); //用來密碼加密
 const userSchema = new mongoose.Schema({
   name: { type: String, required: true },
   email: { type: String, required: true, unique: true },
-  password: { type: String, required: true },
+  password: { type: String },
   token: { type: String },
+  googleId: { type: String, unique: true, sparse: true },
 });
 
 // 在用戶數據被儲存到資料庫之前進行預處理

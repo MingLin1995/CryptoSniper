@@ -3,6 +3,7 @@
 document.addEventListener("DOMContentLoaded", () => {
   checkLoginStatus();
   applyThemePreference();
+  checkForGoogleAuthToken();
 });
 
 function applyThemePreference() {
@@ -159,6 +160,26 @@ async function logout() {
     }
   } catch (error) {
     console.error("Error:", error);
+    window.location.href = "/";
+  }
+}
+
+function checkForGoogleAuthToken() {
+  const urlParams = new URLSearchParams(window.location.search);
+
+  const token = urlParams.get("token");
+  const userId = urlParams.get("userId");
+  const telegramId = urlParams.get("telegramId");
+
+  if (token) {
+    localStorage.setItem("token", token);
+    if (userId) {
+      localStorage.setItem("userId", userId);
+    }
+    if (telegramId) {
+      localStorage.setItem("telegramId", telegramId);
+    }
+    checkLoginStatus();
     window.location.href = "/";
   }
 }

@@ -17,6 +17,10 @@ const strategyRoutes = require("./routes/strategyRoutes");
 const updateTelegramIdRoutes = require("./routes/updateTelegramIdRoutes");
 const webSubscriptionRoutes = require("./routes/webSubscriptionRoutes");
 
+const passport = require("passport");
+const googleAuthRoutes = require("./routes/googleRoutes");
+require("./services/googleAuthService");
+
 const swaggerJSDoc = require("swagger-jsdoc");
 const swaggerUi = require("swagger-ui-express");
 const swaggerDefinition = require("./swaggerDef");
@@ -31,6 +35,8 @@ app.use(express.static("public"));
 app.get("/", (req, res) => {
   res.sendFile(__dirname + "/views/index.html");
 });
+
+app.use(passport.initialize());
 
 app.use("/api/loadKlinesData", klinesDataRoutes);
 app.use("/api/loadVolumeData", volumeDataRoutes);
@@ -53,6 +59,9 @@ updateSymbolData.initialUpdate();
 
 //建立webSocket連線
 trackPrices();
+
+//Google登入
+app.use("/auth/google", googleAuthRoutes);
 
 // Swagger JSDoc setup
 const options = {
