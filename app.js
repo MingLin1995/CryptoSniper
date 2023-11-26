@@ -21,6 +21,9 @@ const passport = require("passport");
 const googleAuthRoutes = require("./routes/googleRoutes");
 require("./services/googleAuthService");
 
+const facebookRoutes = require("./routes/facebookRoutes");
+require("./services/facebookAuthService.js");
+
 const swaggerJSDoc = require("swagger-jsdoc");
 const swaggerUi = require("swagger-ui-express");
 const swaggerDefinition = require("./swaggerDef");
@@ -62,6 +65,9 @@ trackPrices();
 
 //Google登入
 app.use("/auth/google", googleAuthRoutes);
+
+//FB登入
+app.use("/auth/facebook", facebookRoutes);
 
 // Swagger JSDoc setup
 const options = {

@@ -162,9 +162,3 @@ body.night-mode #symbol-column:hover {
     max-width: 100% !important;
   }
 }
-
-.btn-google {
-  display: flex; /* 啟用 Flexbox */
-  align-items: center; /* 垂直居中對齊 */
-  justify-content: center; /* 水平居中對齊 */
-}

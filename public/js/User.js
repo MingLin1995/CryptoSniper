@@ -3,7 +3,7 @@
 document.addEventListener("DOMContentLoaded", () => {
   checkLoginStatus();
   applyThemePreference();
-  checkForGoogleAuthToken();
+  checkForAuthToken();
 });
 
 function applyThemePreference() {
@@ -164,7 +164,7 @@ async function logout() {
   }
 }
 
-function checkForGoogleAuthToken() {
+function checkForAuthToken() {
   const urlParams = new URLSearchParams(window.location.search);
 
   const token = urlParams.get("token");
