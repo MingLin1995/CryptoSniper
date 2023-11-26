@@ -60,6 +60,13 @@ const login = async (req, res) => {
       return res.status(401).json({ error: "電子信箱錯誤" });
     }
 
+    // 如果用户没有密码（即通过 Google 登录创建），提示使用 Google 登录
+    if (!user.password) {
+      return res
+        .status(401)
+        .json({ error: "已設置google或FB登入，請點選該登入按鈕" });
+    }
+
     const isPasswordValid = await bcrypt.compare(password, user.password);
     if (!isPasswordValid) {
       return res.status(401).json({ error: "密碼錯誤" });
