@@ -1,3 +1,5 @@
+// CryptSniper/controllers/favoriteController.js
+
 const Favorite = require("../models/favoriteSchema");
 
 // 加入追蹤清單

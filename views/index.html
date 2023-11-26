@@ -10,6 +10,7 @@
       href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
       rel="stylesheet"
     />
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
   </head>
   <body>
     <div id="mainContainer" class="container mt-5">
@@ -87,7 +88,33 @@
                 >
                   登入
                 </button>
+                <!-- Google 登入按鈕 -->
+                <a
+                  href="/auth/google"
+                  class="btn btn-sm btn-outline-success ml-3"
+                >
+                  <img
+                    src="/images/google.png"
+                    alt="Google Logo"
+                    style="width: 24px; margin-right: 5px"
+                  />
+                  登入
+                </a>
+
+                <!-- FB 登入按鈕 -->
+                <a
+                  href="/auth/facebook"
+                  class="btn btn-sm btn-outline-success ml-3"
+                >
+                  <img
+                    src="/images/facebook.png"
+                    alt="facebook Logo"
+                    style="width: 30px; margin-right: 5px"
+                  />
+                  登入
+                </a>
               </form>
+
               <p class="mt-3">
                 還沒有帳戶?
                 <a
