@@ -29,10 +29,7 @@ async function checkSubscription(req, res) {
       return res.status(404).json({ message: "找不到訂閱信息" });
     }
 
-    const isEnabled =
-      notificationType === "Web"
-        ? subscription.enabled
-        : subscription.notificationsEnabled;
+    const isEnabled = subscription.notificationsEnabled;
     res.status(200).json({ isEnabled });
   } catch (error) {
     console.error("檢查訂閱狀態失敗：", error);
@@ -44,7 +41,6 @@ async function checkSubscription(req, res) {
 async function toggleSubscription(req, res) {
   const userId = req.user._id;
   const notificationType = req.query.notificationType;
-
   try {
     let subscription;
     switch (notificationType) {
@@ -66,18 +62,12 @@ async function toggleSubscription(req, res) {
     }
 
     // 切換訂閱狀態
-    if (notificationType === "Web") {
-      subscription.enabled = !subscription.enabled;
-    } else {
-      subscription.notificationsEnabled = !subscription.notificationsEnabled;
-    }
+    subscription.notificationsEnabled = !subscription.notificationsEnabled;
+
     await subscription.save();
 
-    rres.status(200).res.json({
-      isEnabled:
-        notificationType === "Web"
-          ? subscription.enabled
-          : subscription.notificationsEnabled,
+    res.status(200).json({
+      isEnabled: subscription.notificationsEnabled,
     });
   } catch (error) {
     console.error("切換訂閱狀態失敗", error);
