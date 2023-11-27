@@ -7,7 +7,7 @@ const googleAuthCallback = async (req, res) => {
       `/?token=${token}&userId=${user._id}&telegramId=${telegramId || ""}`
     );
   } else {
-    res.redirect("/login");
+    res.redirect("/");
   }
 };
 
