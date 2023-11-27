@@ -22,7 +22,7 @@ const klinesDataController = require("../controllers/klinesDataController");
  *       - in: query
  *         name: intervals
  *         required: true
- *         description: 要取得數據的時間週期，例如："15m", "1h", "4h", "1d" 等值。
+ *         description: 要取得數據的時間週期，例如："15m", "1h", "4h", "1d" 等值
  *         schema:
  *           type: string
  *           example: '["15m", "1h", "4h", "1d"]'
