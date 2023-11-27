@@ -23,7 +23,12 @@
 
 ## 資料庫架構
 
+### MongoDB
+
 ![MongoDB](public/images/資料庫.jpg)
+
+### Redis
+
 ![Redis](public/images/redis架構.jpg)
 
 ## 聯絡我
