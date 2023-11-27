@@ -16,7 +16,7 @@ const router = express.Router();
  *   get:
  *     tags: [第三方登入]
  *     summary: 使用 Facebook 帳號登入
- *     description: 允許使用者使用其 Facebook 帳號進行登入。
+ *     description: 允許使用者使用 Facebook 帳號進行登入
  *     responses:
  *       200:
  *         description: 成功使用 Facebook 帳號登入
@@ -36,7 +36,7 @@ router.get("/", passport.authenticate("facebook"));
  *   get:
  *     tags: [第三方登入]
  *     summary: facebook 登入回調
- *     description: 處理來自 facebook 的登入回調。
+ *     description: 處理來自 facebook 的登入回調
  *     responses:
  *       302:
  *         description: 根據身份驗證結果進行重定向

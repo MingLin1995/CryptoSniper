@@ -17,7 +17,7 @@ const klinesDataController = require("../controllers/klinesDataController");
  *   get:
  *     tags: [取得標的資料]
  *     summary: 取得K線資料
- *     description: 根據時間週期，取得K線資料。
+ *     description: 根據時間週期，取得K線資料
  *     parameters:
  *       - in: query
  *         name: intervals
