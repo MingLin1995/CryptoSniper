@@ -13,7 +13,7 @@ const webSubscriptionSchema = new mongoose.Schema({
     p256dh: String,
     auth: String,
   },
-  enabled: { type: Boolean, default: true },
+  notificationsEnabled: { type: Boolean, default: true },
 });
 
 module.exports = mongoose.model("WebSubscription", webSubscriptionSchema);

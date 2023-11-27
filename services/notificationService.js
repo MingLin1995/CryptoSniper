@@ -31,7 +31,7 @@ async function sendNotification(
       const webSubscription = await WebSubscription.findOne({
         userId,
       });
-      if (webSubscription && webSubscription.enabled) {
+      if (webSubscription && webSubscription.notificationsEnabled) {
         await sendWebPushNotification(symbol, targetPrice, userId);
       }
       break;

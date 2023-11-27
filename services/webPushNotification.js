@@ -19,7 +19,7 @@ async function sendWebPushNotification(symbol, targetPrice, userId) {
     const webSubscription = await WebSubscription.findOne({ userId });
 
     // 檢查訂閱和啟用狀態
-    if (webSubscription && webSubscription.enabled) {
+    if (webSubscription && webSubscription.notificationsEnabled) {
       const payload = JSON.stringify({
         title: `${symbol.toUpperCase()}`,
         body: `已達到目標價: ${targetPrice}`,
