@@ -182,7 +182,7 @@ async function sendSubscriptionToBackend(subscription) {
   const subscriptionData = JSON.stringify(subscription);
 
   try {
-    await fetch("/api/subscription", {
+    await fetch("/web-subscription", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

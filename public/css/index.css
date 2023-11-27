@@ -124,7 +124,7 @@ body.night-mode #symbol-column:hover {
 }
 
 .ma {
-  margin-left: 5px; /* 或者根據需要調整間距 */
+  margin-left: 5px;
 }
 
 .strategy-item {
@@ -146,4 +146,19 @@ body.night-mode #symbol-column:hover {
 
 .condition {
   margin-bottom: 5px;
+}
+
+.carousel-indicators {
+  position: absolute;
+  top: -20px;
+}
+
+.modal-lg {
+  max-width: 70% !important;
+}
+
+@media (max-width: 580px) {
+  .modal-lg {
+    max-width: 100% !important;
+  }
 }

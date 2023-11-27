@@ -3,6 +3,7 @@
 document.addEventListener("DOMContentLoaded", () => {
   checkLoginStatus();
   applyThemePreference();
+  checkForAuthToken();
 });
 
 function applyThemePreference() {
@@ -25,7 +26,7 @@ async function checkLoginStatus() {
   if (token) {
     // 驗證token是否有效
     try {
-      const response = await fetch("/api/user/verifyToken", {
+      const response = await fetch("/api/user", {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -107,7 +108,7 @@ async function login() {
   const password = document.getElementById("loginPassword").value;
 
   try {
-    const response = await fetch("/api/user/login", {
+    const response = await fetch("/api/user", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email, password }),
@@ -138,7 +139,7 @@ async function login() {
 
 async function logout() {
   try {
-    const response = await fetch("/api/user/logout", {
+    const response = await fetch("/api/user", {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
@@ -159,6 +160,26 @@ async function logout() {
     }
   } catch (error) {
     console.error("Error:", error);
+    window.location.href = "/";
+  }
+}
+
+function checkForAuthToken() {
+  const urlParams = new URLSearchParams(window.location.search);
+
+  const token = urlParams.get("token");
+  const userId = urlParams.get("userId");
+  const telegramId = urlParams.get("telegramId");
+
+  if (token) {
+    localStorage.setItem("token", token);
+    if (userId) {
+      localStorage.setItem("userId", userId);
+    }
+    if (telegramId) {
+      localStorage.setItem("telegramId", telegramId);
+    }
+    checkLoginStatus();
     window.location.href = "/";
   }
 }
