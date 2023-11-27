@@ -101,9 +101,9 @@ router.get("/", verifyToken, trackingController.getNotificationsByMethod);
  *       200:
  *         description: 刪除成功
  *       404:
- *         description: 沒有找到相關追蹤項目
+ *         description: 沒有任何通知
  *       403:
- *         description: 無權刪除此追蹤項目
+ *         description: 沒有任何通知
  *       500:
  *         description: 伺服器錯誤
  */
