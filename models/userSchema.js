@@ -9,7 +9,6 @@ const userSchema = new mongoose.Schema({
   password: { type: String },
   token: { type: String },
   googleId: { type: String, unique: true, sparse: true },
-  facebookId: { type: String, unique: true, sparse: true },
   lineId: { type: String, unique: true, sparse: true },
 });
 

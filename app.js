@@ -21,9 +21,6 @@ const passport = require("passport");
 const googleAuthRoutes = require("./routes/googleRoutes");
 require("./services/googleAuthService");
 
-const facebookRoutes = require("./routes/facebookRoutes");
-require("./services/facebookAuthService.js");
-
 const lineAuthRoutes = require("./routes/lineRoutes");
 require("./services/lineAuthService.js");
 const session = require("express-session");
@@ -31,6 +28,8 @@ const session = require("express-session");
 const swaggerJSDoc = require("swagger-jsdoc");
 const swaggerUi = require("swagger-ui-express");
 const swaggerDefinition = require("./swaggerDef");
+
+require("dotenv").config();
 
 const app = express();
 connectDB();
@@ -47,7 +46,7 @@ app.use(passport.initialize());
 
 app.use(
   session({
-    secret: "随机字符串作为会话秘钥",
+    secret: process.env.JWT_SECRET_KEY,
     resave: false,
     saveUninitialized: false,
   })
@@ -77,9 +76,6 @@ trackPrices();
 
 //Google登入
 app.use("/auth/google", googleAuthRoutes);
-
-//FB登入
-app.use("/auth/facebook", facebookRoutes);
 
 //Line登入
 app.use("/auth/line", lineAuthRoutes);
