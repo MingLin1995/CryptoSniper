@@ -162,3 +162,8 @@ body.night-mode #symbol-column:hover {
     max-width: 100% !important;
   }
 }
+
+.border-bottom {
+  border-bottom: 1px dashed gray;
+  margin-bottom: 30px;
+}
