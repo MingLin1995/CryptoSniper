@@ -129,13 +129,7 @@ async function manageSubscription(registration) {
     return;
   }
 
-  let subscription = await registration.pushManager.getSubscription();
-  if (!subscription) {
-    // 沒有訂閱，創建新的訂閱
-    subscription = await subscribeUser(registration);
-  } else {
-    //console.log("已經訂閱");
-  }
+  await subscribeUser(registration);
 }
 
 // 建立新的訂閱
@@ -152,7 +146,7 @@ async function subscribeUser(registration) {
     // 將訂閱詳情發送到後端
     await sendSubscriptionToBackend(subscription);
 
-    console.log("用戶訂閱成功");
+    //console.log("用戶訂閱成功");
     updateToggleButtonText(true);
   } catch (error) {
     console.error("用戶訂閱失敗", error);
@@ -182,7 +176,7 @@ async function sendSubscriptionToBackend(subscription) {
   const subscriptionData = JSON.stringify(subscription);
 
   try {
-    await fetch("/api/subscription", {
+    await fetch("/web-subscription", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
