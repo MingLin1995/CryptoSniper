@@ -152,3 +152,5 @@ function fetchUserStrategies() {
       }
     });
 }
+
+export { fetchUserStrategies };

@@ -17,12 +17,12 @@ const volumeDataController = require("../controllers/volumeDataController");
  *   get:
  *     tags: [取得標的資料]
  *     summary: 取得成交量資料
- *     description: 根據交易對取得成交量資料。
+ *     description: 根據交易對取得成交量資料
  *     parameters:
  *       - in: query
  *         name: results
  *         required: true
- *         description: 要取得成交量數據的交易對。例如："BTCUSDT", "ETHUSDT", "BNBUSDT"等值。
+ *         description: 要取得成交量數據的交易對，例如："BTCUSDT", "ETHUSDT", "BNBUSDT"等值
  *         schema:
  *           type: string
  *           example: '["BTCUSDT", "ETHUSDT", "BNBUSDT"]'
