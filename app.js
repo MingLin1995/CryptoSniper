@@ -24,6 +24,10 @@ require("./services/googleAuthService");
 const facebookRoutes = require("./routes/facebookRoutes");
 require("./services/facebookAuthService.js");
 
+const lineAuthRoutes = require("./routes/lineRoutes");
+require("./services/lineAuthService.js");
+const session = require("express-session");
+
 const swaggerJSDoc = require("swagger-jsdoc");
 const swaggerUi = require("swagger-ui-express");
 const swaggerDefinition = require("./swaggerDef");
@@ -40,6 +44,14 @@ app.get("/", (req, res) => {
 });
 
 app.use(passport.initialize());
+
+app.use(
+  session({
+    secret: "随机字符串作为会话秘钥",
+    resave: false,
+    saveUninitialized: false,
+  })
+);
 
 app.use("/api/loadKlinesData", klinesDataRoutes);
 app.use("/api/loadVolumeData", volumeDataRoutes);
@@ -68,6 +80,9 @@ app.use("/auth/google", googleAuthRoutes);
 
 //FB登入
 app.use("/auth/facebook", facebookRoutes);
+
+//Line登入
+app.use("/auth/line", lineAuthRoutes);
 
 // Swagger JSDoc setup
 const options = {

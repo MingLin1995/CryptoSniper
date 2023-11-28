@@ -1,7 +1,8 @@
 // models/redis.js
 
+require("dotenv").config();
 const Redis = require("ioredis");
-const REDIS_HOST = "redis"; // 使用 Docker Compose 中定義的服務名稱
+const REDIS_HOST = process.env.REDIS_HOST; // 使用 Docker Compose 中定義的服務名稱
 const REDIS_PORT = 6379;
 const redis = new Redis(REDIS_PORT, REDIS_HOST); // 建立新的Redis連接
 

@@ -10,6 +10,7 @@ const userSchema = new mongoose.Schema({
   token: { type: String },
   googleId: { type: String, unique: true, sparse: true },
   facebookId: { type: String, unique: true, sparse: true },
+  lineId: { type: String, unique: true, sparse: true },
 });
 
 // 在用戶數據被儲存到資料庫之前進行預處理
