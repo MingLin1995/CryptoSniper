@@ -1,6 +1,6 @@
-// CryptSniper/controllers/facebookAuthController.js
+// controllers/lineAuthController.js
 
-const facebookAuthCallback = async (req, res) => {
+const lineAuthCallback = (req, res) => {
   if (req.user) {
     const { user, token, telegramId } = req.user;
     res.redirect(
@@ -12,5 +12,5 @@ const facebookAuthCallback = async (req, res) => {
 };
 
 module.exports = {
-  facebookAuthCallback,
+  lineAuthCallback,
 };

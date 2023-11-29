@@ -1,7 +1,7 @@
-// services/facebookAuthService.js
+// services/lineAuthService.js
 
 const passport = require("passport");
-const FacebookStrategy = require("passport-facebook").Strategy;
+const LineStrategy = require("passport-line").Strategy;
 const jwt = require("jsonwebtoken");
 const User = require("../models/userSchema");
 const TelegramSubscription = require("../models/telegramSubscriptionSchema");
@@ -10,23 +10,21 @@ const WebSubscription = require("../models/webSubscriptionSchema");
 require("dotenv").config();
 
 passport.use(
-  new FacebookStrategy(
+  new LineStrategy(
     {
-      clientID: process.env.FACEBOOK_APP_ID,
-      clientSecret: process.env.FACEBOOK_APP_SECRET,
-      callbackURL: "https://crypto-sniper.minglin.vip/auth/facebook/callback",
-      profileFields: ["id", "displayName", "emails"],
+      channelID: process.env.LINE_CLIENT_ID,
+      channelSecret: process.env.LINE_CLIENT_SECRET,
+      callbackURL: process.env.LINE_CALLBACK_URL,
     },
     async (accessToken, refreshToken, profile, done) => {
       try {
-        let user = await User.findOne({ facebookId: profile.id });
+        let user = await User.findOne({ lineId: profile.id });
         let isNewUser = false;
-
         if (!user) {
           user = new User({
             name: profile.displayName,
             email: "no-email@example.com",
-            facebookId: profile.id,
+            lineId: profile.id,
           });
           await user.save();
           isNewUser = true;
@@ -53,7 +51,7 @@ passport.use(
 
         done(null, { user, token, telegramId });
       } catch (error) {
-        console.error("Error during Facebook OAuth:", error);
+        console.error("Error during Line OAuth:", error);
         done(error, false);
       }
     }
