@@ -14,7 +14,7 @@ passport.use(
     {
       clientID: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-      callbackURL: "https://crypto-sniper.minglin.vip/auth/google/callback",
+      callbackURL: process.env.GOOGLE_CALLBACK_URL,
     },
     async (accessToken, refreshToken, profile, done) => {
       try {
@@ -23,7 +23,6 @@ passport.use(
         if (!user) {
           user = new User({
             name: profile.displayName,
-            email: profile.emails[0].value,
             googleId: profile.id,
           });
           await user.save();
