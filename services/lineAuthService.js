@@ -23,7 +23,6 @@ passport.use(
         if (!user) {
           user = new User({
             name: profile.displayName,
-            email: "no-email@example.com",
             lineId: profile.id,
           });
           await user.save();
