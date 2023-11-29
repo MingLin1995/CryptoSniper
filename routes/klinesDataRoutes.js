@@ -17,12 +17,12 @@ const klinesDataController = require("../controllers/klinesDataController");
  *   get:
  *     tags: [取得標的資料]
  *     summary: 取得K線資料
- *     description: 根據時間週期，取得K線資料。
+ *     description: 根據時間週期，取得K線資料
  *     parameters:
  *       - in: query
  *         name: intervals
  *         required: true
- *         description: 要取得數據的時間週期，例如："15m", "1h", "4h", "1d" 等值。
+ *         description: 要取得數據的時間週期，例如："15m", "1h", "4h", "1d" 等值
  *         schema:
  *           type: string
  *           example: '["15m", "1h", "4h", "1d"]'
