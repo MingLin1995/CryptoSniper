@@ -5,7 +5,7 @@ const bcrypt = require("bcrypt"); //用來密碼加密
 
 const userSchema = new mongoose.Schema({
   name: { type: String, required: true },
-  email: { type: String, required: true, unique: false },
+  email: { type: String, required: false, unique: false, sparse: true },
   password: { type: String },
   token: { type: String },
   googleId: { type: String, unique: true, sparse: true },
