@@ -5,7 +5,6 @@ const LineSubscription = require("../models/lineSubscriptionSchema");
 
 async function sendLineNotification(symbol, targetPrice, userId) {
   try {
-    // 從 LineSubscription 模型中獲取用戶的訂閱資訊
     const lineSubscription = await LineSubscription.findOne({
       userId,
     });
