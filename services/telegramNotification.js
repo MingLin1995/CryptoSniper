@@ -8,7 +8,6 @@ const TelegramSubscription = require("../models/telegramSubscriptionSchema");
 async function sendTelegramNotification(messageText, telegramId) {
   const url = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`;
   try {
-    // 從 TelegramSubscription 模型中獲取用戶的訂閱資訊
     const telegramSubscription = await TelegramSubscription.findOne({
       telegramId,
     });
