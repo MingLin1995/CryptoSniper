@@ -32,6 +32,10 @@ document
     const notificationMethod = currentNotificationMethod;
 
     const token = localStorage.getItem("token");
+    if (!token) {
+      window.location.href = "/";
+      return;
+    }
     fetch("/api/track", {
       method: "POST",
       headers: {
@@ -47,17 +51,21 @@ document
     })
       .then((response) => {
         if (!response.ok) {
-          const errorResponse = response.json();
-          if (errorResponse.error === "jwt expired") {
-            window.location.href = "/";
-            return;
-          }
-          throw new Error("無法獲取訂閱狀態");
+          response.json().then((errorResponse) => {
+            console.log(errorResponse);
+            if (errorResponse.error === "jwt expired") {
+              window.location.href = "/";
+              return;
+            }
+            throw new Error("無法獲取訂閱狀態");
+          });
+        } else {
+          return response.json();
         }
       })
       .then((data) => {
         //console.log("Success:", data);
-        alert("到價通知設定成功！");
+        //alert("到價通知設定成功！");
 
         // 更新用戶的 Telegram ID
         updateUserTelegramId(telegramId);
@@ -75,7 +83,7 @@ document
 // 更新Telegram ID
 function updateUserTelegramId(telegramId) {
   // 發送請求更新用戶的 Telegram ID
-  fetch("/api/user/updateTelegramId", {
+  fetch("/api/updateTelegramId", {
     method: "PATCH",
     headers: {
       "Content-Type": "application/json",

@@ -48,6 +48,11 @@ document
     const targetPrice = document.getElementById("targetPrice-line").value;
     const token = localStorage.getItem("token");
 
+    if (!token) {
+      window.location.href = "/";
+      return;
+    }
+
     // 使用先前選擇的通知方式
     const notificationMethod = currentNotificationMethod;
 
@@ -65,17 +70,26 @@ document
     })
       .then((response) => {
         if (!response.ok) {
-          const errorResponse = response.json();
-          if (errorResponse.error === "jwt expired") {
-            window.location.href = "/";
-            return;
-          }
-          throw new Error("無法獲取訂閱狀態");
+          response.json().then((errorResponse) => {
+            console.log(errorResponse);
+            if (errorResponse.error === "jwt expired") {
+              window.location.href = "/";
+              return;
+            }
+            if (errorResponse.details === "找不到用戶的 Line Access Token") {
+              alert("尚未連動 Line Notify！");
+              return;
+            }
+
+            throw new Error("無法獲取訂閱狀態");
+          });
+        } else {
+          return response.json();
         }
       })
       .then((data) => {
         //console.log(data);
-        alert("到價通知設定成功！");
+        //alert("到價通知設定成功！");
         loadNotifications(currentNotificationMethod);
       })
       .catch((error) => {

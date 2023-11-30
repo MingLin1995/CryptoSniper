@@ -3,7 +3,7 @@
 import { createTradingViewWidget } from "./tradingViewConfig.js";
 import { formatVolume, sortResultsByVolume } from "./helpers.js";
 import { makeDraggable } from "./Bootstrap.js";
-
+import { fetchUserStrategies } from "./strategySettings.js";
 let indexObject = { currentIndex: 0 };
 let userId = localStorage.getItem("userId");
 
@@ -273,6 +273,11 @@ async function toggleNotification(currentNotificationMethod) {
 function loadNotifications(currentNotificationMethod) {
   const token = localStorage.getItem("token");
 
+  if (!token) {
+    window.location.href = "/";
+    return;
+  }
+
   fetch(`/api/track?notificationMethod=${currentNotificationMethod}`, {
     // 使用 GET 方法和查詢參數
     method: "GET",
@@ -281,7 +286,20 @@ function loadNotifications(currentNotificationMethod) {
       Authorization: token,
     },
   })
-    .then((response) => response.json())
+    .then((response) => {
+      if (!response.ok) {
+        response.json().then((errorResponse) => {
+          console.log(errorResponse);
+          if (errorResponse.error === "jwt expired") {
+            window.location.href = "/";
+            return;
+          }
+          throw new Error("無法獲取訂閱狀態");
+        });
+      } else {
+        return response.json();
+      }
+    })
     .then((data) => {
       const notificationHeader = document.getElementById(
         `notificationHeader-${currentNotificationMethod}`
@@ -337,8 +355,12 @@ function loadNotifications(currentNotificationMethod) {
 
 //刪除通知
 function deleteNotification(notificationId, currentNotificationMethod) {
-  alert("確定要刪除嗎？");
   const token = localStorage.getItem("token");
+
+  if (!token) {
+    window.location.href = "/";
+    return;
+  }
 
   fetch(`/api/track?id=${notificationId}`, {
     // 使用 DELETE 方法和查詢參數
@@ -349,19 +371,41 @@ function deleteNotification(notificationId, currentNotificationMethod) {
     },
   })
     .then((response) => {
-      if (response.ok) {
+      if (!response.ok) {
+        response.json().then((errorResponse) => {
+          console.log(errorResponse);
+          if (errorResponse.error === "jwt expired") {
+            window.location.href = "/";
+            return;
+          }
+          throw new Error("無法獲取訂閱狀態");
+        });
+      } else {
+        return response.json();
+      }
+    })
+    .then((data) => {
+      if (data.message === "刪除成功") {
         loadNotifications(currentNotificationMethod); // 重新加載通知，更新列表
       } else {
         throw new Error("刪除失敗");
       }
     })
+
     .catch((error) => console.error("Error:", error));
 }
 
+//切換追蹤按鈕
 function toggleFavorite(symbol, favoriteButton) {
   // 檢查是否有用戶ID，如果没有，返回首頁
   if (!userId) {
     alert("登入後即可使用此功能");
+    return;
+  }
+  const token = localStorage.getItem("token");
+
+  if (!token) {
+    window.location.href = "/";
     return;
   }
 
@@ -370,7 +414,6 @@ function toggleFavorite(symbol, favoriteButton) {
 
   const apiEndpoint = "/api/favorite";
   const method = isFavorite ? "DELETE" : "POST";
-  const token = localStorage.getItem("token");
 
   const queryParams = new URLSearchParams({ userId, symbol }).toString();
   const url = isFavorite ? `${apiEndpoint}?${queryParams}` : apiEndpoint;
@@ -385,12 +428,20 @@ function toggleFavorite(symbol, favoriteButton) {
   })
     .then((response) => {
       if (!response.ok) {
-        throw new Error("無法更新追蹤清單");
+        response.json().then((errorResponse) => {
+          console.log(errorResponse);
+          if (errorResponse.error === "jwt expired") {
+            window.location.href = "/";
+            return;
+          }
+          throw new Error("無法獲取訂閱狀態");
+        });
+      } else {
+        // 切换按鈕狀態
+        favoriteButton.classList.toggle("btn-warning");
+        favoriteButton.classList.toggle("btn-outline-warning");
+        return response.json();
       }
-      // 切换按鈕狀態
-      favoriteButton.classList.toggle("btn-warning");
-      favoriteButton.classList.toggle("btn-outline-warning");
-      return response.json();
     })
     .then((data) => {
       //console.log("追蹤清單已更新", data);
@@ -486,8 +537,15 @@ function updateFavoritesModal() {
     });
 }
 
+//移除追蹤
 function removeFavorite(symbol, userId) {
   const token = localStorage.getItem("token");
+
+  if (!token) {
+    window.location.href = "/";
+    return;
+  }
+
   const queryParams = new URLSearchParams({ userId, symbol }).toString();
   const url = `/api/favorite?${queryParams}`;
 
@@ -500,8 +558,19 @@ function removeFavorite(symbol, userId) {
   })
     .then((response) => {
       if (!response.ok) {
-        throw new Error("Failed to remove favorite");
+        response.json().then((errorResponse) => {
+          console.log(errorResponse);
+          if (errorResponse.error === "jwt expired") {
+            window.location.href = "/";
+            return;
+          }
+          throw new Error("無法獲取訂閱狀態");
+        });
+      } else {
+        return response.json();
       }
+    })
+    .then((data) => {
       updateFavoritesModal(); // 重新載入列表
 
       // 更新追蹤按鈕狀態
@@ -515,6 +584,186 @@ function removeFavorite(symbol, userId) {
     .catch((error) => console.error("Error:", error));
 }
 
+//顯示儲存的策略
+function displayUserStrategies(strategies) {
+  const strategiesList = document.getElementById("userStrategiesList");
+  strategiesList.innerHTML = "";
+
+  strategies.forEach((strategy) => {
+    const strategyDiv = document.createElement("div");
+    strategyDiv.classList.add("strategy-item");
+    strategyDiv.classList.add("draggable-strategy"); // 拖曳class
+    makeDraggable(strategyDiv);
+
+    const strategyHeader = document.createElement("div");
+    strategyHeader.classList.add("strategy-header");
+
+    const strategyName = document.createElement("button");
+    strategyName.textContent = strategy.name;
+    strategyName.classList.add("btn", "btn-link");
+    strategyName.type = "button";
+    strategyName.onclick = function (event) {
+      event.preventDefault();
+      applyStrategy(strategy);
+    };
+
+    const deleteButton = document.createElement("button");
+    deleteButton.textContent = "刪除";
+    deleteButton.classList.add(
+      "btn",
+      "btn-outline-danger",
+      "btn-sm",
+      "delete-strategy"
+    );
+    deleteButton.type = "button";
+    deleteButton.onclick = function (event) {
+      event.preventDefault();
+      deleteStrategy(strategy._id);
+    };
+
+    const strategyDetails = document.createElement("div");
+    strategyDetails.classList.add("strategy-details");
+    strategyDetails.style.display = "none";
+
+    strategy.conditions.forEach((condition, idx) => {
+      if (condition.param_1 == null) return;
+
+      const conditionDiv = document.createElement("div");
+      conditionDiv.classList.add("condition");
+
+      let conditionContent = `
+    <strong>篩選條件 ${idx + 1} ：</strong>
+    <ul>
+      <li>時間週期： ${condition.time_interval}</li>
+      <li>篩選條件： 
+      ${condition.param_1} MA
+      ${condition.comparison_operator_1}
+      ${condition.param_2} MA`;
+
+      if (condition.param_3 != null) {
+        conditionContent += `
+      ${condition.logical_operator}
+      ${condition.param_3} MA
+      ${condition.comparison_operator_2}
+      ${condition.param_4} MA `;
+      }
+
+      conditionContent += `</li></ul>`;
+      conditionDiv.innerHTML = conditionContent;
+      strategyDetails.appendChild(conditionDiv);
+    });
+
+    strategyName.addEventListener("click", function () {
+      strategyDetails.style.display =
+        strategyDetails.style.display === "none" ? "block" : "none";
+    });
+
+    strategiesList.appendChild(strategyDiv);
+    strategyDiv.appendChild(strategyHeader);
+    strategyHeader.appendChild(strategyName);
+    strategyHeader.appendChild(deleteButton);
+    strategyDiv.appendChild(strategyDetails);
+  });
+}
+
+function displayNoStrategiesMessage() {
+  const strategiesList = document.getElementById("userStrategiesList");
+  strategiesList.innerHTML = "<p>尚未儲存任何策略</p>";
+}
+
+//將策略更新到篩選器
+function applyStrategy(strategy) {
+  // 首先清除之前的所有篩選條件
+  clearFilters();
+
+  strategy.conditions.forEach((condition, index) => {
+    const groupIndex = index + 1;
+
+    // 設置時間間隔
+    document.getElementById(`time-interval-${groupIndex}`).value =
+      condition.time_interval;
+
+    // 設置參數值
+    for (let j = 1; j <= 4; j++) {
+      const element = document.getElementById(`MA${groupIndex}-${j}`);
+      if (element) {
+        element.value = condition[`param_${j}`] || "";
+      }
+    }
+
+    // 設置比較運算符和邏輯運算符
+    for (let j = 1; j <= 2; j++) {
+      const operatorElement = document.getElementById(
+        `comparison-operator-${groupIndex}-${j}`
+      );
+      if (operatorElement) {
+        operatorElement.value = condition[`comparison_operator_${j}`] || "";
+      }
+    }
+
+    const logicalOperatorElement = document.getElementById(
+      `logical-operator-${groupIndex}`
+    );
+    if (logicalOperatorElement) {
+      logicalOperatorElement.value = condition.logical_operator || "";
+    }
+  });
+}
+
+//清除篩選器內容
+function clearFilters() {
+  const parameterGroups = 4;
+  for (let i = 1; i <= parameterGroups; i++) {
+    document.getElementById(`time-interval-${i}`).value = "";
+
+    for (let j = 1; j <= 4; j++) {
+      const maElement = document.getElementById(`MA${i}-${j}`);
+      if (maElement) maElement.value = "";
+    }
+
+    for (let j = 1; j <= 2; j++) {
+      const operatorElement = document.getElementById(
+        `comparison-operator-${i}-${j}`
+      );
+      if (operatorElement) operatorElement.value = "";
+    }
+
+    const logicalOperatorElement = document.getElementById(
+      `logical-operator-${i}`
+    );
+    if (logicalOperatorElement) logicalOperatorElement.value = "";
+  }
+}
+
+//刪除策略
+function deleteStrategy(strategyId) {
+  const token = localStorage.getItem("token");
+  if (!token) {
+    window.location.href = "/";
+    return;
+  }
+
+  fetch(`/api/strategy?strategyId=${strategyId}`, {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: token,
+    },
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      if (data.success) {
+        //console.log("策略删除成功:", strategyId);
+        fetchUserStrategies();
+      } else {
+        console.error("策略刪除失败:", data.message);
+      }
+    })
+    .catch((error) => {
+      console.error("刪除策略時發生錯誤:", error);
+    });
+}
+
 export {
   displayResults,
   checkSubscriptionStatus,
@@ -523,4 +772,6 @@ export {
   loadNotifications,
   updateFavoritesModal,
   removeFavorite,
+  displayUserStrategies,
+  displayNoStrategiesMessage,
 };

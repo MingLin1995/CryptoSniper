@@ -9,13 +9,13 @@
 
 /* 表頭固定寬度 */
 #results-table th:nth-child(1) {
-  width: 10%;
+  width: 20%;
 }
 #results-table th:nth-child(2) {
-  width: 45%;
+  width: 40%;
 }
 #results-table th:nth-child(3) {
-  width: 45%;
+  width: 40%;
 }
 
 /* 深色模式文字亮色 */
@@ -124,5 +124,46 @@ body.night-mode #symbol-column:hover {
 }
 
 .ma {
-  margin-left: 5px; /* 或者根據需要調整間距 */
+  margin-left: 5px;
+}
+
+.strategy-item {
+  margin-bottom: 10px;
+  border: 1px solid #ddd;
+  padding: 10px;
+}
+
+.strategy-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 5px;
+}
+
+.strategy-details {
+  margin-top: 10px;
+}
+
+.condition {
+  margin-bottom: 5px;
+}
+
+.carousel-indicators {
+  position: absolute;
+  top: -20px;
+}
+
+.modal-lg {
+  max-width: 70% !important;
+}
+
+@media (max-width: 580px) {
+  .modal-lg {
+    max-width: 100% !important;
+  }
+}
+
+.border-bottom {
+  border-bottom: 1px dashed gray;
+  margin-bottom: 30px;
 }

@@ -105,10 +105,13 @@ function handleDragOver(e) {
 function handleDrop(e) {
   e.stopPropagation();
   if (draggedItem !== this) {
-    draggedItem.innerHTML = this.innerHTML;
-    this.innerHTML = e.dataTransfer.getData("text/html");
+    // 保存被拖動元素的引用
+    let tempDraggedItem = draggedItem;
+
+    // 交换元素
+    this.parentNode.insertBefore(draggedItem, this);
+    tempDraggedItem.parentNode.insertBefore(this, tempDraggedItem);
   }
-  return false;
 }
 
 // 拖動結束
@@ -117,3 +120,24 @@ function handleDragEnd(e) {
 }
 
 export { makeDraggable };
+
+document.querySelectorAll(".tab-link").forEach(function (el) {
+  el.addEventListener("click", function () {
+    // 移除所有按鈕上的 'btn-primary' 類別並添加 'btn-outline-primary'
+    document.querySelectorAll(".tab-link").forEach(function (el) {
+      el.classList.remove("btn-primary");
+      el.classList.add("btn-outline-primary");
+    });
+
+    // 為當前點擊的按鈕添加 'btn-primary' 並移除 'btn-outline-primary'
+    this.classList.remove("btn-outline-primary");
+    this.classList.add("btn-primary");
+
+    // 切換顯示的內容
+    var targetId = this.getAttribute("data-target");
+    document.querySelectorAll(".tab-content").forEach(function (tab) {
+      tab.style.display = "none";
+    });
+    document.querySelector(targetId).style.display = "block";
+  });
+});
