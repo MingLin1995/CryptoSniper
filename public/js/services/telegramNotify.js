@@ -65,7 +65,7 @@ document
       })
       .then((data) => {
         //console.log("Success:", data);
-        alert("到價通知設定成功！");
+        //alert("到價通知設定成功！");
 
         // 更新用戶的 Telegram ID
         updateUserTelegramId(telegramId);
@@ -83,7 +83,7 @@ document
 // 更新Telegram ID
 function updateUserTelegramId(telegramId) {
   // 發送請求更新用戶的 Telegram ID
-  fetch("/api/user/updateTelegramId", {
+  fetch("/api/updateTelegramId", {
     method: "PATCH",
     headers: {
       "Content-Type": "application/json",

@@ -10,6 +10,7 @@
       href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
       rel="stylesheet"
     />
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
   </head>
   <body>
     <div id="mainContainer" class="container mt-5">
@@ -18,7 +19,7 @@
       <div class="text-center mb-4">
         <!-- 登入和註冊按鈕 -->
         <button
-          class="btn btn-outline-primary"
+          class="btn btn-outline-primary ml-3"
           id="loginBtn"
           data-toggle="modal"
           data-target="#loginModal"
@@ -28,7 +29,7 @@
 
         <!-- 登出按鈕 -->
         <button
-          class="btn btn-outline-danger"
+          class="btn btn-outline-danger ml-3"
           id="logoutBtn"
           onclick="logout()"
           style="display: none"
@@ -36,8 +37,16 @@
           登出
         </button>
 
-        <button class="btn btn-outline-secondary" id="toggleThemeBtn">
+        <button class="btn btn-outline-secondary ml-3" id="toggleThemeBtn">
           背景切換
+        </button>
+        <button
+          type="button"
+          class="btn btn-outline-success ml-3"
+          data-toggle="modal"
+          data-target="#tutorialModal"
+        >
+          使用教學
         </button>
       </div>
 
@@ -60,6 +69,7 @@
                     class="form-control"
                     id="loginEmail"
                     required
+                    value="test@gmail.com"
                   />
                 </div>
                 <div class="form-group">
@@ -69,6 +79,7 @@
                     class="form-control"
                     id="loginPassword"
                     required
+                    value="123456"
                   />
                 </div>
                 <button
@@ -77,7 +88,33 @@
                 >
                   登入
                 </button>
+                <!-- Google 登入按鈕 -->
+                <a
+                  href="/auth/google"
+                  class="btn btn-sm btn-outline-success ml-3"
+                >
+                  <img
+                    src="/images/google.png"
+                    alt="Google Logo"
+                    style="width: 24px; margin-right: 5px"
+                  />
+                  登入
+                </a>
+
+                <!-- Line 登入按鈕 -->
+                <a
+                  href="/auth/line"
+                  class="btn btn-sm btn-outline-success ml-3"
+                >
+                  <img
+                    src="/images/line.png"
+                    alt="line Logo"
+                    style="width: 30px; margin-right: 5px"
+                  />
+                  登入
+                </a>
               </form>
+
               <p class="mt-3">
                 還沒有帳戶?
                 <a
@@ -162,8 +199,385 @@
         </div>
       </div>
 
+      <!-- 使用教學 -->
+      <div
+        class="modal fade"
+        id="tutorialModal"
+        tabindex="-1"
+        role="dialog"
+        aria-labelledby="tutorialModalLabel"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog modal-lg" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h3 class="modal-title" id="tutorialModalLabel">使用教學</h3>
+              <button
+                type="button"
+                class="close"
+                data-dismiss="modal"
+                aria-label="Close"
+              >
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <div class="tutorial-tabs d-flex flex-wrap mb-3">
+                <h5
+                  class="tab-link btn btn-primary mr-3"
+                  data-target="#introduction"
+                >
+                  主要功能
+                </h5>
+                <h5
+                  class="tab-link btn btn-outline-primary mr-3"
+                  data-target="#filterIntroduction"
+                >
+                  篩選器
+                </h5>
+                <h5
+                  class="tab-link btn btn-outline-primary mr-3"
+                  data-target="#strategyIntroduction"
+                >
+                  自訂策略
+                </h5>
+                <h5
+                  class="tab-link btn btn-outline-primary mr-3"
+                  data-target="#webIntroduction"
+                >
+                  Web 到價通知
+                </h5>
+                <h5
+                  class="tab-link btn btn-outline-primary mr-3"
+                  data-target="#telegramIntroduction"
+                >
+                  TG 到價通知
+                </h5>
+                <h5
+                  class="tab-link btn btn-outline-primary"
+                  data-target="#lineIntroduction"
+                >
+                  Line 到價通知
+                </h5>
+              </div>
+              <!-- 功能介紹 -->
+              <div id="introduction" class="tab-content">
+                <div class="carousel-inner">
+                  <div class="carousel-item active">
+                    <img
+                      class="d-block mx-auto w-100 mb-3"
+                      src="/images/篩選.jpg"
+                    />
+                    <div class="description border-bottom"></div>
+
+                    <img
+                      class="d-block mx-auto w-50 mb-3"
+                      src="/images/自訂策略.jpg"
+                    />
+                    <div class="description border-bottom"></div>
+
+                    <img
+                      class="d-block mx-auto w-50 mb-3"
+                      src="/images/追蹤清單.jpg"
+                    />
+                    <div class="description border-bottom"></div>
+
+                    <img
+                      class="d-block mx-auto w-50 mb-3"
+                      src="/images/Web到價通知.jpg"
+                    />
+                    <div class="description border-bottom"></div>
+
+                    <img
+                      class="d-block mx-auto w-50 mb-3"
+                      src="/images/TG到價通知.jpg"
+                    />
+                    <div class="description border-bottom"></div>
+
+                    <img
+                      class="d-block mx-auto w-50 mb-3"
+                      src="/images/Line到價通知.jpg"
+                    />
+                    <div class="description"></div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- 篩選功能 -->
+              <div
+                id="filterIntroduction"
+                class="tab-content"
+                style="display: none"
+              >
+                <div class="carousel-inner">
+                  <div class="carousel-item active">
+                    <img
+                      class="d-block w-100 mb-3"
+                      src="/images/filter-9.jpeg"
+                      alt="Filter 1"
+                    />
+                    <div class="description border-bottom">
+                      <p>
+                        在說明使用方法前，要先了解什麼是移動平均線（ MA ），
+                        移動平均線通常稱為均線，英文全名為Moving
+                        Average，縮寫為MA
+                      </p>
+                      <p>
+                        每一個MA的值可以在圖表上畫成一個點，將所有的點連接起來就會變成一條均線
+                      </p>
+                      <p>例如：</p>
+                      <p>
+                        7日均線就是把過去7天的收盤價加總再除以7（圖中黃色線段）
+                      </p>
+                      <p>
+                        25日均線就是把過去7天的收盤價加總再除以25（圖中藍色線段）
+                      </p>
+                      <p>
+                        60日均線就是把過去7天的收盤價加總再除以60（圖中橘色線段）
+                      </p>
+                      <p>
+                        99日均線就是把過去7天的收盤價加總再除以99（圖中白色線段）
+                      </p>
+                    </div>
+
+                    <img
+                      class="d-block w-100 mb-3"
+                      src="/images/filter-3.jpeg"
+                      alt="Filter 2"
+                    />
+                    <div class="description border-bottom">
+                      <p>
+                        此篩選器主要就是透過移動平均線（ MA ）的篩選找出標的
+                      </p>
+                      <p>
+                        例如：我想要找出多頭走勢的強勢標的（通常為短期均線大於長期均線）
+                      </p>
+                      <p>
+                        那就可以設定篩選條件，選擇日線，輸入短期均線（25
+                        MA）大於 長期均線（60 MA）
+                      </p>
+                    </div>
+
+                    <img
+                      class="d-block w-100 mb-3"
+                      src="/images/filter-1.jpeg"
+                      alt="Filter 3"
+                    />
+                    <div class="description border-bottom">
+                      <p>篩選結果如上圖</p>
+                      <p>多頭走勢，均線向上</p>
+                      <p>短期均線（25 MA）大於 長期均線（60 MA）</p>
+                    </div>
+
+                    <img
+                      class="d-block w-100 mb-3"
+                      src="/images/filter-4.jpeg"
+                      alt="Filter 4"
+                    />
+                    <div class="description border-bottom">
+                      <p>或是想要找出同時符合多個時間週期的篩選條件也可以</p>
+                      <p>
+                        例如：我想要找出，15分鐘、1小時、4小時、日K線均符合，短期均線（25
+                        MA）大於 長期均線（60 MA）的標的
+                      </p>
+                    </div>
+
+                    <img
+                      class="d-block w-100 mb-3"
+                      src="/images/filter-5.jpeg"
+                      alt="Filter 5"
+                    />
+                    <div class="description border-bottom">
+                      篩選結果如上圖，15分鐘，短期均線（25 MA）大於 長期均線（60
+                      MA）
+                    </div>
+
+                    <img
+                      class="d-block w-100 mb-3"
+                      src="/images/filter-6.jpeg"
+                      alt="Filter 6"
+                    />
+                    <div class="description border-bottom">
+                      篩選結果如上圖，1小時，短期均線（25 MA）大於 長期均線（60
+                      MA）
+                    </div>
+
+                    <img
+                      class="d-block w-100 mb-3"
+                      src="/images/filter-7.jpeg"
+                      alt="Filter 7"
+                    />
+                    <div class="description border-bottom">
+                      篩選結果如上圖，4小時，短期均線（25 MA）大於 長期均線（60
+                      MA）
+                    </div>
+
+                    <img
+                      class="d-block w-100 mb-3"
+                      src="/images/filter-8.jpeg"
+                      alt="Filter 8"
+                    />
+                    <div class="description">
+                      篩選結果，日線，短期均線（25 MA）大於 長期均線（60 MA）
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- 自訂策略 -->
+              <div
+                id="strategyIntroduction"
+                class="tab-content"
+                style="display: none"
+              >
+                <div class="carousel-inner">
+                  <div class="carousel-item active">
+                    <img
+                      class="d-block mx-auto w-100 mb-3"
+                      src="/images/自訂策略1.jpg"
+                    />
+                    <div class="description border-bottom">
+                      設定好篩選條件後，點選自訂策略按鈕
+                    </div>
+
+                    <img
+                      class="d-block mx-auto w-50 mb-3"
+                      src="/images/自訂策略2.jpg"
+                    />
+                    <div class="description border-bottom">點選儲存策略</div>
+
+                    <img
+                      class="d-block mx-auto w-50 mb-3"
+                      src="/images/自訂策略3.jpg"
+                    />
+                    <div class="description border-bottom">輸入策略名稱</div>
+
+                    <img
+                      class="d-block mx-auto w-50 mb-3"
+                      src="/images/自訂策略4.jpg"
+                    />
+                    <div class="description">
+                      儲存成功後，點選策略名稱即可將篩選條件自動帶入篩選器
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- web -->
+              <div
+                id="webIntroduction"
+                class="tab-content"
+                style="display: none"
+              >
+                <div class="carousel-inner">
+                  <div class="carousel-item active">
+                    <img
+                      class="d-block mx-auto w-50 mb-3"
+                      src="/images/web1.jpg"
+                    />
+                    <div class="description border-bottom">
+                      開啟顯示通知，即可使用此功能
+                    </div>
+
+                    <img
+                      class="d-block mx-auto w-100 mb-3"
+                      src="/images/web2.jpg"
+                    />
+                    <div class="description">
+                      若選擇封鎖，就要透過瀏覽器設定，更改為允許
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- TG -->
+              <div
+                id="telegramIntroduction"
+                class="tab-content"
+                style="display: none"
+              >
+                <div class="carousel-inner">
+                  <div class="carousel-item active">
+                    <img
+                      class="d-block mx-auto w-50 mb-3"
+                      src="/images/TG1.jpg"
+                    />
+                    <div class="description border-bottom">
+                      點選 CryptoSniper 加入機器人
+                    </div>
+
+                    <img
+                      class="d-block mx-auto w-50 mb-3"
+                      src="/images/TG2.jpg"
+                    />
+                    <div class="description border-bottom">
+                      點選 SEND MESSAGE
+                    </div>
+
+                    <img
+                      class="d-block mx-auto w-50 mb-3"
+                      src="/images/TG3.jpg"
+                    />
+                    <div class="description border-bottom">點選開始</div>
+
+                    <img
+                      class="d-block mx-auto w-50 mb-3"
+                      src="/images/TG4.jpg"
+                    />
+                    <div class="description border-bottom">
+                      即可看到您的 Telegram ID
+                    </div>
+
+                    <img
+                      class="d-block mx-auto w-50 mb-3"
+                      src="/images/TG5.jpg"
+                    />
+                    <div class="description">
+                      第一次建立通知後會將 Telegram ID 保存下來，有需要更換 ID
+                      再重複以上流程即可
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- Line -->
+              <div
+                id="lineIntroduction"
+                class="tab-content"
+                style="display: none"
+              >
+                <div class="carousel-inner">
+                  <div class="carousel-item active">
+                    <img
+                      class="d-block mx-auto w-50 mb-3"
+                      src="/images/line1.jpg"
+                    />
+                    <div class="description border-bottom">
+                      選擇透過1對1聊天接收 LINE Notify 的通知，同意並連動
+                    </div>
+
+                    <img
+                      class="d-block mx-auto w-50 mb-3"
+                      src="/images/line2.jpg"
+                    />
+                    <div class="description">收到連動完成，即可使用</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="btn btn-secondary"
+                data-dismiss="modal"
+              >
+                關閉
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <!-- 篩選器、圖表 -->
-      <h2 class="mb-3">幣安U本位合約篩選器</h2>
+      <h2 class="mb-3">篩選器</h2>
       <div class="main">
         <form name="filterForm" class="mb-4">
           <!-- 第一组參數 -->
@@ -668,12 +1082,60 @@
               </div>
             </div>
           </div>
-          <button type="submit" class="btn btn-outline-primary">
-            開始篩選
-          </button>
+
+          <div class="d-flex align-items-center justify-content-start">
+            <button type="submit" class="btn btn-outline-primary mr-3">
+              開始篩選
+            </button>
+
+            <!-- 自訂策略 -->
+            <button
+              type="button"
+              class="btn btn-outline-warning hidden-before-login"
+              data-toggle="modal"
+              data-target="#optionsModal"
+              id="options"
+            >
+              自訂策略
+            </button>
+          </div>
+
+          <div
+            class="modal fade"
+            id="optionsModal"
+            tabindex="-1"
+            role="dialog"
+            aria-labelledby="optionsModalLabel"
+            aria-hidden="true"
+          >
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="optionsModalLabel">自訂策略</h5>
+                  <button
+                    type="button"
+                    class="close"
+                    data-dismiss="modal"
+                    aria-label="Close"
+                  >
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <button
+                    id="saveStrategyModalButton"
+                    class="btn btn-outline-success mb-3"
+                  >
+                    儲存策略
+                  </button>
+                  <div id="userStrategiesList"></div>
+                </div>
+              </div>
+            </div>
+          </div>
         </form>
 
-        <!-- web到價通知 -->
+        <!-- 到價通知 -->
         <div class="hidden-before-login">
           <h2 class="mb-3">到價通知設定</h2>
           <div class="d-flex justify-content-around align-items-center mb-3">
@@ -739,6 +1201,7 @@
                           type="number"
                           class="form-control mb-2"
                           id="targetPrice-Notification"
+                          step="any"
                           required
                         />
                       </div>
@@ -807,7 +1270,8 @@
                           <a
                             href="https://t.me/CryptoSniper_MLvip_Bot"
                             target="_blank"
-                            >CryptoSniper </a
+                          >
+                            CryptoSniper </a
                           >加入機器人。
                         </li>
                         <li>
@@ -858,6 +1322,7 @@
                           id="targetPrice"
                           name="targetPrice"
                           class="form-control"
+                          step="any"
                           required
                         />
                       </div>
@@ -951,6 +1416,7 @@
                           type="number"
                           class="form-control mb-2"
                           id="targetPrice-line"
+                          step="any"
                           required
                         />
                       </div>
@@ -1021,7 +1487,7 @@
           style="display: none"
         >
           <div id="tradingview_0aab0"></div>
-          <div>※部分『季度合約』、『BUSD交易對』不支援</div>
+          <div>※ 部分交易對不支援圖表功能</div>
           <script
             type="text/javascript"
             src="https://s3.tradingview.com/tv.js"
@@ -1086,6 +1552,7 @@
     <script src="/js/services/service-worker.js"></script>
     <script type="module" src="/js/services/notifications.js"></script>
     <script type="module" src="/js/services/lineNotify.js"></script>
+    <script type="module" src="js/strategySettings.js"></script>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>

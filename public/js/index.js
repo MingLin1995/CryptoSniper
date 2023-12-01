@@ -91,3 +91,17 @@ document.addEventListener("DOMContentLoaded", () => {
   const favoritesButton = document.getElementById("favorites");
   favoritesButton.addEventListener("click", updateFavoritesModal);
 });
+
+document.addEventListener("DOMContentLoaded", function () {
+  // 檢查 localStorage 中是否有標記
+  if (!localStorage.getItem("tutorialShown")) {
+    var tutorialModal = new bootstrap.Modal(
+      document.getElementById("tutorialModal"),
+      {}
+    );
+    tutorialModal.show();
+
+    // 設置標記表示教學已經顯示過
+    localStorage.setItem("tutorialShown", "true");
+  }
+});

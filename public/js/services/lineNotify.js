@@ -76,6 +76,11 @@ document
               window.location.href = "/";
               return;
             }
+            if (errorResponse.details === "找不到用戶的 Line Access Token") {
+              alert("尚未連動 Line Notify！");
+              return;
+            }
+
             throw new Error("無法獲取訂閱狀態");
           });
         } else {
@@ -84,7 +89,7 @@ document
       })
       .then((data) => {
         //console.log(data);
-        alert("到價通知設定成功！");
+        //alert("到價通知設定成功！");
         loadNotifications(currentNotificationMethod);
       })
       .catch((error) => {

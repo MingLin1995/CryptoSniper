@@ -1,37 +1,35 @@
 // services/lineNotification.js
 
 const axios = require("axios");
-const User = require("../models/User");
+const LineSubscription = require("../models/lineSubscriptionSchema");
 
-async function sendLineNotification(symbol, targetPrice, user) {
+async function sendLineNotification(symbol, targetPrice, userId) {
   try {
-    // 從資料庫獲取最新的用戶資訊
-    const updatedUser = await User.findById(user._id);
+    const lineSubscription = await LineSubscription.findOne({
+      userId,
+    });
 
-    if (!updatedUser) {
-      console.log("User not found");
+    if (!lineSubscription) {
+      console.log("Line subscription not found");
       return;
     }
 
-    const userSubscription = updatedUser.lineSubscription;
-    if (userSubscription && userSubscription.notificationsEnabled) {
+    if (lineSubscription.notificationsEnabled) {
       const message = `${symbol.toUpperCase()}－已達到目標價：${targetPrice}`;
-      const response = await axios.post(
+      await axios.post(
         "https://notify-api.line.me/api/notify",
-        {
-          message: message,
-        },
+        `message=${encodeURIComponent(message)}`,
         {
           headers: {
             "Content-Type": "application/x-www-form-urlencoded",
-            Authorization: `Bearer ${user.lineSubscription.accessToken}`,
+            Authorization: `Bearer ${lineSubscription.accessToken}`,
           },
         }
       );
-      //console.log("Message sent successfully:", response.data);
+      //console.log("Line message sent successfully");
     }
   } catch (error) {
-    console.error("Error sending message:", error);
+    console.error("Error sending Line message:", error);
   }
 }
 
