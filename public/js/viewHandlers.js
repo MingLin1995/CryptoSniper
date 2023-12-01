@@ -529,12 +529,14 @@ function updateFavoritesModal() {
               $("#favoritesModal").modal("hide");
             };
             li.appendChild(symbolText);
+            li.style.marginBottom = "10px";
           } else {
             let sectionName = symbol.split(":")[1]; // 取標的名稱
             li.textContent = sectionName;
             li.style.fontWeight = "bold";
             li.style.borderTop = "3px Solid";
             li.style.borderBottom = "3px Solid ";
+            li.style.marginBottom = "10px";
           }
 
           const deleteButton = document.createElement("button");

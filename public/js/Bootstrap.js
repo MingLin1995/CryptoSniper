@@ -193,6 +193,7 @@ function createListItem(name, isSection) {
     li.style.borderBottom = "3px Solid ";
   }
   makeDraggable(li);
+  li.style.marginBottom = "10px";
 
   const deleteButton = document.createElement("button");
   deleteButton.classList.add("btn", "btn-outline-danger", "btn-sm");
