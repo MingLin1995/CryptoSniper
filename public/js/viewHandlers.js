@@ -483,6 +483,7 @@ function updateFavoritesModal() {
       } else {
         // 如果追蹤不為空
         favorites.forEach((symbol) => {
+          if (!symbol) return;
           const li = document.createElement("li");
           li.classList.add(
             "list-group-item",
