@@ -59,6 +59,7 @@ const favoriteList = async (req, res) => {
     res.status(500).send({ message: "查詢失敗", error: error.message });
   }
 };
+
 const updateOrder = async (req, res) => {
   try {
     const userId = req.user._id;
