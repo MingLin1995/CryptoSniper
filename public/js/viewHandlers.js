@@ -490,6 +490,7 @@ function updateFavoritesModal() {
             "justify-content-between",
             "align-items-center"
           );
+          li.setAttribute("data-id", symbol);
           makeDraggable(li);
 
           const symbolText = document.createElement("span");

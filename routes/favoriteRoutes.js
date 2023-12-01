@@ -100,4 +100,6 @@ router.delete("/", verifyToken, favoriteController.favoriteRemove);
 
 router.get("/", verifyToken, favoriteController.favoriteList);
 
+router.post("/updateOrder", verifyToken, favoriteController.updateOrder);
+
 module.exports = router;

@@ -117,6 +117,26 @@ function handleDrop(e) {
 // 拖動結束
 function handleDragEnd(e) {
   draggedItem = null;
+  updateListOrderOnServer();
+}
+
+function updateListOrderOnServer() {
+  var items = document.querySelectorAll("#favoritesList li");
+  var itemOrder = Array.from(items).map(function (item) {
+    return item.getAttribute("data-id");
+  });
+
+  fetch("/api/favorite/updateOrder", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: localStorage.getItem("token"),
+    },
+    body: JSON.stringify({ order: itemOrder }),
+  })
+    .then((response) => response.text())
+    .then((data) => console.log(data))
+    .catch((error) => console.error("Error:", error));
 }
 
 export { makeDraggable };

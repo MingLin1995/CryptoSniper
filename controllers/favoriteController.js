@@ -59,9 +59,21 @@ const favoriteList = async (req, res) => {
     res.status(500).send({ message: "查詢失敗", error: error.message });
   }
 };
+const updateOrder = async (req, res) => {
+  try {
+    const userId = req.user._id;
+    const newOrder = req.body.order;
+
+    await Favorite.updateOrder(userId, newOrder);
+    res.send("Order updated successfully");
+  } catch (error) {
+    res.status(500).send(error.message);
+  }
+};
 
 module.exports = {
   favoriteAdd,
   favoriteRemove,
   favoriteList,
+  updateOrder,
 };
