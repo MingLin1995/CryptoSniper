@@ -133,7 +133,7 @@ function updateListOrderOnServer() {
   });
 
   fetch("/api/favorite/updateOrder", {
-    method: "POST",
+    method: "PATCH",
     headers: {
       "Content-Type": "application/json",
       Authorization: localStorage.getItem("token"),
