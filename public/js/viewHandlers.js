@@ -490,37 +490,51 @@ function updateFavoritesModal() {
             "justify-content-between",
             "align-items-center"
           );
+          li.setAttribute("data-id", symbol);
           makeDraggable(li);
 
-          const symbolText = document.createElement("span");
-          symbolText.textContent = symbol;
-          symbolText.style.cursor = "pointer";
-          symbolText.onclick = () => {
-            const intervalsData = [
-              {
-                time_interval: document.getElementById("time-interval-1").value,
-                param_1: parseInt(document.getElementById("MA1-1").value),
-                param_2: parseInt(document.getElementById("MA1-2").value),
-                comparison_operator_1: document.getElementById(
-                  "comparison-operator-1-1"
-                ).value,
-                comparison_operator_2:
-                  document.getElementById("comparison-operator-1-2")?.value ||
-                  null,
-                logical_operator:
-                  document.querySelector(
-                    ".toggle-element-1:not(.hidden) #logical-operator-1"
-                  )?.value || null,
-                param_3:
-                  parseInt(document.getElementById("MA1-3")?.value) || null,
-                param_4:
-                  parseInt(document.getElementById("MA1-4")?.value) || null,
-              },
-            ];
-            handleSymbolClick(symbol, intervalsData);
-            $("#favoritesModal").modal("hide"); //關閉追蹤清單
-          };
-          li.appendChild(symbolText);
+          // 檢查是否為板塊
+          const isSection = symbol.startsWith("section:");
+          if (!isSection) {
+            // 非板塊，增加點擊事件
+            const symbolText = document.createElement("span");
+            symbolText.textContent = symbol;
+            symbolText.style.cursor = "pointer";
+            symbolText.onclick = () => {
+              // 點擊事件處理
+              const intervalsData = [
+                {
+                  time_interval:
+                    document.getElementById("time-interval-1").value,
+                  param_1: parseInt(document.getElementById("MA1-1").value),
+                  param_2: parseInt(document.getElementById("MA1-2").value),
+                  comparison_operator_1: document.getElementById(
+                    "comparison-operator-1-1"
+                  ).value,
+                  comparison_operator_2:
+                    document.getElementById("comparison-operator-1-2")?.value ||
+                    null,
+                  logical_operator:
+                    document.querySelector(
+                      ".toggle-element-1:not(.hidden) #logical-operator-1"
+                    )?.value || null,
+                  param_3:
+                    parseInt(document.getElementById("MA1-3")?.value) || null,
+                  param_4:
+                    parseInt(document.getElementById("MA1-4")?.value) || null,
+                },
+              ];
+              handleSymbolClick(symbol, intervalsData);
+              $("#favoritesModal").modal("hide");
+            };
+            li.appendChild(symbolText);
+          } else {
+            let sectionName = symbol.split(":")[1]; // 取標的名稱
+            li.textContent = sectionName;
+            li.style.fontWeight = "bold";
+            li.style.borderTop = "3px Solid";
+            li.style.borderBottom = "3px Solid ";
+          }
 
           const deleteButton = document.createElement("button");
           deleteButton.classList.add("btn", "btn-outline-danger", "btn-sm");
@@ -774,4 +788,5 @@ export {
   removeFavorite,
   displayUserStrategies,
   displayNoStrategiesMessage,
+  loadFavorites,
 };

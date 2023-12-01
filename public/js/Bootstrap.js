@@ -1,5 +1,11 @@
 // public/js/Bootstrap.js
 
+import {
+  removeFavorite,
+  loadFavorites,
+  updateFavoritesModal,
+} from "./viewHandlers.js";
+
 // 背景切換
 document
   .getElementById("toggleThemeBtn")
@@ -117,6 +123,25 @@ function handleDrop(e) {
 // 拖動結束
 function handleDragEnd(e) {
   draggedItem = null;
+  updateListOrderOnServer();
+}
+
+function updateListOrderOnServer() {
+  var items = document.querySelectorAll("#favoritesList li");
+  var itemOrder = Array.from(items).map(function (item) {
+    return item.getAttribute("data-id");
+  });
+
+  fetch("/api/favorite/updateOrder", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: localStorage.getItem("token"),
+    },
+    body: JSON.stringify({ order: itemOrder }),
+  })
+    .then((response) => response.text())
+    .catch((error) => console.error("Error:", error));
 }
 
 export { makeDraggable };
@@ -141,3 +166,45 @@ document.querySelectorAll(".tab-link").forEach(function (el) {
     document.querySelector(targetId).style.display = "block";
   });
 });
+
+document.getElementById("addSection").addEventListener("click", function () {
+  let sectionName = prompt("請輸入板塊名稱");
+  if (sectionName) {
+    let section = createListItem(sectionName, true);
+    document.getElementById("favoritesList").appendChild(section);
+  }
+});
+
+function createListItem(name, isSection) {
+  let li = document.createElement("li");
+  li.classList.add(
+    "list-group-item",
+    "d-flex",
+    "justify-content-between",
+    "align-items-center"
+  );
+  li.textContent = name;
+  li.setAttribute("data-id", `section:${name}:${Date.now()}`);
+  if (isSection) {
+    li.classList.add("section-title");
+    li.textContent = name;
+    li.style.fontWeight = "bold";
+    li.style.borderTop = "3px Solid";
+    li.style.borderBottom = "3px Solid ";
+  }
+  makeDraggable(li);
+
+  const deleteButton = document.createElement("button");
+  deleteButton.classList.add("btn", "btn-outline-danger", "btn-sm");
+  deleteButton.textContent = "刪除";
+
+  deleteButton.onclick = () =>
+    removeFavorite(name, localStorage.getItem("userId"));
+  li.appendChild(deleteButton);
+
+  favoritesList.appendChild(li);
+  updateListOrderOnServer();
+  loadFavorites();
+  updateFavoritesModal();
+  return li;
+}

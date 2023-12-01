@@ -14,7 +14,7 @@ const saveStrategy = async (req, res) => {
   try {
     const strategy = new Strategy(strategyData);
     await strategy.save();
-    res.status(201).send({ success: true, message: "策略儲存成功" }); // 使用 201 Created
+    res.status(201).send({ success: true, message: "策略儲存成功" });
   } catch (err) {
     console.error(err);
     res.status(500).send({ success: false, message: "伺服器錯誤" });
