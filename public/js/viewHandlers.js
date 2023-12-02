@@ -610,6 +610,7 @@ function displayUserStrategies(strategies) {
     const strategyDiv = document.createElement("div");
     strategyDiv.classList.add("strategy-item");
     strategyDiv.classList.add("draggable-strategy"); // 拖曳class
+    strategyDiv.setAttribute("data-id", strategy._id);
     makeDraggable(strategyDiv);
 
     const strategyHeader = document.createElement("div");

@@ -104,4 +104,6 @@ router.get("/", verifyToken, strategyController.getStrategies);
 
 router.delete("/", verifyToken, strategyController.deleteStrategy);
 
+router.patch("/updateOrder", verifyToken, strategyController.updateOrder);
+
 module.exports = router;

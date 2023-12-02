@@ -124,8 +124,10 @@ function handleDrop(e) {
 function handleDragEnd(e) {
   draggedItem = null;
   updateListOrderOnServer();
+  updateStrategyOrderOnServer();
 }
 
+// 更新追蹤清單順序
 function updateListOrderOnServer() {
   var items = document.querySelectorAll("#favoritesList li");
   var itemOrder = Array.from(items).map(function (item) {
@@ -142,6 +144,26 @@ function updateListOrderOnServer() {
   })
     .then((response) => response.text())
     .catch((error) => console.error("Error:", error));
+}
+
+// 更新自訂策略順序
+function updateStrategyOrderOnServer() {
+  var items = document.querySelectorAll(".strategy-item");
+  var itemOrder = Array.from(items).map(function (item) {
+    return item.getAttribute("data-id");
+  });
+
+  fetch("/api/strategy/updateOrder", {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: localStorage.getItem("token"),
+    },
+    body: JSON.stringify({ order: itemOrder }),
+  })
+    .then((response) => response.json())
+    .then((data) => console.log("Order updated", data))
+    .catch((error) => console.error("Error updating order:", error));
 }
 
 export { makeDraggable };

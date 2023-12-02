@@ -26,7 +26,8 @@ const getStrategies = async (req, res) => {
   const userId = req.user._id;
 
   try {
-    const strategies = await Strategy.find({ userId });
+    // 使用 sort 方法依據 order 進行排序
+    const strategies = await Strategy.find({ userId }).sort("order");
     res.status(200).send({ success: true, strategies });
   } catch (err) {
     console.error(err);
@@ -49,4 +50,21 @@ const deleteStrategy = async (req, res) => {
   }
 };
 
-module.exports = { saveStrategy, getStrategies, deleteStrategy };
+// 更新排序
+const updateOrder = async (req, res) => {
+  try {
+    const userId = req.user._id;
+    const newOrder = req.body.order;
+
+    if (!userId || !newOrder) {
+      return res.status(400).send({ message: "缺少必要的查詢参数" });
+    }
+
+    await Strategy.updateOrder(userId, newOrder);
+    res.status(200).json({ message: "策略排序更新成功" });
+  } catch (error) {
+    res.status(500).json({ message: "策略排序更新失败", error: error.message });
+  }
+};
+
+module.exports = { saveStrategy, getStrategies, deleteStrategy, updateOrder };
