@@ -164,7 +164,6 @@ function updateStrategyOrderOnServer() {
     body: JSON.stringify({ order: itemOrder }),
   })
     .then((response) => response.json())
-    .then((data) => console.log("Order updated", data))
     .catch((error) => console.error("Error updating order:", error));
 }
 
