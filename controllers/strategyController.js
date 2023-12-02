@@ -5,16 +5,24 @@ const Strategy = require("../models/strategySchema");
 // 儲存策略
 const saveStrategy = async (req, res) => {
   const userId = req.user._id;
-  const strategyData = { ...req.body, userId };
+  const { name, conditions = [] } = req.body;
 
-  if (!strategyData.name || !strategyData.conditions) {
-    return res.status(400).send({ success: false, message: "缺少策略資料" });
+  if (!name) {
+    return res
+      .status(400)
+      .send({ success: false, message: "缺少策略或板塊名稱" });
   }
 
   try {
+    const strategyData = {
+      userId,
+      name,
+      conditions,
+    };
+
     const strategy = new Strategy(strategyData);
     await strategy.save();
-    res.status(201).send({ success: true, message: "策略儲存成功" });
+    res.status(201).send({ success: true, message: "策略或板塊儲存成功" });
   } catch (err) {
     console.error(err);
     res.status(500).send({ success: false, message: "伺服器錯誤" });
@@ -27,7 +35,7 @@ const getStrategies = async (req, res) => {
 
   try {
     // 使用 sort 方法依據 order 進行排序
-    const strategies = await Strategy.find({ userId }).sort("order");
+    const strategies = await Strategy.find({ userId }).sort({ order: 1 });
     res.status(200).send({ success: true, strategies });
   } catch (err) {
     console.error(err);
@@ -67,4 +75,9 @@ const updateOrder = async (req, res) => {
   }
 };
 
-module.exports = { saveStrategy, getStrategies, deleteStrategy, updateOrder };
+module.exports = {
+  saveStrategy,
+  getStrategies,
+  deleteStrategy,
+  updateOrder,
+};
