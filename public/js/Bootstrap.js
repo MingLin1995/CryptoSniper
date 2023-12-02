@@ -6,6 +6,8 @@ import {
   updateFavoritesModal,
 } from "./viewHandlers.js";
 
+import { fetchUserStrategies } from "./strategySettings.js";
+
 // 背景切換
 document
   .getElementById("toggleThemeBtn")
@@ -124,8 +126,10 @@ function handleDrop(e) {
 function handleDragEnd(e) {
   draggedItem = null;
   updateListOrderOnServer();
+  updateStrategyOrderOnServer();
 }
 
+// 更新追蹤清單順序
 function updateListOrderOnServer() {
   var items = document.querySelectorAll("#favoritesList li");
   var itemOrder = Array.from(items).map(function (item) {
@@ -142,6 +146,25 @@ function updateListOrderOnServer() {
   })
     .then((response) => response.text())
     .catch((error) => console.error("Error:", error));
+}
+
+// 更新自訂策略順序
+function updateStrategyOrderOnServer() {
+  var items = document.querySelectorAll(".strategy-item");
+  var itemOrder = Array.from(items).map(function (item) {
+    return item.getAttribute("data-id");
+  });
+
+  fetch("/api/strategy/updateOrder", {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: localStorage.getItem("token"),
+    },
+    body: JSON.stringify({ order: itemOrder }),
+  })
+    .then((response) => response.json())
+    .catch((error) => console.error("Error updating order:", error));
 }
 
 export { makeDraggable };
@@ -167,6 +190,7 @@ document.querySelectorAll(".tab-link").forEach(function (el) {
   });
 });
 
+// 追蹤清單，新增板塊
 document.getElementById("addSection").addEventListener("click", function () {
   let sectionName = prompt("請輸入板塊名稱");
   if (sectionName) {
@@ -193,6 +217,7 @@ function createListItem(name, isSection) {
     li.style.borderBottom = "3px Solid ";
   }
   makeDraggable(li);
+  li.style.marginBottom = "10px";
 
   const deleteButton = document.createElement("button");
   deleteButton.classList.add("btn", "btn-outline-danger", "btn-sm");
@@ -207,4 +232,42 @@ function createListItem(name, isSection) {
   loadFavorites();
   updateFavoritesModal();
   return li;
+}
+
+// 策略清單，新增板塊
+document
+  .getElementById("createSectionButton")
+  .addEventListener("click", function (event) {
+    event.preventDefault();
+    const sectionName = prompt("請輸入板塊名稱");
+    if (sectionName) {
+      createSection("section:" + sectionName);
+    }
+  });
+
+// 建立板塊
+function createSection(sectionName) {
+  const token = localStorage.getItem("token");
+  const sectionData = {
+    name: sectionName,
+    conditions: [],
+  };
+
+  fetch("/api/strategy", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: token,
+    },
+    body: JSON.stringify(sectionData),
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      if (data.success) {
+        fetchUserStrategies();
+      } else {
+        alert("板塊创建失败。");
+      }
+    })
+    .catch((error) => console.error("Error:", error));
 }
