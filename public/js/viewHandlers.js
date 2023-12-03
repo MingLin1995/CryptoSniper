@@ -499,6 +499,8 @@ function updateFavoritesModal() {
           if (!isSection) {
             // 非板塊，增加點擊事件
             const symbolText = document.createElement("span");
+            symbolText.classList.add("clickable-item");
+
             symbolText.textContent = symbol;
             symbolText.style.cursor = "pointer";
             symbolText.onclick = () => {
@@ -529,12 +531,16 @@ function updateFavoritesModal() {
               $("#favoritesModal").modal("hide");
             };
             li.appendChild(symbolText);
+            li.style.marginBottom = "10px";
           } else {
+            li.classList.add("section-item");
+
             let sectionName = symbol.split(":")[1]; // 取標的名稱
             li.textContent = sectionName;
             li.style.fontWeight = "bold";
             li.style.borderTop = "3px Solid";
             li.style.borderBottom = "3px Solid ";
+            li.style.marginBottom = "10px";
           }
 
           const deleteButton = document.createElement("button");
@@ -605,22 +611,34 @@ function displayUserStrategies(strategies) {
   strategiesList.innerHTML = "";
 
   strategies.forEach((strategy) => {
+    const isSection = strategy.name.startsWith("section:");
     const strategyDiv = document.createElement("div");
-    strategyDiv.classList.add("strategy-item");
-    strategyDiv.classList.add("draggable-strategy"); // 拖曳class
+    strategyDiv.classList.add("strategy-item", "draggable-strategy");
+    strategyDiv.setAttribute("data-id", strategy._id);
     makeDraggable(strategyDiv);
 
     const strategyHeader = document.createElement("div");
     strategyHeader.classList.add("strategy-header");
 
-    const strategyName = document.createElement("button");
-    strategyName.textContent = strategy.name;
-    strategyName.classList.add("btn", "btn-link");
-    strategyName.type = "button";
-    strategyName.onclick = function (event) {
-      event.preventDefault();
-      applyStrategy(strategy);
-    };
+    const strategyName = document.createElement("div"); // 更改為 div
+    strategyName.textContent = isSection
+      ? strategy.name.replace("section:", "")
+      : strategy.name;
+    strategyName.classList.add("strategy-name");
+
+    if (isSection) {
+      strategyDiv.style.fontWeight = "bold";
+      strategyDiv.style.borderTop = "3px solid";
+      strategyDiv.style.borderBottom = "3px solid";
+    } else {
+      strategyName.classList.add("clickable-item");
+      strategyName.onclick = function (event) {
+        event.preventDefault();
+        applyStrategy(strategy);
+      };
+    }
+
+    strategyHeader.appendChild(strategyName);
 
     const deleteButton = document.createElement("button");
     deleteButton.textContent = "刪除";
@@ -636,48 +654,51 @@ function displayUserStrategies(strategies) {
       deleteStrategy(strategy._id);
     };
 
-    const strategyDetails = document.createElement("div");
-    strategyDetails.classList.add("strategy-details");
-    strategyDetails.style.display = "none";
+    strategyHeader.appendChild(deleteButton);
+    strategyDiv.appendChild(strategyHeader);
 
-    strategy.conditions.forEach((condition, idx) => {
-      if (condition.param_1 == null) return;
+    if (!isSection) {
+      const strategyDetails = document.createElement("div");
+      strategyDetails.classList.add("strategy-details");
+      strategyDetails.style.display = "none";
 
-      const conditionDiv = document.createElement("div");
-      conditionDiv.classList.add("condition");
+      strategy.conditions.forEach((condition, idx) => {
+        if (condition.param_1 == null) return;
 
-      let conditionContent = `
-    <strong>篩選條件 ${idx + 1} ：</strong>
-    <ul>
-      <li>時間週期： ${condition.time_interval}</li>
-      <li>篩選條件： 
-      ${condition.param_1} MA
-      ${condition.comparison_operator_1}
-      ${condition.param_2} MA`;
+        const conditionDiv = document.createElement("div");
+        conditionDiv.classList.add("condition");
 
-      if (condition.param_3 != null) {
-        conditionContent += `
-      ${condition.logical_operator}
-      ${condition.param_3} MA
-      ${condition.comparison_operator_2}
-      ${condition.param_4} MA `;
-      }
+        let conditionContent = `
+        <strong>篩選條件 ${idx + 1} ：</strong>
+        <ul>
+          <li>時間週期： ${condition.time_interval}</li>
+          <li>篩選條件： 
+          ${condition.param_1} MA
+          ${condition.comparison_operator_1}
+          ${condition.param_2} MA`;
 
-      conditionContent += `</li></ul>`;
-      conditionDiv.innerHTML = conditionContent;
-      strategyDetails.appendChild(conditionDiv);
-    });
+        if (condition.param_3 != null) {
+          conditionContent += `
+          ${condition.logical_operator}
+          ${condition.param_3} MA
+          ${condition.comparison_operator_2}
+          ${condition.param_4} MA `;
+        }
 
-    strategyName.addEventListener("click", function () {
-      strategyDetails.style.display =
-        strategyDetails.style.display === "none" ? "block" : "none";
-    });
+        conditionContent += `</li></ul>`;
+        conditionDiv.innerHTML = conditionContent;
+        strategyDetails.appendChild(conditionDiv);
+      });
+
+      strategyName.addEventListener("click", function () {
+        strategyDetails.style.display =
+          strategyDetails.style.display === "none" ? "block" : "none";
+      });
+
+      strategyDiv.appendChild(strategyDetails);
+    }
 
     strategiesList.appendChild(strategyDiv);
-    strategyDiv.appendChild(strategyHeader);
-    strategyHeader.appendChild(strategyName);
-    strategyHeader.appendChild(deleteButton);
-    strategyDiv.appendChild(strategyDetails);
   });
 }
 
