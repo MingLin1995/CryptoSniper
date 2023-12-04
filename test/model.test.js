@@ -619,6 +619,4 @@ describe("findIntersection function", () => {
     const result = findIntersection(matchingData, intervalsData);
     expect(result).toEqual([]);
   });
-
-  // 其他可能的测试用例...
 });

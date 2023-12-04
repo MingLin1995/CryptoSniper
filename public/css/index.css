@@ -167,3 +167,50 @@ body.night-mode #symbol-column:hover {
   border-bottom: 1px dashed gray;
   margin-bottom: 30px;
 }
+
+/* ------------- */
+
+/* 基本樣式 */
+.strategy-item,
+.list-item {
+  margin-bottom: 10px;
+}
+
+/* 板塊樣式 */
+.section-item {
+  font-weight: bold;
+  border-top: 3px solid;
+  border-bottom: 3px solid;
+}
+
+/* 可點擊項目樣式 */
+.clickable-item {
+  cursor: pointer;
+}
+
+/* 滑鼠移入可點擊項目時的樣式 */
+.clickable-item:hover {
+  color: #007bff;
+}
+
+/* 夜間模式下的樣式 */
+body.night-mode {
+  background-color: #343a40;
+  color: white;
+}
+
+.night-mode .modal-content,
+.night-mode .card,
+.night-mode .list-group-item {
+  background-color: #343a40;
+  color: white;
+}
+
+.night-mode .list-group-item {
+  border-color: #6c757d;
+}
+
+/* 夜間模式下滑鼠移入可點擊項目的樣式 */
+body.night-mode .clickable-item:hover {
+  color: #00d2ff;
+}
