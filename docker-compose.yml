@@ -9,6 +9,8 @@ services:
       - redis
     env_file:
       - ./.env
+    restart: unless-stopped 
+
   mongodb:
     image: mongo
     ports:
@@ -18,9 +20,13 @@ services:
       MONGO_INITDB_ROOT_PASSWORD: ${DB_PASSWORD}
     volumes:
       - mongodb_data:/data/db
+    restart: unless-stopped
+
   redis:
     image: redis
     ports:
       - "6379:6379"
+    restart: unless-stopped
+    
 volumes:
   mongodb_data:

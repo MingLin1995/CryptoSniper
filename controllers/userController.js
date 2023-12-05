@@ -60,7 +60,7 @@ const login = async (req, res) => {
       return res.status(401).json({ error: "電子信箱錯誤" });
     }
 
-    // 如果用户没有密码（即通过 Google 登录创建），提示使用 Google 登录
+    // 如果用戶沒有密碼（透過第三登入），提示用戶用第三方登入
     if (!user.password) {
       return res
         .status(401)
