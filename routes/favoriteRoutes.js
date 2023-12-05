@@ -44,8 +44,8 @@ const router = express.Router();
  *       500:
  *         description: 伺服器錯誤
  */
-
 router.post("/", verifyToken, favoriteController.favoriteAdd);
+
 /**
  * @swagger
  * /api/favorite:
@@ -73,13 +73,13 @@ router.post("/", verifyToken, favoriteController.favoriteAdd);
  *         description: 移除成功
  *       400:
  *         description: 缺少參數
- *       403:
+ *       404:
  *         description: 用戶未設置追蹤清單
  *       500:
  *         description: 伺服器錯誤
  */
-
 router.delete("/", verifyToken, favoriteController.favoriteRemove);
+
 /**
  * @swagger
  * /api/favorite:
@@ -97,7 +97,6 @@ router.delete("/", verifyToken, favoriteController.favoriteRemove);
  *       500:
  *         description: 伺服器錯誤
  */
-
 router.get("/", verifyToken, favoriteController.favoriteList);
 
 /**
@@ -106,20 +105,31 @@ router.get("/", verifyToken, favoriteController.favoriteList);
  *   patch:
  *     tags: [追蹤清單]
  *     summary: 更新追蹤清單
- *     description: 更新使用者的追蹤清單
+ *     description: 更新使用者的追蹤清單順序
  *     security:
  *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               order:
+ *                 type: array
+ *                 description: 追蹤清單的新順序，包含清單項目的ID
+ *                 items:
+ *                   type: string
  *     responses:
  *       200:
  *         description: 追蹤清單更新成功
  *       400:
- *         description: 缺少必要的查詢參數
+ *         description: 缺少必要的查詢參數或參數格式不正確
  *       404:
  *         description: 找不到追蹤清單或用戶
  *       500:
  *         description: 伺服器錯誤
  */
-
 router.patch("/updateOrder", verifyToken, favoriteController.updateOrder);
 
 module.exports = router;

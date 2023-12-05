@@ -98,12 +98,43 @@ router.get("/", verifyToken, strategyController.getStrategies);
  *     responses:
  *       200:
  *         description: 策略刪除成功
+ *       404:
+ *         description: 找不到策略
  *       500:
  *         description: 伺服器錯誤
  */
 
 router.delete("/", verifyToken, strategyController.deleteStrategy);
 
+/**
+ * @swagger
+ * /api/strategy/updateOrder:
+ *   patch:
+ *     tags: [策略清單]
+ *     summary: 更新策略清單
+ *     description: 更新使用者的策略清單順序
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               order:
+ *                 type: array
+ *                 items:
+ *                   type: string
+ *                 description: 策略的新順序，包含策略ID
+ *     responses:
+ *       200:
+ *         description: 策略清單更新成功
+ *       400:
+ *         description: 缺少必要的查詢參數
+ *       500:
+ *         description: 伺服器錯誤
+ */
 router.patch("/updateOrder", verifyToken, strategyController.updateOrder);
 
 module.exports = router;
