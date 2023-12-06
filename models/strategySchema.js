@@ -21,6 +21,17 @@ const strategySchema = new mongoose.Schema({
       logical_operator: { type: String, required: false },
     },
   ],
+  order: Number,
 });
+
+strategySchema.statics.updateOrder = async function (userId, strategiesOrder) {
+  try {
+    for (const [index, strategyId] of strategiesOrder.entries()) {
+      await this.updateOne({ _id: strategyId }, { $set: { order: index } });
+    }
+  } catch (error) {
+    throw error;
+  }
+};
 
 module.exports = mongoose.model("Strategy", strategySchema);

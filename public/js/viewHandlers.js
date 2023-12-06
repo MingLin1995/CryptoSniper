@@ -483,6 +483,7 @@ function updateFavoritesModal() {
       } else {
         // 如果追蹤不為空
         favorites.forEach((symbol) => {
+          if (!symbol) return;
           const li = document.createElement("li");
           li.classList.add(
             "list-group-item",
@@ -490,37 +491,57 @@ function updateFavoritesModal() {
             "justify-content-between",
             "align-items-center"
           );
+          li.setAttribute("data-id", symbol);
           makeDraggable(li);
 
-          const symbolText = document.createElement("span");
-          symbolText.textContent = symbol;
-          symbolText.style.cursor = "pointer";
-          symbolText.onclick = () => {
-            const intervalsData = [
-              {
-                time_interval: document.getElementById("time-interval-1").value,
-                param_1: parseInt(document.getElementById("MA1-1").value),
-                param_2: parseInt(document.getElementById("MA1-2").value),
-                comparison_operator_1: document.getElementById(
-                  "comparison-operator-1-1"
-                ).value,
-                comparison_operator_2:
-                  document.getElementById("comparison-operator-1-2")?.value ||
-                  null,
-                logical_operator:
-                  document.querySelector(
-                    ".toggle-element-1:not(.hidden) #logical-operator-1"
-                  )?.value || null,
-                param_3:
-                  parseInt(document.getElementById("MA1-3")?.value) || null,
-                param_4:
-                  parseInt(document.getElementById("MA1-4")?.value) || null,
-              },
-            ];
-            handleSymbolClick(symbol, intervalsData);
-            $("#favoritesModal").modal("hide"); //關閉追蹤清單
-          };
-          li.appendChild(symbolText);
+          // 檢查是否為板塊
+          const isSection = symbol.startsWith("section:");
+          if (!isSection) {
+            // 非板塊，增加點擊事件
+            const symbolText = document.createElement("span");
+            symbolText.classList.add("clickable-item");
+
+            symbolText.textContent = symbol;
+            symbolText.style.cursor = "pointer";
+            symbolText.onclick = () => {
+              // 點擊事件處理
+              const intervalsData = [
+                {
+                  time_interval:
+                    document.getElementById("time-interval-1").value,
+                  param_1: parseInt(document.getElementById("MA1-1").value),
+                  param_2: parseInt(document.getElementById("MA1-2").value),
+                  comparison_operator_1: document.getElementById(
+                    "comparison-operator-1-1"
+                  ).value,
+                  comparison_operator_2:
+                    document.getElementById("comparison-operator-1-2")?.value ||
+                    null,
+                  logical_operator:
+                    document.querySelector(
+                      ".toggle-element-1:not(.hidden) #logical-operator-1"
+                    )?.value || null,
+                  param_3:
+                    parseInt(document.getElementById("MA1-3")?.value) || null,
+                  param_4:
+                    parseInt(document.getElementById("MA1-4")?.value) || null,
+                },
+              ];
+              handleSymbolClick(symbol, intervalsData);
+              $("#favoritesModal").modal("hide");
+            };
+            li.appendChild(symbolText);
+            li.style.marginBottom = "10px";
+          } else {
+            li.classList.add("section-item");
+
+            let sectionName = symbol.split(":")[1]; // 取標的名稱
+            li.textContent = `－－－
+            ${sectionName}－－－`;
+            li.style.fontWeight = "bold";
+            li.style.border = "3px double";
+            li.style.marginBottom = "10px";
+          }
 
           const deleteButton = document.createElement("button");
           deleteButton.classList.add("btn", "btn-outline-danger", "btn-sm");
@@ -590,22 +611,33 @@ function displayUserStrategies(strategies) {
   strategiesList.innerHTML = "";
 
   strategies.forEach((strategy) => {
+    const isSection = strategy.name.startsWith("section:");
     const strategyDiv = document.createElement("div");
-    strategyDiv.classList.add("strategy-item");
-    strategyDiv.classList.add("draggable-strategy"); // 拖曳class
+    strategyDiv.classList.add("strategy-item", "draggable-strategy");
+    strategyDiv.setAttribute("data-id", strategy._id);
     makeDraggable(strategyDiv);
 
     const strategyHeader = document.createElement("div");
     strategyHeader.classList.add("strategy-header");
 
-    const strategyName = document.createElement("button");
-    strategyName.textContent = strategy.name;
-    strategyName.classList.add("btn", "btn-link");
-    strategyName.type = "button";
-    strategyName.onclick = function (event) {
-      event.preventDefault();
-      applyStrategy(strategy);
-    };
+    const strategyName = document.createElement("div"); // 更改為 div
+    strategyName.textContent = isSection
+      ? `－－－${strategy.name.replace("section:", "")}－－－`
+      : strategy.name;
+    strategyName.classList.add("strategy-name");
+
+    if (isSection) {
+      strategyDiv.style.fontWeight = "bold";
+      strategyDiv.style.border = "3px double";
+    } else {
+      strategyName.classList.add("clickable-item");
+      strategyName.onclick = function (event) {
+        event.preventDefault();
+        applyStrategy(strategy);
+      };
+    }
+
+    strategyHeader.appendChild(strategyName);
 
     const deleteButton = document.createElement("button");
     deleteButton.textContent = "刪除";
@@ -621,48 +653,51 @@ function displayUserStrategies(strategies) {
       deleteStrategy(strategy._id);
     };
 
-    const strategyDetails = document.createElement("div");
-    strategyDetails.classList.add("strategy-details");
-    strategyDetails.style.display = "none";
+    strategyHeader.appendChild(deleteButton);
+    strategyDiv.appendChild(strategyHeader);
 
-    strategy.conditions.forEach((condition, idx) => {
-      if (condition.param_1 == null) return;
+    if (!isSection) {
+      const strategyDetails = document.createElement("div");
+      strategyDetails.classList.add("strategy-details");
+      strategyDetails.style.display = "none";
 
-      const conditionDiv = document.createElement("div");
-      conditionDiv.classList.add("condition");
+      strategy.conditions.forEach((condition, idx) => {
+        if (condition.param_1 == null) return;
 
-      let conditionContent = `
-    <strong>篩選條件 ${idx + 1} ：</strong>
-    <ul>
-      <li>時間週期： ${condition.time_interval}</li>
-      <li>篩選條件： 
-      ${condition.param_1} MA
-      ${condition.comparison_operator_1}
-      ${condition.param_2} MA`;
+        const conditionDiv = document.createElement("div");
+        conditionDiv.classList.add("condition");
 
-      if (condition.param_3 != null) {
-        conditionContent += `
-      ${condition.logical_operator}
-      ${condition.param_3} MA
-      ${condition.comparison_operator_2}
-      ${condition.param_4} MA `;
-      }
+        let conditionContent = `
+        <strong>篩選條件 ${idx + 1} ：</strong>
+        <ul>
+          <li>時間週期： ${condition.time_interval}</li>
+          <li>篩選條件： 
+          ${condition.param_1} MA
+          ${condition.comparison_operator_1}
+          ${condition.param_2} MA`;
 
-      conditionContent += `</li></ul>`;
-      conditionDiv.innerHTML = conditionContent;
-      strategyDetails.appendChild(conditionDiv);
-    });
+        if (condition.param_3 != null) {
+          conditionContent += `
+          ${condition.logical_operator}
+          ${condition.param_3} MA
+          ${condition.comparison_operator_2}
+          ${condition.param_4} MA `;
+        }
 
-    strategyName.addEventListener("click", function () {
-      strategyDetails.style.display =
-        strategyDetails.style.display === "none" ? "block" : "none";
-    });
+        conditionContent += `</li></ul>`;
+        conditionDiv.innerHTML = conditionContent;
+        strategyDetails.appendChild(conditionDiv);
+      });
+
+      strategyName.addEventListener("click", function () {
+        strategyDetails.style.display =
+          strategyDetails.style.display === "none" ? "block" : "none";
+      });
+
+      strategyDiv.appendChild(strategyDetails);
+    }
 
     strategiesList.appendChild(strategyDiv);
-    strategyDiv.appendChild(strategyHeader);
-    strategyHeader.appendChild(strategyName);
-    strategyHeader.appendChild(deleteButton);
-    strategyDiv.appendChild(strategyDetails);
   });
 }
 
@@ -774,4 +809,5 @@ export {
   removeFavorite,
   displayUserStrategies,
   displayNoStrategiesMessage,
+  loadFavorites,
 };

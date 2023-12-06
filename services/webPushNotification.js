@@ -15,7 +15,6 @@ webpush.setVapidDetails(
 
 async function sendWebPushNotification(symbol, targetPrice, userId) {
   try {
-    // 從 WebSubscription 模型中獲取用戶的訂閱資訊
     const webSubscription = await WebSubscription.findOne({ userId });
 
     // 檢查訂閱和啟用狀態

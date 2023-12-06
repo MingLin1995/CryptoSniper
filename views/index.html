@@ -243,6 +243,12 @@
                 </h5>
                 <h5
                   class="tab-link btn btn-outline-primary mr-3"
+                  data-target="#favoriteIntroduction"
+                >
+                  追蹤清單
+                </h5>
+                <h5
+                  class="tab-link btn btn-outline-primary mr-3"
                   data-target="#webIntroduction"
                 >
                   Web 到價通知
@@ -458,6 +464,49 @@
                     />
                     <div class="description">
                       儲存成功後，點選策略名稱即可將篩選條件自動帶入篩選器
+                    </div>
+
+                    <img
+                      class="d-block mx-auto w-50 mb-3"
+                      src="/images/自訂策略5.jpg"
+                    />
+                    <div class="description">
+                      新增分類板塊，可點擊拖移排序列表順序
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- 追蹤清單 -->
+              <div
+                id="favoriteIntroduction"
+                class="tab-content"
+                style="display: none"
+              >
+                <div class="carousel-inner">
+                  <div class="carousel-item active">
+                    <img
+                      class="d-block mx-auto w-50 mb-3"
+                      src="/images/追蹤2.jpg"
+                    />
+                    <div class="description border-bottom">
+                      篩選標的後，點選追蹤按鈕即可加入清單
+                    </div>
+
+                    <img
+                      class="d-block mx-auto w-50 mb-3"
+                      src="/images/追蹤3.jpg"
+                    />
+                    <div class="description border-bottom">
+                      點擊追蹤清單即可看到追蹤的標的
+                    </div>
+
+                    <img
+                      class="d-block mx-auto w-50 mb-3"
+                      src="/images/追蹤4.jpg"
+                    />
+                    <div class="description">
+                      新增分類板塊，可點擊拖移排序列表順序
                     </div>
                   </div>
                 </div>
@@ -1128,6 +1177,12 @@
                   >
                     儲存策略
                   </button>
+                  <button
+                    id="createSectionButton"
+                    class="btn btn-outline-primary mb-3 ml-3"
+                  >
+                    新增分類板塊
+                  </button>
                   <div id="userStrategiesList"></div>
                 </div>
               </div>
@@ -1474,6 +1529,9 @@
                 </button>
               </div>
               <div class="modal-body">
+                <button id="addSection" class="btn btn-outline-primary mb-3">
+                  新增分類板塊
+                </button>
                 <ul id="favoritesList" class="list-group"></ul>
               </div>
             </div>

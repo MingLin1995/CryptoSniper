@@ -19,7 +19,7 @@
 
 ## 系統架構
 
-![系統架構圖](public/images/架構圖.jpeg)
+![系統架構圖](public/images/系統架構圖.jpg)
 
 ## 資料庫架構
 
@@ -30,6 +30,10 @@
 ### Redis
 
 ![Redis](public/images/redis架構.jpg)
+
+## 到價通知架構
+
+![到價通知架構](public/images/通知流程.jpg)
 
 ## 聯絡我
 
