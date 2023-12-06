@@ -101,14 +101,14 @@
                   登入
                 </a>
 
-                <!-- FB 登入按鈕 -->
+                <!-- Line 登入按鈕 -->
                 <a
-                  href="/auth/facebook"
+                  href="/auth/line"
                   class="btn btn-sm btn-outline-success ml-3"
                 >
                   <img
-                    src="/images/facebook.png"
-                    alt="facebook Logo"
+                    src="/images/line.png"
+                    alt="line Logo"
                     style="width: 30px; margin-right: 5px"
                   />
                   登入
@@ -1128,6 +1128,12 @@
                   >
                     儲存策略
                   </button>
+                  <button
+                    id="createSectionButton"
+                    class="btn btn-outline-primary mb-3 ml-3"
+                  >
+                    新增分類板塊
+                  </button>
                   <div id="userStrategiesList"></div>
                 </div>
               </div>
@@ -1135,7 +1141,7 @@
           </div>
         </form>
 
-        <!-- web到價通知 -->
+        <!-- 到價通知 -->
         <div class="hidden-before-login">
           <h2 class="mb-3">到價通知設定</h2>
           <div class="d-flex justify-content-around align-items-center mb-3">
@@ -1201,6 +1207,7 @@
                           type="number"
                           class="form-control mb-2"
                           id="targetPrice-Notification"
+                          step="any"
                           required
                         />
                       </div>
@@ -1321,6 +1328,7 @@
                           id="targetPrice"
                           name="targetPrice"
                           class="form-control"
+                          step="any"
                           required
                         />
                       </div>
@@ -1414,6 +1422,7 @@
                           type="number"
                           class="form-control mb-2"
                           id="targetPrice-line"
+                          step="any"
                           required
                         />
                       </div>
@@ -1471,6 +1480,9 @@
                 </button>
               </div>
               <div class="modal-body">
+                <button id="addSection" class="btn btn-outline-primary mb-3">
+                  新增分類板塊
+                </button>
                 <ul id="favoritesList" class="list-group"></ul>
               </div>
             </div>

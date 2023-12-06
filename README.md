@@ -31,6 +31,10 @@
 
 ![Redis](public/images/redis架構.jpg)
 
+## 到價通知架構
+
+[到價通知架構](public/images/通知流程.jpeg)
+
 ## 聯絡我
 
 林右銘（ Ming ）
