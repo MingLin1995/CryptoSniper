@@ -12,7 +12,7 @@ async function sendTelegramNotification(messageText, telegramId) {
       telegramId,
     });
 
-    if (!telegramSubscription || !telegramSubscription.notificationsEnabled) {
+    if (telegramSubscription && !telegramSubscription.notificationsEnabled) {
       //console.log("Telegram subscription not found or notifications are disabled");
       return;
     }

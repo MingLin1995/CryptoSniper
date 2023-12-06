@@ -536,10 +536,10 @@ function updateFavoritesModal() {
             li.classList.add("section-item");
 
             let sectionName = symbol.split(":")[1]; // 取標的名稱
-            li.textContent = sectionName;
+            li.textContent = `－－－
+            ${sectionName}－－－`;
             li.style.fontWeight = "bold";
-            li.style.borderTop = "3px Solid";
-            li.style.borderBottom = "3px Solid ";
+            li.style.border = "3px double";
             li.style.marginBottom = "10px";
           }
 
@@ -622,14 +622,13 @@ function displayUserStrategies(strategies) {
 
     const strategyName = document.createElement("div"); // 更改為 div
     strategyName.textContent = isSection
-      ? strategy.name.replace("section:", "")
+      ? `－－－${strategy.name.replace("section:", "")}－－－`
       : strategy.name;
     strategyName.classList.add("strategy-name");
 
     if (isSection) {
       strategyDiv.style.fontWeight = "bold";
-      strategyDiv.style.borderTop = "3px solid";
-      strategyDiv.style.borderBottom = "3px solid";
+      strategyDiv.style.border = "3px double";
     } else {
       strategyName.classList.add("clickable-item");
       strategyName.onclick = function (event) {
