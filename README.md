@@ -33,7 +33,7 @@
 
 ## 到價通知架構
 
-[到價通知](public/images/通知流程.jpeg)
+[到價通知架構](public/images/通知流程.jpeg)
 
 ## 聯絡我
 
