@@ -26,12 +26,6 @@ function calculateMA(allKlinesData, intervalsData) {
         return;
       }
 
-      // 檢查 allKlinesData[timeInterval] 是否存在
-      if (!allKlinesData[timeInterval]) {
-        console.error(`Error: allKlinesData[${timeInterval}] is undefined`);
-        return;
-      }
-
       const maData = {};
       params.forEach((param) => {
         if (param !== null) {
