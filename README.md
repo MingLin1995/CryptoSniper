@@ -17,7 +17,7 @@
 
 [API doc](https://crypto-sniper.minglin.vip/api-docs/#/)
 
-## Unit Test Doc
+## Unit Test Report
 
 [Unit Test Report](https://minglin1995.github.io/CryptoSniper/coverage/lcov-report/)
 
