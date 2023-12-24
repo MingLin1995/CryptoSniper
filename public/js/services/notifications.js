@@ -207,7 +207,7 @@ document.querySelectorAll('img[data-toggle="modal"]').forEach((img) => {
 const notificationImage = document.getElementById("NotificationPermissio-web");
 
 // 點擊圖片時，請求通知許可
-notificationImage.addEventListener("click", async function () {
+notificationImage.addEventListener("click", async function (event) {
   const isSupported = await init();
   if (!isSupported) {
     // 避免觸發彈窗
