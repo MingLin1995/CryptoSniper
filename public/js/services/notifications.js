@@ -37,8 +37,6 @@ async function init() {
   await registerServiceWorker();
 }
 
-init();
-
 // 建立通知
 document
   .getElementById("targetPriceForm")
@@ -210,6 +208,7 @@ const notificationImage = document.getElementById("NotificationPermissio-web");
 
 // 點擊圖片時，請求通知許可
 notificationImage.addEventListener("click", async function () {
+  await init();
   await onClick();
   await checkSubscriptionStatus(currentNotificationMethod);
   loadNotifications(currentNotificationMethod);
