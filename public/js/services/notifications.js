@@ -208,7 +208,13 @@ const notificationImage = document.getElementById("NotificationPermissio-web");
 
 // 點擊圖片時，請求通知許可
 notificationImage.addEventListener("click", async function () {
-  await init();
+  const isSupported = await init();
+  if (!isSupported) {
+    // 避免觸發彈窗
+    event.stopPropagation();
+    event.preventDefault();
+    return;
+  }
   await onClick();
   await checkSubscriptionStatus(currentNotificationMethod);
   loadNotifications(currentNotificationMethod);
