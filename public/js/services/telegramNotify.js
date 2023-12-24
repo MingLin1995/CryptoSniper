@@ -64,9 +64,6 @@ document
         }
       })
       .then((data) => {
-        //console.log("Success:", data);
-        //alert("到價通知設定成功！");
-
         // 更新用戶的 Telegram ID
         updateUserTelegramId(telegramId);
 
@@ -82,7 +79,6 @@ document
 
 // 更新Telegram ID
 function updateUserTelegramId(telegramId) {
-  // 發送請求更新用戶的 Telegram ID
   fetch("/api/updateTelegramId", {
     method: "PATCH",
     headers: {
@@ -93,8 +89,6 @@ function updateUserTelegramId(telegramId) {
   })
     .then((response) => response.json())
     .then((data) => {
-      //console.log(data);
-      // 如果有新的Telegram ID，則更新資料庫和輸入框
       if (data.telegramId) {
         localStorage.setItem("telegramId", data.telegramId);
         document.getElementById("telegramId").value = data.telegramId;

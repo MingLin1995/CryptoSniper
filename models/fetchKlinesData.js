@@ -28,7 +28,7 @@ async function updateSymbolKlinesData(timeInterval) {
   }
 }
 
-// 等待指定時間的異步函數
+// 等待指定時間
 function sleep(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
@@ -46,8 +46,6 @@ async function getSymbolKlinesData(symbolQuoteVolumeData, timeInterval) {
 
     // 增加每個標的之間的時間間隔，避免大量呼叫API
     await sleep(1000);
-    // 800毫秒，每個時間框架處理時間約4分 AWS 2.5分鐘(0.625倍)
-    // 1000毫秒，每個時間框架處理時間約5分 AWS 4分鐘(0.625倍)
   }
 
   return results;
@@ -56,7 +54,7 @@ async function getSymbolKlinesData(symbolQuoteVolumeData, timeInterval) {
 // Binance的基本URL
 const BASE_URL = "https://fapi.binance.com/fapi/v1";
 
-// 使用API取得指定符號和時間間隔的K線數據
+// 使用API取得指定標的和時間間隔的K線數據
 async function fetchKlinesData(symbol, timeInterval) {
   const limit = 240;
   const klinesUrl = `${BASE_URL}/klines`;
@@ -66,7 +64,7 @@ async function fetchKlinesData(symbol, timeInterval) {
     limit: limit,
   };
 
-  let retries = 3; // 設定重試次數
+  let retries = 3; // 重試次數
   while (retries > 0) {
     try {
       const response = await axios.get(klinesUrl, { params: params });

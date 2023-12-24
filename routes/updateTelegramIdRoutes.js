@@ -3,7 +3,6 @@
 const express = require("express");
 const userController = require("../controllers/updateTelegramIdController");
 const verifyToken = require("../auth");
-
 const router = express.Router();
 
 /**
@@ -49,7 +48,6 @@ const router = express.Router();
  *       500:
  *         description: 伺服器錯誤 或 Telegram ID 更新失敗
  */
-
 router.patch("/", verifyToken, userController.updateTelegramId);
 
 module.exports = router;

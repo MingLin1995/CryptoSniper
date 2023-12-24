@@ -3,7 +3,6 @@
 const express = require("express");
 const userController = require("../controllers/userController");
 const verifyToken = require("../auth");
-
 const router = express.Router();
 
 /**
@@ -50,6 +49,7 @@ const router = express.Router();
  *         description: 伺服器錯誤
  */
 router.post("/register", userController.register);
+
 /**
  * @swagger
  * /api/user:
@@ -99,6 +99,7 @@ router.post("/register", userController.register);
  *         description: 伺服器錯誤
  */
 router.post("/", userController.login);
+
 /**
  * @swagger
  * /api/user:
@@ -114,7 +115,6 @@ router.post("/", userController.login);
  *       500:
  *         description: 伺服器錯誤
  */
-
 router.delete("/", verifyToken, userController.logout);
 
 /**

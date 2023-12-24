@@ -76,7 +76,7 @@ const login = async (req, res) => {
     user.token = token;
     await user.save();
 
-    // 查詢 Telegram 訂閱
+    // 查詢 Telegram ID
     const telegramSubscription = await TelegramSubscription.findOne({
       userId: user._id,
     });
@@ -97,7 +97,6 @@ const login = async (req, res) => {
 
 const logout = async (req, res) => {
   try {
-    //根據userID找資料
     await User.findByIdAndUpdate(
       req.user._id,
       { $unset: { token: 1 } }, //移除token

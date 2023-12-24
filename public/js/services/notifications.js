@@ -12,7 +12,6 @@ async function registerServiceWorker() {
     const registration = await navigator.serviceWorker.register(
       "/js/services/service-worker.js"
     );
-    //console.log("Service Worker 註冊成功");
     return registration;
   } catch (error) {
     console.error("Service Worker 註冊失敗", error);
@@ -67,12 +66,11 @@ document
       return;
     }
 
-    const symbol = document.getElementById("symbol-Notification").value; // 獲取使用者輸入的幣種
+    const symbol = document.getElementById("symbol-Notification").value;
     const targetPrice = document.getElementById(
       "targetPrice-Notification"
     ).value;
 
-    // 使用先前選擇的通知方式
     const notificationMethod = currentNotificationMethod;
 
     fetch("/api/track", {
@@ -102,8 +100,6 @@ document
         }
       })
       .then((data) => {
-        //console.log(data);
-        //alert("到價通知設定成功！");
         loadNotifications(currentNotificationMethod);
       })
       .catch((error) => {
@@ -115,10 +111,8 @@ document
 async function requestNotificationPermission() {
   const permission = await Notification.requestPermission();
   if (permission !== "granted") {
-    //console.log("用戶拒絕了通知許可權");
     return false;
   }
-  //console.log("通知許可權獲得成功");
   return true;
 }
 
@@ -146,7 +140,6 @@ async function subscribeUser(registration) {
     // 將訂閱詳情發送到後端
     await sendSubscriptionToBackend(subscription);
 
-    //console.log("用戶訂閱成功");
     updateToggleButtonText(true);
   } catch (error) {
     console.error("用戶訂閱失敗", error);
@@ -172,7 +165,6 @@ function urlB64ToUint8Array(base64String) {
 async function sendSubscriptionToBackend(subscription) {
   const token = localStorage.getItem("token");
 
-  // 將訂閱對象轉換為適合發送的格式
   const subscriptionData = JSON.stringify(subscription);
 
   try {
@@ -184,7 +176,6 @@ async function sendSubscriptionToBackend(subscription) {
       },
       body: subscriptionData,
     });
-    //console.log("訂閱詳情已發送到後端");
   } catch (error) {
     console.error("發送訂閱詳情到後端失敗", error);
   }

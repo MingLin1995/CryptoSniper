@@ -1,13 +1,11 @@
-// public/js/dataService.js
+// public/js/services/dataService.js
 
 // 從伺服器取得K線資料
 async function getKlinesData(intervalsData) {
-  // 把時間區間作為查詢參數
   const timeIntervals = intervalsData
     .filter((interval) => interval.param_1 !== null)
     .map((interval) => interval.time_interval);
 
-  // 使用 URLSearchParams 來構建查詢字符串
   const queryParams = new URLSearchParams({
     intervals: JSON.stringify(timeIntervals),
   });
@@ -20,7 +18,6 @@ async function getKlinesData(intervalsData) {
 
 // 從伺服器取得成交量資料
 async function getResultsVolume(results) {
-  // 使用 URLSearchParams 來構建查詢字符串
   const queryParams = new URLSearchParams({ results: JSON.stringify(results) });
 
   return fetch(`/api/loadVolumeData?${queryParams}`, {

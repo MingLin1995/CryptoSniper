@@ -4,6 +4,7 @@ const express = require("express");
 const passport = require("passport");
 const googleAuthController = require("../controllers/googleAuthController");
 const router = express.Router();
+
 /**
  * @swagger
  * tags:
@@ -27,7 +28,6 @@ const router = express.Router();
  *       500:
  *         description: 伺服器錯誤
  */
-
 router.get(
   "/",
   passport.authenticate("google", {
@@ -47,7 +47,6 @@ router.get(
  *       302:
  *         description: 根據身份驗證結果進行重定向
  */
-
 router.get(
   "/callback",
   passport.authenticate("google", {

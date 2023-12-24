@@ -1,4 +1,4 @@
-// CryptSniper/public/js/lineNotify.js
+// public/js/services/lineNotify.js
 import {
   checkSubscriptionStatus,
   toggleNotification,
@@ -44,7 +44,7 @@ document
       return;
     }
 
-    const symbol = document.getElementById("symbol-line").value; // 獲取使用者輸入的幣種
+    const symbol = document.getElementById("symbol-line").value;
     const targetPrice = document.getElementById("targetPrice-line").value;
     const token = localStorage.getItem("token");
 
@@ -53,7 +53,6 @@ document
       return;
     }
 
-    // 使用先前選擇的通知方式
     const notificationMethod = currentNotificationMethod;
 
     fetch("/api/track", {
@@ -88,8 +87,6 @@ document
         }
       })
       .then((data) => {
-        //console.log(data);
-        //alert("到價通知設定成功！");
         loadNotifications(currentNotificationMethod);
       })
       .catch((error) => {

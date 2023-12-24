@@ -87,7 +87,7 @@ const getNotificationsByMethod = async (req, res) => {
 
 //刪除通知項目
 const deleteNotification = async (req, res) => {
-  const { id } = req.query; // 從查詢參數中獲取通知的 ID
+  const { id } = req.query;
   try {
     const notification = await PriceAlert.findById(id);
     if (!notification) {

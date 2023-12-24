@@ -1,13 +1,13 @@
 /* public/css/index.css */
 
-/* 表格文字置中 */
+/* 表格文字 */
 #results-table th,
 #results-table td {
   text-align: center;
   vertical-align: middle;
 }
 
-/* 表頭固定寬度 */
+/* 表頭寬度 */
 #results-table th:nth-child(1) {
   width: 20%;
 }
@@ -167,8 +167,6 @@ body.night-mode #symbol-column:hover {
   border-bottom: 1px dashed gray;
   margin-bottom: 30px;
 }
-
-/* ------------- */
 
 /* 基本樣式 */
 .strategy-item,
