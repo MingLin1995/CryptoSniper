@@ -48,7 +48,6 @@ async function processForm() {
 
     // 依據ma做篩選
     const matchingData = compareMAValues(maResults, intervalsData);
-    //1M出現錯誤，有可能是因為K線數量不足
 
     // 檢查 maResults 是否為空值
     if (Object.keys(matchingData).length === 0) {
@@ -83,7 +82,6 @@ async function processForm() {
     tradingViewContainer.style.display = "none";
     loadingImageContainer.innerHTML =
       "選擇的時間週期資料庫更新中，請稍後再試或是換個時框";
-    //console.error("錯誤:", error);
   }
 }
 

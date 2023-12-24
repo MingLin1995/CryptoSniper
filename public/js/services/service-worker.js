@@ -1,19 +1,13 @@
 // public/js/services/service-worker.js
 
-self.addEventListener("install", (event) => {
-  //console.log("Service worker 安裝成功");
-});
+self.addEventListener("install", (event) => {});
 
-self.addEventListener("activate", (event) => {
-  //console.log("Service worker 啟動成功");
-});
+self.addEventListener("activate", (event) => {});
 
 self.addEventListener("push", function (event) {
-  //console.log("Received push event:", event);
   try {
     if (event.data) {
       const data = event.data.json();
-      // console.log("Push data:", data);
       event.waitUntil(
         self.registration.showNotification(data.title, {
           body: data.body,

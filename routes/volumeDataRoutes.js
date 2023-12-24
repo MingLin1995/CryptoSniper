@@ -47,7 +47,6 @@ const volumeDataController = require("../controllers/volumeDataController");
  *       500:
  *         description: 伺服器錯誤
  */
-
 router.get("/", volumeDataController.handleLoadVolumeRequest);
 
 module.exports = router;

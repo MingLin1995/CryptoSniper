@@ -24,7 +24,6 @@ async function checkLoginStatus() {
   );
 
   if (token) {
-    // 驗證token是否有效
     try {
       const response = await fetch("/api/user", {
         method: "GET",
@@ -35,7 +34,6 @@ async function checkLoginStatus() {
       });
 
       if (!response.ok) {
-        // token無效，清除token並返回
         localStorage.removeItem("token");
         localStorage.removeItem("telegramId");
         localStorage.removeItem("userId");
@@ -43,9 +41,8 @@ async function checkLoginStatus() {
         throw new Error("Token expired");
       }
     } catch (error) {
-      // 處理token過期或其他錯誤
       console.error(error);
-      return checkLoginStatus(); // 重新檢查登錄狀態
+      return checkLoginStatus();
     }
 
     loginBtn.style.display = "none";
@@ -98,7 +95,6 @@ async function register() {
       alert("註冊失敗：" + data.message);
     }
   } catch (error) {
-    //console.error("Error:", error);
     alert("伺服器錯誤");
   }
 }
@@ -117,7 +113,6 @@ async function login() {
     const data = await response.json();
 
     if (response.ok) {
-      //alert("登入成功！");
       localStorage.setItem("token", data.token);
       localStorage.setItem("userId", data.userId);
 
@@ -132,7 +127,6 @@ async function login() {
       alert("登入失敗：" + data.error);
     }
   } catch (error) {
-    //console.error("Error:", error);
     alert("伺服器錯誤");
   }
 }
@@ -151,7 +145,6 @@ async function logout() {
       localStorage.removeItem("token");
       localStorage.removeItem("telegramId");
       localStorage.removeItem("userId");
-      //alert("登出成功！");
       checkLoginStatus();
       window.location.href = "/";
     } else {

@@ -1,3 +1,5 @@
+// public/js/strategySettings.js
+
 import {
   displayUserStrategies,
   displayNoStrategiesMessage,
@@ -64,7 +66,6 @@ function getFilters() {
     });
   }
 
-  // 新增：讓用戶輸入策略名稱
   const strategyName = prompt("請為您的策略命名:");
   if (!strategyName) {
     alert("策略未命名，無法保存。");
@@ -112,7 +113,6 @@ function saveStrategy() {
     })
     .then((data) => {
       if (data.success) {
-        //alert("策略已成功保存！");
         fetchUserStrategies();
       } else {
         alert("策略保存失敗。");

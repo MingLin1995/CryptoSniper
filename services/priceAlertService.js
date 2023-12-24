@@ -11,7 +11,6 @@ const trackPrices = async () => {
   const alerts = await PriceAlert.find({}).populate("userId");
 
   if (alerts.length === 0) {
-    //console.log("沒有找到任何目標價格的設定。");
     return;
   }
   alerts.forEach((alert) => {
@@ -27,14 +26,11 @@ const trackPrices = async () => {
     );
     activeWebSockets.set(_id.toString(), ws); // 將 WebSocket 連接儲存到 Map 中
 
-    ws.on("open", function open() {
-      //console.log(`WebSocket連線開啟: ${symbol}`);
-    });
+    ws.on("open", function open() {});
 
     let initialPrice = null; //設定當下價格
     let lastNotificationTime = 0; // 初始化上次通知時間
     let hasNotified = false; // 新增一個標記是否已經發送通知的變數
-
     let latestPrice = null; //儲存最新的價格
 
     ws.on("message", async function incoming(message) {
@@ -67,7 +63,7 @@ const trackPrices = async () => {
               // 發送通知
               sendNotification(symbol, targetPrice, notificationMethod, userId);
               hasNotified = true; // 更新已發送通知的狀態
-              lastNotificationTime = now; // 更新發送通知的時間戳
+              lastNotificationTime = now; // 更新發送通知的時間
 
               console.log("設定當下價格", initialPrice);
               console.log("當下價格", currentPrice);
@@ -75,7 +71,6 @@ const trackPrices = async () => {
               console.log("執行類型是否為市場價格", data.X);
               console.log("是否由做市者進行", data.m);
 
-              //console.log(`${symbol} 達到目標價格 ${currentPrice}`);
               await PriceAlert.deleteOne({ _id });
               ws.close(); // 關閉 WebSocket 連接
               activeWebSockets.delete(_id.toString()); // 從 Map 中移除 WebSocket 連接

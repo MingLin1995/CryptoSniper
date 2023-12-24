@@ -55,8 +55,8 @@ const verifyToken = require("../auth");
  *       500:
  *         description: 伺服器錯誤
  */
-
 router.post("/", verifyToken, trackingController.addTracking);
+
 /**
  * @swagger
  * /api/track:
@@ -79,8 +79,8 @@ router.post("/", verifyToken, trackingController.addTracking);
  *       500:
  *         description: 伺服器錯誤
  */
-
 router.get("/", verifyToken, trackingController.getNotificationsByMethod);
+
 /**
  * @swagger
  * /api/track:
@@ -107,7 +107,6 @@ router.get("/", verifyToken, trackingController.getNotificationsByMethod);
  *       500:
  *         description: 伺服器錯誤
  */
-
 router.delete("/", verifyToken, trackingController.deleteNotification);
 
 module.exports = router;
