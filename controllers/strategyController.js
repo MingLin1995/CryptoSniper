@@ -1,4 +1,4 @@
-// CryptSniper/controllers/strategyController.js
+// controllers/strategyController.js
 
 const Strategy = require("../models/strategySchema");
 
@@ -34,7 +34,6 @@ const getStrategies = async (req, res) => {
   const userId = req.user._id;
 
   try {
-    // 使用 sort 方法依據 order 進行排序
     const strategies = await Strategy.find({ userId }).sort({ order: 1 });
     res.status(200).send({ success: true, strategies });
   } catch (err) {

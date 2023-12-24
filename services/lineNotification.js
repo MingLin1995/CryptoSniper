@@ -26,7 +26,6 @@ async function sendLineNotification(symbol, targetPrice, userId) {
           },
         }
       );
-      //console.log("Line message sent successfully");
     }
   } catch (error) {
     console.error("Error sending Line message:", error);

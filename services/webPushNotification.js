@@ -26,7 +26,7 @@ async function sendWebPushNotification(symbol, targetPrice, userId) {
 
       await webpush.sendNotification(webSubscription, payload);
     } else {
-      //console.log("Web push notification is disabled for this user.");
+      console.log("Web push notification is disabled for this user.");
     }
   } catch (error) {
     console.error("Error sending notification:", error);

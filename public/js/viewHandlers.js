@@ -279,7 +279,6 @@ function loadNotifications(currentNotificationMethod) {
   }
 
   fetch(`/api/track?notificationMethod=${currentNotificationMethod}`, {
-    // 使用 GET 方法和查詢參數
     method: "GET",
     headers: {
       "Content-Type": "application/json",
@@ -307,7 +306,7 @@ function loadNotifications(currentNotificationMethod) {
       const notificationListId = `notificationList-${currentNotificationMethod}`;
       const notificationList = document.getElementById(notificationListId);
 
-      notificationList.innerHTML = ""; // 清空當前列表
+      notificationList.innerHTML = "";
       // 檢查是否有通知列表
       if (data.length === 0) {
         notificationHeader.textContent = "尚未建立任何通知";
@@ -363,7 +362,6 @@ function deleteNotification(notificationId, currentNotificationMethod) {
   }
 
   fetch(`/api/track?id=${notificationId}`, {
-    // 使用 DELETE 方法和查詢參數
     method: "DELETE",
     headers: {
       "Content-Type": "application/json",
@@ -397,7 +395,6 @@ function deleteNotification(notificationId, currentNotificationMethod) {
 
 //切換追蹤按鈕
 function toggleFavorite(symbol, favoriteButton) {
-  // 檢查是否有用戶ID，如果没有，返回首頁
   if (!userId) {
     alert("登入後即可使用此功能");
     return;
@@ -443,9 +440,6 @@ function toggleFavorite(symbol, favoriteButton) {
         return response.json();
       }
     })
-    .then((data) => {
-      //console.log("追蹤清單已更新", data);
-    })
     .catch((error) => {
       console.error("Error:", error);
     });
@@ -472,16 +466,14 @@ function updateFavoritesModal() {
   loadFavorites()
     .then((favorites) => {
       const favoritesList = document.getElementById("favoritesList");
-      favoritesList.innerHTML = ""; // 清空列表
+      favoritesList.innerHTML = "";
 
       if (favorites.length === 0) {
-        // 如果追蹤為空
         const li = document.createElement("li");
         li.classList.add("list-group-item");
         li.textContent = "尚未建立任何追蹤";
         favoritesList.appendChild(li);
       } else {
-        // 如果追蹤不為空
         favorites.forEach((symbol) => {
           if (!symbol) return;
           const li = document.createElement("li");
@@ -620,7 +612,7 @@ function displayUserStrategies(strategies) {
     const strategyHeader = document.createElement("div");
     strategyHeader.classList.add("strategy-header");
 
-    const strategyName = document.createElement("div"); // 更改為 div
+    const strategyName = document.createElement("div");
     strategyName.textContent = isSection
       ? `－－－${strategy.name.replace("section:", "")}－－－`
       : strategy.name;
@@ -788,7 +780,6 @@ function deleteStrategy(strategyId) {
     .then((response) => response.json())
     .then((data) => {
       if (data.success) {
-        //console.log("策略删除成功:", strategyId);
         fetchUserStrategies();
       } else {
         console.error("策略刪除失败:", data.message);

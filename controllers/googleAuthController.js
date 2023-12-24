@@ -1,4 +1,4 @@
-// CryptSniper/controllers/googleAuthController.js
+// controllers/googleAuthController.js
 
 const googleAuthCallback = async (req, res) => {
   if (req.user) {

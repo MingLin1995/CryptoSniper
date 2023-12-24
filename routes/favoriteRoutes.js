@@ -3,8 +3,8 @@
 const express = require("express");
 const favoriteController = require("../controllers/favoriteController");
 const verifyToken = require("../auth");
-
 const router = express.Router();
+
 /**
  * @swagger
  * tags:

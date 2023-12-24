@@ -1,4 +1,4 @@
-// CryptSniper/routes/strategyRoutes.js
+// routes/strategyRoutes.js
 
 const express = require("express");
 const router = express.Router();
@@ -60,8 +60,8 @@ const verifyToken = require("../auth");
  *       500:
  *         description: 伺服器錯誤
  */
-
 router.post("/", verifyToken, strategyController.saveStrategy);
+
 /**
  * @swagger
  * /api/strategy:
@@ -77,8 +77,8 @@ router.post("/", verifyToken, strategyController.saveStrategy);
  *       500:
  *         description: 伺服器錯誤
  */
-
 router.get("/", verifyToken, strategyController.getStrategies);
+
 /**
  * @swagger
  * /api/strategy:
@@ -103,7 +103,6 @@ router.get("/", verifyToken, strategyController.getStrategies);
  *       500:
  *         description: 伺服器錯誤
  */
-
 router.delete("/", verifyToken, strategyController.deleteStrategy);
 
 /**

@@ -1,4 +1,4 @@
-// CryptSniper/routes/lineNotifyRoutes.js
+// routes/lineNotifyRoutes.js
 
 const express = require("express");
 const router = express.Router();
@@ -39,7 +39,6 @@ const lineNotifyController = require("../controllers/lineNotifyController");
  *       500:
  *         description: 獲取 Access Token 時出錯
  */
-
 router.get("/", lineNotifyController);
 
 module.exports = router;

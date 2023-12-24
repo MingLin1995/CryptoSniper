@@ -71,7 +71,6 @@ const klinesDataController = require("../controllers/klinesDataController");
  *                 type: number
  *                 description: 收盤價數組
  */
-
 router.get("/", klinesDataController.handleLoadKlinesDataRequest);
 
 module.exports = router;
