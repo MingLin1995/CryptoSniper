@@ -31,10 +31,11 @@ function checkBrowserSupport() {
 // 初始化函數
 async function init() {
   if (!checkBrowserSupport()) {
-    alert("此瀏覽器不支持推送通知。");
-    return;
+    alert("此瀏覽器不支援Web推送通知功能");
+    return false;
   }
   await registerServiceWorker();
+  return true;
 }
 
 // 建立通知
