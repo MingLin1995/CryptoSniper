@@ -56,7 +56,6 @@ const {
  *       500:
  *         description: 伺服器錯誤
  */
-
 router.post("/", verifyToken, handleSubscription);
 
 module.exports = router;

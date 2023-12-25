@@ -41,8 +41,8 @@ const {
  *       500:
  *         description: 檢查訂閱狀態失敗
  */
-
 router.get("/", verifyToken, checkSubscription);
+
 /**
  * @swagger
  * /api/subscription:
@@ -69,7 +69,6 @@ router.get("/", verifyToken, checkSubscription);
  *       500:
  *         description: 切換訂閱狀態失敗
  */
-
 router.patch("/", verifyToken, toggleSubscription);
 
 module.exports = router;

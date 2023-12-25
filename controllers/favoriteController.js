@@ -1,4 +1,4 @@
-// CryptSniper/controllers/favoriteController.js
+// controllers/favoriteController.js
 
 const Favorite = require("../models/favoriteSchema");
 
@@ -70,10 +70,8 @@ const updateOrder = async (req, res) => {
       return res.status(400).send("是否有參數");
     }
 
-    // 更新順序
     const result = await Favorite.updateOrder(userId, newOrder);
 
-    // 檢查是否有找到清單
     if (!result) {
       return res.status(404).send("找不到追蹤清單");
     }

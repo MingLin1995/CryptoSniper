@@ -4,6 +4,7 @@ const express = require("express");
 const passport = require("passport");
 const lineAuthController = require("../controllers/lineAuthController");
 const router = express.Router();
+
 /**
  * @swagger
  * tags:
@@ -28,6 +29,7 @@ const router = express.Router();
  *         description: 伺服器錯誤
  */
 router.get("/", passport.authenticate("line", { session: false }));
+
 /**
  * @swagger
  * /auth/line/callback:

@@ -43,6 +43,6 @@
 
 ## 聯絡我
 
-林右銘（ Ming ）
-Email：ben014335@gmail.com
-Linkedin：https://www.linkedin.com/in/youminglin/
+- 林右銘（ Ming ）
+- Email：ben014335@gmail.com
+- Linkedin：https://www.linkedin.com/in/youminglin/
