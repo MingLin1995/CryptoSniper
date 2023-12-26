@@ -5,6 +5,7 @@ import { getKlinesData, getResultsVolume } from "./services/dataService.js";
 import { calculateMA, compareMAValues, findIntersection } from "./model.js";
 import { displayResults } from "./viewHandlers.js";
 import { createTradingViewWidget } from "./tradingViewConfig.js";
+import { updateFavoritesModal } from "./viewHandlers.js";
 
 // 取得篩選器表單
 const filterForm = document.querySelector('form[name="filterForm"]');
@@ -47,7 +48,6 @@ async function processForm() {
 
     // 依據ma做篩選
     const matchingData = compareMAValues(maResults, intervalsData);
-    //1M出現錯誤，有可能是因為K線數量不足
 
     // 檢查 maResults 是否為空值
     if (Object.keys(matchingData).length === 0) {
@@ -82,6 +82,24 @@ async function processForm() {
     tradingViewContainer.style.display = "none";
     loadingImageContainer.innerHTML =
       "選擇的時間週期資料庫更新中，請稍後再試或是換個時框";
-    //console.error("錯誤:", error);
   }
 }
+
+document.addEventListener("DOMContentLoaded", () => {
+  const favoritesButton = document.getElementById("favorites");
+  favoritesButton.addEventListener("click", updateFavoritesModal);
+});
+
+document.addEventListener("DOMContentLoaded", function () {
+  // 檢查 localStorage 中是否有標記
+  if (!localStorage.getItem("tutorialShown")) {
+    var tutorialModal = new bootstrap.Modal(
+      document.getElementById("tutorialModal"),
+      {}
+    );
+    tutorialModal.show();
+
+    // 設置標記表示教學已經顯示過
+    localStorage.setItem("tutorialShown", "true");
+  }
+});

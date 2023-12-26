@@ -1,57 +1,78 @@
 // controllers/subscriptionController.js
 
-const Subscription = require("../models/Subscription");
+const WebSubscription = require("../models/webSubscriptionSchema");
+const LineSubscription = require("../models/lineSubscriptionSchema");
+const TelegramSubscription = require("../models/telegramSubscriptionSchema");
 
-async function subscribe(req, res) {
-  try {
-    const subscriptionData = {
-      ...req.body,
-      user: req.user._id,
-    };
-    const subscription = new Subscription(subscriptionData);
-    await subscription.save();
-    res.status(201).json({ message: "訂閱已保存。" });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: "保存訂閱時出錯。" });
-  }
-}
-
-async function unsubscribe(req, res) {
-  try {
-    const { endpoint } = req.body;
-    const result = await Subscription.deleteOne({
-      endpoint,
-      user: req.user._id,
-    });
-    if (result.deletedCount === 0) {
-      return res.status(404).json({ message: "未找到訂閱來取消。" });
-    }
-    res.status(200).json({ message: "訂閱已取消。" });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: "取消訂閱時出錯。" });
-  }
-}
-
+//檢查訂閱狀態
 async function checkSubscription(req, res) {
-  try {
-    // 查詢該用戶相關聯的訂閱
-    const subscription = await Subscription.findOne({ user: req.user._id });
+  const userId = req.user._id;
+  const notificationType = req.query.notificationType;
 
-    if (subscription) {
-      res.json({ isSubscribed: true });
-    } else {
-      res.json({ isSubscribed: false });
+  try {
+    let subscription;
+    switch (notificationType) {
+      case "Line":
+        subscription = await LineSubscription.findOne({ userId });
+        break;
+      case "Web":
+        subscription = await WebSubscription.findOne({ userId });
+        break;
+      case "Telegram":
+        subscription = await TelegramSubscription.findOne({ userId });
+        break;
+      default:
+        return res.status(400).json({ message: "未知的通知類型" });
     }
+
+    if (!subscription) {
+      return res.status(404).json({ message: "找不到訂閱信息" });
+    }
+
+    const isEnabled = subscription.notificationsEnabled;
+    res.status(200).json({ isEnabled });
   } catch (error) {
-    console.error("檢查訂閱失敗:", error);
-    res.status(500).json({ error: "內部伺服器錯誤" });
+    console.error("檢查訂閱狀態失敗：", error);
+    res.status(500).json({ message: "檢查訂閱狀態失敗" });
   }
 }
 
-module.exports = {
-  subscribe,
-  unsubscribe,
-  checkSubscription,
-};
+//切換訂閱狀態
+async function toggleSubscription(req, res) {
+  const userId = req.user._id;
+  const notificationType = req.query.notificationType;
+  try {
+    let subscription;
+    switch (notificationType) {
+      case "Line":
+        subscription = await LineSubscription.findOne({ userId });
+        break;
+      case "Web":
+        subscription = await WebSubscription.findOne({ userId });
+        break;
+      case "Telegram":
+        subscription = await TelegramSubscription.findOne({ userId });
+        break;
+      default:
+        return res.status(400).json({ message: "未知的通知類型" });
+    }
+
+    if (!subscription) {
+      return res.status(404).json({ message: "找不到訂閱信息" });
+    }
+
+    // 切換訂閱狀態
+    subscription.notificationsEnabled = !subscription.notificationsEnabled;
+
+    await subscription.save();
+
+    res.status(200).json({
+      isEnabled: subscription.notificationsEnabled,
+    });
+  } catch (error) {
+    console.error("切換訂閱狀態失敗", error);
+    res.status(500).json({ message: "切換訂閱狀態失敗" });
+  }
+}
+
+module.exports = { checkSubscription, toggleSubscription };

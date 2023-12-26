@@ -3,6 +3,7 @@
 document.addEventListener("DOMContentLoaded", () => {
   checkLoginStatus();
   applyThemePreference();
+  checkForAuthToken();
 });
 
 function applyThemePreference() {
@@ -18,16 +19,14 @@ async function checkLoginStatus() {
   const token = localStorage.getItem("token");
   const loginBtn = document.getElementById("loginBtn");
   const logoutBtn = document.getElementById("logoutBtn");
-  const trackingForm = document.getElementById("trackingForm");
   const hiddenBeforeLoginElements = document.querySelectorAll(
     ".hidden-before-login"
   );
 
   if (token) {
-    // 驗證token是否有效
     try {
-      const response = await fetch("/api/user/verifyToken", {
-        method: "POST",
+      const response = await fetch("/api/user", {
+        method: "GET",
         headers: {
           "Content-Type": "application/json",
           Authorization: token,
@@ -35,20 +34,19 @@ async function checkLoginStatus() {
       });
 
       if (!response.ok) {
-        // token無效，清除token並返回
         localStorage.removeItem("token");
         localStorage.removeItem("telegramId");
+        localStorage.removeItem("userId");
+
         throw new Error("Token expired");
       }
     } catch (error) {
-      // 處理token過期或其他錯誤
       console.error(error);
-      return checkLoginStatus(); // 重新檢查登錄狀態
+      return checkLoginStatus();
     }
 
     loginBtn.style.display = "none";
     logoutBtn.style.display = "inline-block";
-    trackingForm.style.display = "block";
     getTelegramId();
 
     // 顯示所有需要在登入後顯示的元素
@@ -59,11 +57,13 @@ async function checkLoginStatus() {
     loginBtn.style.display = "inline-block";
     logoutBtn.style.display = "none";
     document.getElementById("telegramId").value = "";
-    trackingForm.style.display = "none";
     // 隱藏所有需要在登入前隱藏的元素
     hiddenBeforeLoginElements.forEach((el) => {
       el.style.display = "none";
     });
+    localStorage.removeItem("token");
+    localStorage.removeItem("telegramId");
+    localStorage.removeItem("userId");
   }
 }
 
@@ -95,7 +95,6 @@ async function register() {
       alert("註冊失敗：" + data.message);
     }
   } catch (error) {
-    //console.error("Error:", error);
     alert("伺服器錯誤");
   }
 }
@@ -105,7 +104,7 @@ async function login() {
   const password = document.getElementById("loginPassword").value;
 
   try {
-    const response = await fetch("/api/user/login", {
+    const response = await fetch("/api/user", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email, password }),
@@ -114,29 +113,28 @@ async function login() {
     const data = await response.json();
 
     if (response.ok) {
-      alert("登入成功！");
       localStorage.setItem("token", data.token);
+      localStorage.setItem("userId", data.userId);
 
       if (data.telegramId) {
         localStorage.setItem("telegramId", data.telegramId);
         document.getElementById("telegramId").value = data.telegramId;
       }
 
-      $("#loginModal").modal("hide");
       checkLoginStatus();
+      window.location.href = "/";
     } else {
       alert("登入失敗：" + data.error);
     }
   } catch (error) {
-    //console.error("Error:", error);
     alert("伺服器錯誤");
   }
 }
 
 async function logout() {
   try {
-    const response = await fetch("/api/user/logout", {
-      method: "POST",
+    const response = await fetch("/api/user", {
+      method: "DELETE",
       headers: {
         "Content-Type": "application/json",
         Authorization: localStorage.getItem("token"),
@@ -146,14 +144,35 @@ async function logout() {
     if (response.ok) {
       localStorage.removeItem("token");
       localStorage.removeItem("telegramId");
-      alert("登出成功！");
+      localStorage.removeItem("userId");
       checkLoginStatus();
+      window.location.href = "/";
     } else {
       const data = await response.json();
       window.location.href = "/";
     }
   } catch (error) {
     console.error("Error:", error);
+    window.location.href = "/";
+  }
+}
+
+function checkForAuthToken() {
+  const urlParams = new URLSearchParams(window.location.search);
+
+  const token = urlParams.get("token");
+  const userId = urlParams.get("userId");
+  const telegramId = urlParams.get("telegramId");
+
+  if (token) {
+    localStorage.setItem("token", token);
+    if (userId) {
+      localStorage.setItem("userId", userId);
+    }
+    if (telegramId) {
+      localStorage.setItem("telegramId", telegramId);
+    }
+    checkLoginStatus();
     window.location.href = "/";
   }
 }

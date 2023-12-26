@@ -5,7 +5,6 @@ require("dotenv").config();
 
 const connectDB = async () => {
   try {
-    // 連接到MongoDB資料庫，建立CryptoSniper資料庫
     const username = process.env.DB_USERNAME;
     const password = process.env.DB_PASSWORD;
     const dbName = process.env.DB_NAME;
