@@ -13,7 +13,7 @@ const favoriteAdd = async (req, res) => {
   try {
     const favorite = await Favorite.findOneAndUpdate(
       { userId },
-      { $addToSet: { symbols: symbol } },
+      { $addToSet: { symbol: symbol } },
       { new: true, upsert: true }
     );
     res.status(200).send({ message: "追蹤成功", favorite });
@@ -33,7 +33,7 @@ const favoriteRemove = async (req, res) => {
   try {
     const favorite = await Favorite.findOneAndUpdate(
       { userId },
-      { $pull: { symbols: symbol } },
+      { $pull: { symbol: symbol } },
       { new: true }
     );
     if (!favorite) {
@@ -54,7 +54,7 @@ const favoriteList = async (req, res) => {
     if (!favorite) {
       return res.status(404).send({ message: "用戶未設置追蹤清單" });
     }
-    res.status(200).send({ favorites: favorite.symbols });
+    res.status(200).send({ favorites: favorite.symbol });
   } catch (error) {
     res.status(500).send({ message: "查詢失敗", error: error.message });
   }

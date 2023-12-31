@@ -31,13 +31,12 @@ function checkBrowserSupport() {
 // 初始化函數
 async function init() {
   if (!checkBrowserSupport()) {
-    alert("此瀏覽器不支持推送通知。");
-    return;
+    alert("此瀏覽器不支援Web推送通知功能");
+    return false;
   }
   await registerServiceWorker();
+  return true;
 }
-
-init();
 
 // 建立通知
 document
@@ -209,7 +208,14 @@ document.querySelectorAll('img[data-toggle="modal"]').forEach((img) => {
 const notificationImage = document.getElementById("NotificationPermissio-web");
 
 // 點擊圖片時，請求通知許可
-notificationImage.addEventListener("click", async function () {
+notificationImage.addEventListener("click", async function (event) {
+  const isSupported = await init();
+  if (!isSupported) {
+    // 避免觸發彈窗
+    event.stopPropagation();
+    event.preventDefault();
+    return;
+  }
   await onClick();
   await checkSubscriptionStatus(currentNotificationMethod);
   loadNotifications(currentNotificationMethod);

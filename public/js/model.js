@@ -72,7 +72,7 @@ function compareMAValues(maData, intervalsData) {
       const ma2 = parseFloat(maData[`MA_${param2}`]);
 
       if (param3 === null || param4 === null) {
-        const condition = eval(`${ma1} ${comparisonOperator1} ${ma2}`);
+        const condition = compare(ma1, comparisonOperator1, ma2);
         if (Boolean(condition)) {
           if (!results[timeInterval]) {
             results[timeInterval] = [];
@@ -84,8 +84,8 @@ function compareMAValues(maData, intervalsData) {
         const ma3 = parseFloat(maData[`MA_${param3}`]);
         const ma4 = parseFloat(maData[`MA_${param4}`]);
 
-        const condition1 = eval(`${ma1} ${comparisonOperator1} ${ma2}`);
-        const condition2 = eval(`${ma3} ${comparisonOperator2} ${ma4}`);
+        const condition1 = compare(ma1, comparisonOperator1, ma2);
+        const condition2 = compare(ma3, comparisonOperator2, ma4);
 
         let condition;
         if (logicalOperator === "and") {
@@ -105,6 +105,26 @@ function compareMAValues(maData, intervalsData) {
     }
   }
   return results;
+}
+
+//判斷函式
+function compare(ma1, operator, ma2) {
+  switch (operator) {
+    case "<":
+      return ma1 < ma2;
+    case "<=":
+      return ma1 <= ma2;
+    case ">":
+      return ma1 > ma2;
+    case ">=":
+      return ma1 >= ma2;
+    case "==":
+      return ma1 == ma2;
+    case "!=":
+      return ma1 != ma2;
+    default:
+      throw new Error("Invalid comparison operator");
+  }
 }
 
 // 取得標的的交集
