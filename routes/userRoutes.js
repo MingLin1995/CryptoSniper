@@ -32,6 +32,7 @@ const router = express.Router();
  *               name:
  *                 type: string
  *                 description: 使用者的姓名
+ *                 example: "王小明"
  *               email:
  *                 type: string
  *                 format: email
@@ -85,12 +86,16 @@ router.post("/register", userController.register);
  *               properties:
  *                 message:
  *                   type: string
+ *                   example: "登入成功"
  *                 token:
  *                   type: string
+ *                   example: "XXXXX"
  *                 telegramId:
  *                   type: string
+ *                   example: "XXXXX"
  *                 userId:
  *                   type: string
+ *                   example: "XXXXX"
  *       400:
  *         description: 請求資料不完整
  *       401:
@@ -136,8 +141,10 @@ router.delete("/", verifyToken, userController.logout);
  *               properties:
  *                 status:
  *                   type: string
+ *                   example: "success"
  *                 message:
  *                   type: string
+ *                   example: "Token 驗證成功"
  *       401:
  *         description: 無效的 Token 或 未提供 Token
  *       500:

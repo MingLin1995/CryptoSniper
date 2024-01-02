@@ -135,16 +135,28 @@ function updateListOrderOnServer() {
   var itemOrder = Array.from(items).map(function (item) {
     return item.getAttribute("data-id");
   });
+  const token = localStorage.getItem("token");
 
-  fetch("/api/favorite/updateOrder", {
-    method: "PATCH",
+  fetch("/api/favorite", {
+    method: "PUT",
     headers: {
       "Content-Type": "application/json",
-      Authorization: localStorage.getItem("token"),
+      Authorization: token,
     },
     body: JSON.stringify({ order: itemOrder }),
   })
-    .then((response) => response.text())
+    .then((response) => response.json())
+    .then((data) => {
+      if (!data.success) {
+        if (data.message === "jwt expired") {
+          window.location.href = "/";
+        } else {
+          throw new Error(data.message || "更新追蹤清單失敗");
+        }
+      } else {
+        //console.log(data.message);
+      }
+    })
     .catch((error) => console.error("Error:", error));
 }
 
@@ -154,16 +166,28 @@ function updateStrategyOrderOnServer() {
   var itemOrder = Array.from(items).map(function (item) {
     return item.getAttribute("data-id");
   });
+  const token = localStorage.getItem("token");
 
-  fetch("/api/strategy/updateOrder", {
-    method: "PATCH",
+  fetch("/api/strategy", {
+    method: "PUT",
     headers: {
       "Content-Type": "application/json",
-      Authorization: localStorage.getItem("token"),
+      Authorization: token,
     },
     body: JSON.stringify({ order: itemOrder }),
   })
     .then((response) => response.json())
+    .then((data) => {
+      if (!data.success) {
+        if (data.message === "jwt expired") {
+          window.location.href = "/";
+        } else {
+          throw new Error(data.message || "更新策略順序失敗");
+        }
+      } else {
+        //console.log(data.message);
+      }
+    })
     .catch((error) => console.error("Error updating order:", error));
 }
 

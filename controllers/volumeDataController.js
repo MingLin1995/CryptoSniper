@@ -4,11 +4,7 @@ const loadVolumeData = require("../models/loadVolumeData");
 
 async function handleLoadVolumeRequest(req, res) {
   let results;
-  try {
-    results = JSON.parse(req.query.results);
-  } catch (error) {
-    return res.status(400).json({ message: "無效的查詢參數" });
-  }
+  results = JSON.parse(req.query.results);
 
   try {
     const allVolumeData = await loadVolumeData.getVolumeData(results);
