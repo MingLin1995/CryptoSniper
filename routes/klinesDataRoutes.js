@@ -50,8 +50,6 @@ const klinesDataController = require("../controllers/klinesDataController");
  *                   type: array
  *                   items:
  *                     $ref: '#/components/schemas/TradingPairData'
- *       400:
- *         description: 查詢參數無效
  *       404:
  *         description: 找不到K線資料
  *       500:
@@ -69,7 +67,11 @@ const klinesDataController = require("../controllers/klinesDataController");
  *               type: array
  *               items:
  *                 type: number
- *                 description: 收盤價數組
+ *                 description: 收盤價列表
+ *                 example: 42700, 42600, 42800
+ *       example:
+ *         BTCUSDT:
+ *           closePrices: [42700, 42600, 42800]
  */
 router.get("/", klinesDataController.handleLoadKlinesDataRequest);
 

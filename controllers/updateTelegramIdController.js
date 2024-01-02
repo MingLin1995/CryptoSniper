@@ -13,10 +13,6 @@ const updateTelegramId = async (req, res) => {
       { new: true, upsert: true }
     );
 
-    if (!telegramSubscription) {
-      return res.status(404).json({ message: "無法更新 Telegram ID" });
-    }
-
     res.status(200).json({ message: "Telegram ID 更新成功" });
   } catch (error) {
     console.error(error);

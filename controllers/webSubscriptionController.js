@@ -8,15 +8,6 @@ async function handleSubscription(req, res) {
     const userId = req.user._id;
     const subscriptionData = req.body;
 
-    if (!subscriptionData) {
-      return res.status(400).send("缺少訂閱資料");
-    }
-
-    const user = await User.findById(userId);
-    if (!user) {
-      return res.status(404).send("找不到用戶");
-    }
-
     const updatedSubscription = await WebSubscription.findOneAndUpdate(
       { userId },
       { ...subscriptionData, userId },
