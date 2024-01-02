@@ -26,21 +26,19 @@ const router = express.Router();
  *         application/json:
  *           schema:
  *             type: object
- *             required:
- *               - userId
- *               - symbol
  *             properties:
  *               userId:
  *                 type: string
  *                 description: 用戶ID
  *               symbol:
  *                 type: string
- *                 description: 要追蹤的標的符號
+ *                 description: 要追蹤的標的
+ *             example:
+ *               userId: "XXXXX"
+ *               symbol: "BTCUSDT"
  *     responses:
  *       200:
  *         description: 追蹤成功
- *       400:
- *         description: 缺少參數
  *       500:
  *         description: 伺服器錯誤
  */
@@ -62,19 +60,17 @@ router.post("/", verifyToken, favoriteController.favoriteAdd);
  *         description: 用戶ID
  *         schema:
  *           type: string
+ *           example: XXXXX
  *       - in: query
  *         name: symbol
  *         required: true
  *         description: 要移除的標的
  *         schema:
  *           type: string
+ *           example: BTCUSDT
  *     responses:
  *       200:
  *         description: 移除成功
- *       400:
- *         description: 缺少參數
- *       404:
- *         description: 用戶未設置追蹤清單
  *       500:
  *         description: 伺服器錯誤
  */
@@ -92,8 +88,17 @@ router.delete("/", verifyToken, favoriteController.favoriteRemove);
  *     responses:
  *       200:
  *         description: 獲取追蹤清單成功
- *       404:
- *         description: 用戶未設置追蹤清單
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 favorites:
+ *                   type: array
+ *                   items:
+ *                     type: string
+ *               example:
+ *                 favorites: ["BTCUSDT", "ETHUSDT", "SOLUSDT", "FILUSDT", "ORDIUSDT"]
  *       500:
  *         description: 伺服器錯誤
  */
@@ -102,10 +107,10 @@ router.get("/", verifyToken, favoriteController.favoriteList);
 /**
  * @swagger
  * /api/favorite:
- *   patch:
+ *   put:
  *     tags: [追蹤清單]
  *     summary: 更新追蹤清單
- *     description: 更新使用者的追蹤清單順序
+ *     description: 根據用戶提供的新順序更新追蹤清單
  *     security:
  *       - bearerAuth: []
  *     requestBody:
@@ -117,19 +122,17 @@ router.get("/", verifyToken, favoriteController.favoriteList);
  *             properties:
  *               order:
  *                 type: array
- *                 description: 追蹤清單的新順序，包含清單項目的ID
+ *                 description: 新的追蹤清單的順序
  *                 items:
  *                   type: string
+ *             example:
+ *               order: ["BTCUSDT", "ETHUSDT", "BNBUSDT"]
  *     responses:
  *       200:
  *         description: 追蹤清單更新成功
- *       400:
- *         description: 缺少必要的查詢參數或參數格式不正確
- *       404:
- *         description: 找不到追蹤清單或用戶
  *       500:
  *         description: 伺服器錯誤
  */
-router.patch("/updateOrder", verifyToken, favoriteController.updateOrder);
+router.put("/", verifyToken, favoriteController.updateOrder);
 
 module.exports = router;

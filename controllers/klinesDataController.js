@@ -3,11 +3,7 @@
 const loadKlinesData = require("../models/loadKlinesData");
 
 async function handleLoadKlinesDataRequest(req, res) {
-  try {
-    intervalData = JSON.parse(req.query.intervals);
-  } catch (error) {
-    return res.status(400).json({ message: "無效的查詢參數" });
-  }
+  intervalData = JSON.parse(req.query.intervals);
 
   try {
     const allKlinesData = await loadKlinesData.getKlinesData(intervalData);

@@ -65,12 +65,6 @@ const trackPrices = async () => {
               hasNotified = true; // 更新已發送通知的狀態
               lastNotificationTime = now; // 更新發送通知的時間
 
-              console.log("設定當下價格", initialPrice);
-              console.log("當下價格", currentPrice);
-              console.log("目標價", targetPrice);
-              console.log("執行類型是否為市場價格", data.X);
-              console.log("是否由做市者進行", data.m);
-
               await PriceAlert.deleteOne({ _id });
               ws.close(); // 關閉 WebSocket 連接
               activeWebSockets.delete(_id.toString()); // 從 Map 中移除 WebSocket 連接

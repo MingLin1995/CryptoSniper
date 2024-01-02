@@ -25,17 +25,17 @@ const lineNotifyController = require("../controllers/lineNotifyController");
  *         description: LINE Notify 授權後返回的授權碼
  *         schema:
  *           type: string
+ *           example: "XXX-XXX-XXX-XXX-XXX"
  *       - in: query
  *         name: state
  *         required: true
- *         description: 狀態參數
+ *         description: 狀態參數，通常包含隨機生成的狀態值和用戶ID
  *         schema:
  *           type: string
+ *           example: "XXX|1234567890"
  *     responses:
  *       302:
  *         description: 成功獲取 Access Token 並導回首頁
- *       404:
- *         description: 找不到用戶
  *       500:
  *         description: 獲取 Access Token 時出錯
  */
