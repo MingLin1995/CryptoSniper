@@ -38,16 +38,15 @@ const volumeDataController = require("../controllers/volumeDataController");
  *                 properties:
  *                   symbol:
  *                     type: string
+ *                     example: "BTCUSDT"
  *                   quote_volume:
  *                     type: string
- *       400:
- *         description: 查詢參數無效
+ *                     example: "6170908232.24"
  *       404:
  *         description: 找不到成交量資料
  *       500:
  *         description: 伺服器錯誤
  */
-
 router.get("/", volumeDataController.handleLoadVolumeRequest);
 
 module.exports = router;

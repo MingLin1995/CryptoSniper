@@ -3,7 +3,6 @@
 const express = require("express");
 const userController = require("../controllers/updateTelegramIdController");
 const verifyToken = require("../auth");
-
 const router = express.Router();
 
 /**
@@ -34,18 +33,10 @@ const router = express.Router();
  *               telegramId:
  *                 type: string
  *                 description: 用戶要更新的 Telegram ID
+ *                 example: "0123456789"
  *     responses:
  *       200:
  *         description: Telegram ID 更新成功
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 message:
- *                   type: string
- *       404:
- *         description: 無法更新 Telegram ID
  *       500:
  *         description: 伺服器錯誤 或 Telegram ID 更新失敗
  */

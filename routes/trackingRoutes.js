@@ -45,23 +45,25 @@ const verifyToken = require("../auth");
  *                 type: string
  *                 nullable: true
  *                 description: Telegram ID（如果選擇了 Telegram 通知）
+ *           example:
+ *             telegramId: "XXXXX"
+ *             notificationMethod: "Telegram"
+ *             symbol: "BTCUSDT"
+ *             targetPrice: 45700
  *     responses:
  *       200:
  *         description: 追蹤成功設置
- *       400:
- *         description: 缺少必要的參數
- *       404:
- *         description: 無法設置追蹤
  *       500:
  *         description: 伺服器錯誤
  */
-
 router.post("/", verifyToken, trackingController.addTracking);
+
 /**
  * @swagger
  * /api/track:
  *   get:
- *     tags: [到價通知]
+ *     tags:
+ *       - 到價通知
  *     summary: 取得追蹤清單
  *     description: 根據指定的通知方法，取得追蹤清單
  *     security:
@@ -76,11 +78,45 @@ router.post("/", verifyToken, trackingController.addTracking);
  *     responses:
  *       200:
  *         description: 成功取得追蹤清單
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                   _id:
+ *                     type: string
+ *                   userId:
+ *                     type: string
+ *                   symbol:
+ *                     type: string
+ *                   targetPrice:
+ *                     type: number
+ *                   notificationMethod:
+ *                     type: string
+ *             example:
+ *                 [
+ *                   {
+ *                     "_id": "XXXXX",
+ *                     "userId": "XXXXX",
+ *                     "symbol": "BTCUSDT",
+ *                     "targetPrice": 43330,
+ *                     "notificationMethod": "Telegram"
+ *                   },
+ *                   {
+ *                     "_id": "XXXXX",
+ *                     "userId": "XXXXX",
+ *                     "symbol": "ETHUSDT",
+ *                     "targetPrice": 2252,
+ *                     "notificationMethod": "Telegram"
+ *                   }
+ *                 ]
  *       500:
  *         description: 伺服器錯誤
  */
-
 router.get("/", verifyToken, trackingController.getNotificationsByMethod);
+
 /**
  * @swagger
  * /api/track:
@@ -97,17 +133,13 @@ router.get("/", verifyToken, trackingController.getNotificationsByMethod);
  *         description: 要刪除的通知ID
  *         schema:
  *           type: string
+ *           example: "XXXXX"
  *     responses:
  *       200:
  *         description: 刪除成功
- *       404:
- *         description: 沒有任何通知
- *       403:
- *         description: 沒有任何通知
  *       500:
  *         description: 伺服器錯誤
  */
-
 router.delete("/", verifyToken, trackingController.deleteNotification);
 
 module.exports = router;

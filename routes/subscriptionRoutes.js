@@ -33,21 +33,30 @@ const {
  *           type: string
  *     responses:
  *       200:
- *         description: 成功獲取訂閱狀態
- *       400:
- *         description: 未知的通知類型
- *       404:
- *         description: 找不到訂閱信息
+ *         description: 成功切換訂閱狀態
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 isEnabled:
+ *                   type: boolean
+ *             examples:
+ *               example1:
+ *                 value: {"isEnabled": false}
+ *               example2:
+ *                 value: {"isEnabled": true}
  *       500:
  *         description: 檢查訂閱狀態失敗
  */
-
 router.get("/", verifyToken, checkSubscription);
+
 /**
  * @swagger
  * /api/subscription:
  *   patch:
- *     tags: [通知狀態]
+ *     tags:
+ *       - 通知狀態
  *     summary: 切換使用者的通知狀態
  *     description: 根據指定的通知類型，切換使用者的通知狀態
  *     security:
@@ -62,10 +71,18 @@ router.get("/", verifyToken, checkSubscription);
  *     responses:
  *       200:
  *         description: 成功切換訂閱狀態
- *       400:
- *         description: 未知的通知類型
- *       404:
- *         description: 找不到訂閱信息
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 isEnabled:
+ *                   type: boolean
+ *             examples:
+ *               example1:
+ *                 value: {"isEnabled": false}
+ *               example2:
+ *                 value: {"isEnabled": true}
  *       500:
  *         description: 切換訂閱狀態失敗
  */

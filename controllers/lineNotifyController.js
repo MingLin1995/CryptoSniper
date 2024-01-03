@@ -1,4 +1,4 @@
-// CryptSniper/controllers/lineNotifyController.js
+// controllers/lineNotifyController.js
 
 const axios = require("axios");
 const LineSubscription = require("../models/lineSubscriptionSchema");
@@ -11,7 +11,7 @@ async function handleLineNotifyCallback(req, res) {
   const code = req.query.code;
   const state = req.query.state;
   const parts = state.split("|");
-  const userId = parts[parts.length - 1]; // 最後一個元素
+  const userId = parts[parts.length - 1];
   try {
     // 使用授權碼獲取 Access Token
     const response = await axios.post(
@@ -42,12 +42,7 @@ async function handleLineNotifyCallback(req, res) {
       { new: true, upsert: true }
     );
 
-    if (!lineSubscription) {
-      return res.status(404).json({ error: "無法更新 LINE 訂閱訊息。" }); // 用戶不存在的情況
-    }
-
-    // 導回首頁
-    res.redirect("https://crypto-sniper.minglin.vip/"); // 302 重定向
+    res.redirect("https://crypto-sniper.minglin.vip/");
   } catch (error) {
     console.error("Error getting access token:", error);
     res.status(500).json({ error: "獲取 Access Token 時出錯。" });

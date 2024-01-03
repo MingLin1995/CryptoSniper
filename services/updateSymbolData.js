@@ -5,7 +5,7 @@ const { updateSymbolKlinesData } = require("../models/fetchKlinesData");
 
 // 時框
 const timeIntervals = {
-  "5m": 5 * 60 * 1000, // 轉換為毫秒
+  "5m": 5 * 60 * 1000,
   "15m": 15 * 60 * 1000,
   "30m": 30 * 60 * 1000,
   "1h": 60 * 60 * 1000,
@@ -20,7 +20,7 @@ async function initialUpdate() {
   try {
     setInterval(async () => {
       await updateSymbolQuoteVolumeData();
-    }, 5 * 60 * 1000); // 轉換為毫秒
+    }, 5 * 60 * 1000);
     // 24hr Data
     await updateSymbolQuoteVolumeData();
 
@@ -35,7 +35,5 @@ async function initialUpdate() {
     console.error(`Initial update failed: ${error}`);
   }
 }
-
-//initialUpdate();
 
 module.exports = { initialUpdate };

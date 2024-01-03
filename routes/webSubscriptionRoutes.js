@@ -33,26 +33,26 @@ const {
  *               endpoint:
  *                 type: string
  *                 description: 通知服務的端點 URL
+ *                 example: "https://wns2-ln2p.notify.windows.com/w/?token=XXX"
  *               expirationTime:
  *                 type: string
  *                 nullable: true
  *                 description: 訂閱過期時間
+ *                 example: null
  *               keys:
  *                 type: object
  *                 properties:
  *                   p256dh:
  *                     type: string
  *                     description: 用戶公鑰
+ *                     example: "XXX-XXX-XXX-XXX"
  *                   auth:
  *                     type: string
  *                     description: 認證密鑰
+ *                     example: "XXXX_XXX"
  *     responses:
  *       200:
  *         description: Web通知資料儲存成功
- *       400:
- *         description: 缺少訂閱資料
- *       404:
- *         description: 找不到用戶
  *       500:
  *         description: 伺服器錯誤
  */

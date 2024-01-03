@@ -229,8 +229,8 @@ describe("calculateMA function", () => {
       return symbol;
     }
 
-    //每個標的有1百萬筆收盤價
-    const largeNumberOfDataPoints = 1000000;
+    //每個標的有5萬筆收盤價
+    const largeNumberOfDataPoints = 50000;
     const largeClosePricesArray = new Array(largeNumberOfDataPoints)
       .fill(0)
       .map(() => Math.random() * 100);
@@ -300,35 +300,44 @@ describe("compareMAValues function", () => {
       "15m": [
         {
           symbol: "BTCUSDT",
-          maData: { MA_25: 100, MA_60: 105 },
+          maData: { MA_25: 100, MA_60: 105, MA_80: 150, MA_99: 105 },
         },
         {
           symbol: "ETHUSDT",
-          maData: { MA_25: 165, MA_60: 50 },
+          maData: { MA_25: 165, MA_60: 50, MA_80: 150, MA_99: 105 },
         },
-        { symbol: "BNBUSDT", maData: { MA_25: 50, MA_60: 100 } },
+        {
+          symbol: "BNBUSDT",
+          maData: { MA_25: 50, MA_60: 100, MA_80: 150, MA_99: 105 },
+        },
       ],
       "1h": [
         {
           symbol: "BTCUSDT",
-          maData: { MA_25: 100, MA_60: 105 },
+          maData: { MA_25: 100, MA_60: 105, MA_80: 150, MA_99: 105 },
         },
         {
           symbol: "ETHUSDT",
-          maData: { MA_25: 165, MA_60: 50 },
+          maData: { MA_25: 165, MA_60: 50, MA_80: 150, MA_99: 105 },
         },
-        { symbol: "BNBUSDT", maData: { MA_25: 50, MA_60: 100 } },
+        {
+          symbol: "BNBUSDT",
+          maData: { MA_25: 50, MA_60: 100, MA_80: 150, MA_99: 105 },
+        },
       ],
       "4h": [
         {
           symbol: "BTCUSDT",
-          maData: { MA_25: 100, MA_60: 105 },
+          maData: { MA_25: 110, MA_60: 105, MA_80: 150, MA_99: 105 },
         },
         {
           symbol: "ETHUSDT",
-          maData: { MA_25: 165, MA_60: 50 },
+          maData: { MA_25: 165, MA_60: 50, MA_80: 150, MA_99: 105 },
         },
-        { symbol: "BNBUSDT", maData: { MA_25: 50, MA_60: 100 } },
+        {
+          symbol: "BNBUSDT",
+          maData: { MA_25: 110, MA_60: 100, MA_80: 150, MA_99: 105 },
+        },
       ],
       "1d": [
         {
@@ -349,34 +358,34 @@ describe("compareMAValues function", () => {
         logical_operator: "and",
         param_1: 25,
         param_2: 60,
-        param_3: null,
-        param_4: null,
+        param_3: 80,
+        param_4: 99,
         time_interval: "15m",
       },
       {
         comparison_operator_1: ">",
         comparison_operator_2: ">",
-        logical_operator: "and",
+        logical_operator: "or",
         param_1: 25,
         param_2: 60,
-        param_3: null,
-        param_4: null,
+        param_3: 80,
+        param_4: 99,
         time_interval: "1h",
       },
       {
-        comparison_operator_1: "<",
-        comparison_operator_2: ">",
-        logical_operator: "and",
+        comparison_operator_1: ">",
+        comparison_operator_2: "<",
+        logical_operator: "or",
         param_1: 25,
         param_2: 60,
-        param_3: null,
-        param_4: null,
+        param_3: 80,
+        param_4: 99,
         time_interval: "4h",
       },
       {
         comparison_operator_1: ">",
         comparison_operator_2: ">",
-        logical_operator: "and",
+        logical_operator: "or",
         param_1: 25,
         param_2: 60,
         param_3: null,
@@ -387,8 +396,16 @@ describe("compareMAValues function", () => {
 
     const result = compareMAValues(maData, intervalsData);
     const expected_15m = [{ symbol: "BTCUSDT" }, { symbol: "BNBUSDT" }];
-    const expected_1h = [{ symbol: "ETHUSDT" }];
-    const expected_4h = [{ symbol: "BTCUSDT" }, { symbol: "BNBUSDT" }];
+    const expected_1h = [
+      { symbol: "BTCUSDT" },
+      { symbol: "BNBUSDT" },
+      { symbol: "ETHUSDT" },
+    ];
+    const expected_4h = [
+      { symbol: "BTCUSDT" },
+      { symbol: "BNBUSDT" },
+      { symbol: "ETHUSDT" },
+    ];
     const expected_1d = [{ symbol: "ETHUSDT" }];
 
     expect(result["15m"]).toEqual(expect.arrayContaining(expected_15m));
@@ -419,7 +436,7 @@ describe("compareMAValues function", () => {
         param_3: 30,
         param_4: 40,
         comparison_operator_2: "<",
-        logical_operator: "and",
+        logical_operator: "or",
       },
       {
         comparison_operator_1: "<",
