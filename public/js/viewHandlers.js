@@ -455,7 +455,20 @@ function loadFavorites() {
         Authorization: token,
       },
     })
-      .then((response) => response.json())
+      .then((response) => {
+        if (!response.ok) {
+          response.json().then((errorResponse) => {
+            console.log(errorResponse);
+            if (errorResponse.error === "jwt expired") {
+              window.location.href = "/";
+              return;
+            }
+            throw new Error("無法獲取訂閱狀態");
+          });
+        } else {
+          return response.json();
+        }
+      })
       .then((data) => resolve(data.favorites || []))
       .catch((error) => reject(error));
   });
@@ -777,7 +790,20 @@ function deleteStrategy(strategyId) {
       Authorization: token,
     },
   })
-    .then((response) => response.json())
+    .then((response) => {
+      if (!response.ok) {
+        response.json().then((errorResponse) => {
+          console.log(errorResponse);
+          if (errorResponse.error === "jwt expired") {
+            window.location.href = "/";
+            return;
+          }
+          throw new Error("無法獲取訂閱狀態");
+        });
+      } else {
+        return response.json();
+      }
+    })
     .then((data) => {
       if (data.success) {
         fetchUserStrategies();
