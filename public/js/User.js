@@ -41,7 +41,7 @@ async function checkLoginStatus() {
         throw new Error("Token expired");
       }
     } catch (error) {
-      console.error(error);
+      //console.error(error);
       return checkLoginStatus();
     }
 
