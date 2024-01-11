@@ -134,22 +134,26 @@ function findIntersection(matchingData, intervalsData) {
 
   for (let i = 0; i < count; i++) {
     const interval = intervalsData[i]["time_interval"];
-    const symbolsForInterval = matchingData[interval].map(
-      (item) => item["symbol"]
-    );
-    symbolArrays.push(symbolsForInterval);
+    // 檢查 matchingData 是否包含當前時間週期的數據
+    if (matchingData.hasOwnProperty(interval)) {
+      const symbolsForInterval = matchingData[interval].map(
+        (item) => item["symbol"]
+      );
+      symbolArrays.push(symbolsForInterval);
+    }
   }
-  // 如果只有一個陣列，則直接返回該陣列
+
+  // 處理交集邏輯
   if (symbolArrays.length === 1) {
     return symbolArrays[0];
+  } else if (symbolArrays.length > 1) {
+    const intersection = symbolArrays.reduce((acc, currArray) => {
+      return acc.filter((symbol) => currArray.includes(symbol));
+    });
+    return intersection;
   }
 
-  // 否則取得所有陣列的交集
-  const intersection = symbolArrays.reduce((acc, currArray) => {
-    return acc.filter((symbol) => currArray.includes(symbol));
-  });
-
-  return intersection;
+  return []; // 如果沒有符合條件的陣列，返回空陣列
 }
 
 export { calculateMA, compareMAValues, findIntersection };
