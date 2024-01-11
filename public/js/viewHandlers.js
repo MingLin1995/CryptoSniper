@@ -452,12 +452,33 @@ function loadFavorites() {
     fetch("/api/favorite", {
       method: "GET",
       headers: {
-        Authorization: token,
+        Authorization: token ? token : undefined,
       },
     })
-      .then((response) => response.json())
-      .then((data) => resolve(data.favorites || []))
-      .catch((error) => reject(error));
+      .then((response) => {
+        if (!response.ok) {
+          return response.json().then((errorResponse) => {
+            if (errorResponse.error === "jwt expired") {
+              window.location.href = "/";
+              reject(new Error("Token 已過期，請重新登入"));
+            } else if (errorResponse.error === "jwt malformed") {
+              resolve([]);
+            } else {
+              throw new Error(errorResponse.error || "未知錯誤");
+            }
+          });
+        } else {
+          // 如果回應正常，解析 JSON
+          return response.json();
+        }
+      })
+      .then((data) => {
+        resolve(data.favorites || []);
+      })
+      .catch((error) => {
+        console.error(error);
+        reject(error);
+      });
   });
 }
 
@@ -777,7 +798,20 @@ function deleteStrategy(strategyId) {
       Authorization: token,
     },
   })
-    .then((response) => response.json())
+    .then((response) => {
+      if (!response.ok) {
+        response.json().then((errorResponse) => {
+          console.log(errorResponse);
+          if (errorResponse.error === "jwt expired") {
+            window.location.href = "/";
+            return;
+          }
+          throw new Error("無法獲取訂閱狀態");
+        });
+      } else {
+        return response.json();
+      }
+    })
     .then((data) => {
       if (data.success) {
         fetchUserStrategies();

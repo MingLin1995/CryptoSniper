@@ -25,19 +25,24 @@ const telegramBotController = require("../controllers/telegramBotController");
  *           schema:
  *             type: object
  *             properties:
- *               update_id:
- *                 type: integer
- *                 description: 更新 telegram ID
  *               message:
  *                 type: object
- *                 description: 接收到的訊息
+ *                 properties:
+ *                   chat:
+ *                     type: object
+ *                     properties:
+ *                       id:
+ *                         type: integer
+ *                         example: 0123456789
+ *                   text:
+ *                     type: string
+ *                     example: "/start"
  *     responses:
  *       200:
- *         description: 更新成功處理
+ *         description: 接收使用者資訊成功
  *       500:
- *         description: 處理 Telegram 更新時發生錯誤
+ *         description: 處理 Telegram 資訊時發生錯誤
  */
-
 router.post("/", telegramBotController.processTelegramUpdate);
 
 module.exports = router;

@@ -8,7 +8,7 @@ const favoriteSchema = new mongoose.Schema({
     ref: "User",
     required: true,
   },
-  symbols: [String],
+  symbol: [String],
 });
 
 // 更新排序的方法
@@ -18,7 +18,7 @@ favoriteSchema.statics.updateOrder = async function (userId, newOrder) {
     if (!favorite) {
       throw new Error("Favorite list not found");
     }
-    favorite.symbols = newOrder;
+    favorite.symbol = newOrder;
     await favorite.save();
     return favorite;
   } catch (error) {

@@ -42,10 +42,6 @@ async function handleLineNotifyCallback(req, res) {
       { new: true, upsert: true }
     );
 
-    if (!lineSubscription) {
-      return res.status(404).json({ error: "無法更新 LINE 訂閱訊息。" });
-    }
-
     res.redirect("https://crypto-sniper.minglin.vip/");
   } catch (error) {
     console.error("Error getting access token:", error);

@@ -21,12 +21,6 @@ async function checkSubscription(req, res) {
       case "Telegram":
         subscription = await TelegramSubscription.findOne({ userId });
         break;
-      default:
-        return res.status(400).json({ message: "未知的通知類型" });
-    }
-
-    if (!subscription) {
-      return res.status(404).json({ message: "找不到訂閱信息" });
     }
 
     const isEnabled = subscription.notificationsEnabled;
@@ -53,12 +47,6 @@ async function toggleSubscription(req, res) {
       case "Telegram":
         subscription = await TelegramSubscription.findOne({ userId });
         break;
-      default:
-        return res.status(400).json({ message: "未知的通知類型" });
-    }
-
-    if (!subscription) {
-      return res.status(404).json({ message: "找不到訂閱信息" });
     }
 
     // 切換訂閱狀態
