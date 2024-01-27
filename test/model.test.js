@@ -625,7 +625,6 @@ describe("findIntersection function", () => {
 
   it("多個時間週期，其中一個週期為空值", () => {
     const matchingData = {
-      "1h": [],
       "4h": [{ symbol: "BNBUSDT" }],
     };
     const intervalsData = [

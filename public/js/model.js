@@ -130,30 +130,40 @@ function compare(ma1, operator, ma2) {
 // 取得標的的交集
 function findIntersection(matchingData, intervalsData) {
   const symbolArrays = [];
-  const count = intervalsData.filter((item) => item.param_1 !== null).length;
+  // 只考慮那些 param_1 不為 null 的時間週期
+  const activeIntervals = intervalsData.filter((item) => item.param_1 !== null);
+  const count = activeIntervals.length;
+
+  // 檢查 matchingData 是否包含 activeIntervals 定義的所有時間週期
+  const intervals = activeIntervals.map((interval) => interval.time_interval);
+  const availableIntervals = Object.keys(matchingData);
+  const isAllIntervalsAvailable = intervals.every((interval) =>
+    availableIntervals.includes(interval)
+  );
+
+  if (!isAllIntervalsAvailable) {
+    // 如果有時間週期沒資料，直接返回空陣列（因為一定不會有交集）
+    return [];
+  }
 
   for (let i = 0; i < count; i++) {
     const interval = intervalsData[i]["time_interval"];
-    // 檢查 matchingData 是否包含當前時間週期的數據
-    if (matchingData.hasOwnProperty(interval)) {
-      const symbolsForInterval = matchingData[interval].map(
-        (item) => item["symbol"]
-      );
-      symbolArrays.push(symbolsForInterval);
-    }
+    const symbolsForInterval = matchingData[interval].map(
+      (item) => item["symbol"]
+    );
+    symbolArrays.push(symbolsForInterval);
   }
-
-  // 處理交集邏輯
+  // 如果只有一個陣列，則直接返回該陣列
   if (symbolArrays.length === 1) {
     return symbolArrays[0];
-  } else if (symbolArrays.length > 1) {
-    const intersection = symbolArrays.reduce((acc, currArray) => {
-      return acc.filter((symbol) => currArray.includes(symbol));
-    });
-    return intersection;
   }
 
-  return []; // 如果沒有符合條件的陣列，返回空陣列
+  // 否則取得所有陣列的交集
+  const intersection = symbolArrays.reduce((acc, currArray) => {
+    return acc.filter((symbol) => currArray.includes(symbol));
+  });
+
+  return intersection;
 }
 
 export { calculateMA, compareMAValues, findIntersection };

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1703601394503" clover="3.2.0">
-  <project timestamp="1703601394503" name="All files">
-    <metrics statements="110" coveredstatements="105" conditionals="54" coveredconditionals="44" methods="19" coveredmethods="19" elements="183" coveredelements="168" complexity="0" loc="110" ncloc="110" packages="1" files="2" classes="2"/>
+<coverage generated="1705285404032" clover="3.2.0">
+  <project timestamp="1705285404032" name="All files">
+    <metrics statements="117" coveredstatements="112" conditionals="56" coveredconditionals="46" methods="21" coveredmethods="21" elements="194" coveredelements="179" complexity="0" loc="117" ncloc="117" packages="1" files="2" classes="2"/>
     <file name="helpers.js" path="/Users/ming/Desktop/CryptoSniper/public/js/helpers.js">
       <metrics statements="29" coveredstatements="29" conditionals="15" coveredconditionals="13" methods="6" coveredmethods="6"/>
       <line num="5" count="6" type="cond" truecount="2" falsecount="0"/>
@@ -35,7 +35,7 @@
       <line num="81" count="1" type="stmt"/>
     </file>
     <file name="model.js" path="/Users/ming/Desktop/CryptoSniper/public/js/model.js">
-      <metrics statements="81" coveredstatements="76" conditionals="39" coveredconditionals="31" methods="13" coveredmethods="13"/>
+      <metrics statements="88" coveredstatements="83" conditionals="41" coveredconditionals="33" methods="15" coveredmethods="15"/>
       <line num="5" count="4" type="stmt"/>
       <line num="7" count="4" type="stmt"/>
       <line num="8" count="16" type="stmt"/>
@@ -106,17 +106,24 @@
       <line num="124" count="0" type="stmt"/>
       <line num="126" count="0" type="stmt"/>
       <line num="132" count="4" type="stmt"/>
-      <line num="133" count="7" type="stmt"/>
+      <line num="134" count="7" type="stmt"/>
       <line num="135" count="4" type="stmt"/>
-      <line num="136" count="7" type="stmt"/>
-      <line num="137" count="7" type="stmt"/>
-      <line num="138" count="9" type="stmt"/>
-      <line num="140" count="7" type="stmt"/>
-      <line num="143" count="4" type="cond" truecount="2" falsecount="0"/>
-      <line num="144" count="1" type="stmt"/>
-      <line num="148" count="3" type="stmt"/>
+      <line num="138" count="7" type="stmt"/>
+      <line num="139" count="4" type="stmt"/>
+      <line num="140" count="4" type="stmt"/>
+      <line num="141" count="6" type="stmt"/>
+      <line num="144" count="4" type="cond" truecount="2" falsecount="0"/>
+      <line num="146" count="1" type="stmt"/>
       <line num="149" count="3" type="stmt"/>
-      <line num="152" count="3" type="stmt"/>
+      <line num="150" count="5" type="stmt"/>
+      <line num="151" count="5" type="stmt"/>
+      <line num="152" count="8" type="stmt"/>
+      <line num="154" count="5" type="stmt"/>
+      <line num="157" count="3" type="cond" truecount="2" falsecount="0"/>
+      <line num="158" count="1" type="stmt"/>
+      <line num="162" count="2" type="stmt"/>
+      <line num="163" count="3" type="stmt"/>
+      <line num="166" count="2" type="stmt"/>
     </file>
   </project>
 </coverage>
