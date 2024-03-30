@@ -72,7 +72,7 @@ const login = async (req, res) => {
       return res.status(401).json({ error: "密碼錯誤" });
     }
 
-    const token = jwt.sign({ id: user._id }, secretKey, { expiresIn: "1d" });
+    const token = jwt.sign({ id: user._id }, secretKey, { expiresIn: "7d" });
     user.token = token;
     await user.save();
 
