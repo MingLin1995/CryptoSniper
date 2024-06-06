@@ -35,12 +35,16 @@ const favoriteRemove = async (req, res) => {
   }
 };
 
-//查詢追蹤清單
+// 查詢追蹤清單，如果不存在則創建空的追蹤清單
 const favoriteList = async (req, res) => {
   const userId = req.user._id;
 
   try {
-    const favorite = await Favorite.findOne({ userId });
+    const favorite = await Favorite.findOneAndUpdate(
+      { userId },
+      { $setOnInsert: { symbol: [] } }, // 初始化 symbol 為空陣列
+      { new: true, upsert: true, returnNewDocument: true }
+    );
     res.status(200).send({ favorites: favorite.symbol });
   } catch (error) {
     res.status(500).send({ message: "查詢失敗", error: error.message });
