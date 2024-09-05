@@ -125,8 +125,11 @@ function handleDrop(e) {
 // 拖動結束
 function handleDragEnd(e) {
   draggedItem = null;
-  updateListOrderOnServer();
-  updateStrategyOrderOnServer();
+  if (this.classList.contains("strategy-item")) {
+    updateStrategyOrderOnServer(); // 更新策略順序
+  } else if (this.closest("#favoritesList")) {
+    updateListOrderOnServer(); // 更新追蹤清單順序
+  }
 }
 
 // 更新追蹤清單順序
