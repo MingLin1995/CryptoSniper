@@ -157,6 +157,13 @@ body.night-mode #symbol-column:hover {
   max-width: 70% !important;
 }
 
+.drag-over {
+  border: 2px dashed #007bff !important;
+  background-color: rgba(0, 123, 255, 0.1) !important;
+  opacity: 0.7;
+  transition: all 0.2s ease;
+}
+
 @media (max-width: 580px) {
   .modal-lg {
     max-width: 100% !important;

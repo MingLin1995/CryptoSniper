@@ -93,6 +93,8 @@ function makeDraggable(li) {
   li.addEventListener("dragover", handleDragOver);
   li.addEventListener("drop", handleDrop);
   li.addEventListener("dragend", handleDragEnd);
+  li.addEventListener("dragenter", handleDragEnter);
+  li.addEventListener("dragleave", handleDragLeave);
 }
 
 // 拖動開始
@@ -107,18 +109,41 @@ function handleDragStart(e) {
 function handleDragOver(e) {
   e.preventDefault();
   e.dataTransfer.dropEffect = "move";
+  this.classList.add("drag-over"); // 放置的效果
+}
+
+// 拖動進入可放置區域
+function handleDragEnter(e) {
+  this.classList.add("drag-over");
+}
+
+// 拖動離開可放置區域
+function handleDragLeave(e) {
+  this.classList.remove("drag-over");
 }
 
 // 放置時
 function handleDrop(e) {
   e.stopPropagation();
   if (draggedItem !== this) {
-    // 保存被拖動元素的引用
-    let tempDraggedItem = draggedItem;
+    const parent = this.parentNode;
+    const tempDraggedItem = draggedItem;
 
-    // 交换元素
-    this.parentNode.insertBefore(draggedItem, this);
-    tempDraggedItem.parentNode.insertBefore(this, tempDraggedItem);
+    if (this.nextSibling === tempDraggedItem) {
+      parent.insertBefore(tempDraggedItem, this);
+    } else {
+      parent.insertBefore(tempDraggedItem, this.nextSibling);
+    }
+
+    const isSwapped = tempDraggedItem !== draggedItem;
+
+    if (isSwapped) {
+      if (tempDraggedItem.classList.contains("strategy-item")) {
+        updateStrategyOrderOnServer(); // 更新策略順序
+      } else if (tempDraggedItem.closest("#favoritesList")) {
+        updateListOrderOnServer(); // 更新追蹤清單順序
+      }
+    }
   }
 }
 
@@ -130,6 +155,10 @@ function handleDragEnd(e) {
   } else if (this.closest("#favoritesList")) {
     updateListOrderOnServer(); // 更新追蹤清單順序
   }
+
+  document.querySelectorAll(".drag-over").forEach((el) => {
+    el.classList.remove("drag-over");
+  });
 }
 
 // 更新追蹤清單順序
@@ -194,7 +223,7 @@ function updateStrategyOrderOnServer() {
     .catch((error) => console.error("Error updating order:", error));
 }
 
-export { makeDraggable };
+export { makeDraggable, handleDragStart, handleDragOver, handleDrop };
 
 document.querySelectorAll(".tab-link").forEach(function (el) {
   el.addEventListener("click", function () {
@@ -223,6 +252,7 @@ document.getElementById("addSection").addEventListener("click", function () {
   if (sectionName) {
     let section = createListItem(sectionName, true);
     document.getElementById("favoritesList").appendChild(section);
+    makeDraggable(section);
   }
 });
 
@@ -304,7 +334,9 @@ function createSection(sectionName) {
     })
     .then((data) => {
       if (data.success) {
-        fetchUserStrategies();
+        fetchUserStrategies().then(() => {
+          document.querySelectorAll(".strategy-item").forEach(makeDraggable);
+        });
       } else {
         alert("板塊创建失败。");
       }
