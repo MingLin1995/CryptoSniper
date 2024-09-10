@@ -45,7 +45,7 @@ async function getSymbolKlinesData(symbolQuoteVolumeData, timeInterval) {
     if (data !== null) results.push(data);
 
     // 增加每個標的之間的時間間隔，避免大量呼叫API
-    await sleep(1000);
+    await sleep(100);
   }
 
   return results;
