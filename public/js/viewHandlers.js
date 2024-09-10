@@ -2,8 +2,14 @@
 
 import { createTradingViewWidget } from "./tradingViewConfig.js";
 import { formatVolume, sortResultsByVolume } from "./helpers.js";
-import { makeDraggable } from "./Bootstrap.js";
+import {
+  makeDraggable,
+  handleDragStart,
+  handleDragOver,
+  handleDrop,
+} from "./Bootstrap.js";
 import { fetchUserStrategies } from "./strategySettings.js";
+
 let indexObject = { currentIndex: 0 };
 let userId = localStorage.getItem("userId");
 
@@ -132,65 +138,103 @@ function handleSymbolClick(symbol, intervalsData) {
 }
 
 // 前端畫面顯示標的
-function displayResults(allResultsVolume, intervalsData) {
-  const tbody = document.getElementById("results-tbody");
-  const loadCount = 10;
-  let isAscending = false;
+let isDisplayResultsRunning = false;
 
-  // 取得追蹤清單
-  loadFavorites()
-    .then((userFavorites) => {
-      // 清空表格，重置 currentIndex
-      tbody.innerHTML = "";
-      indexObject.currentIndex = 0;
+async function displayResults(allResultsVolume, intervalsData) {
+  if (isDisplayResultsRunning) {
+    return;
+  }
 
-      // 載入資料
-      loadMoreResults(
+  isDisplayResultsRunning = true;
+
+  try {
+    const tbody = document.getElementById("results-tbody");
+    const loadCount = 10;
+    let isAscending = false;
+
+    const userFavorites = await loadFavorites();
+
+    updateTableContent(
+      tbody,
+      allResultsVolume,
+      intervalsData,
+      userFavorites,
+      loadCount
+    );
+
+    updateFavoritesModal();
+    document.querySelectorAll("#favoritesList li").forEach(makeDraggable);
+
+    // 排序
+    const volumeHeader = document.getElementById("volume-header");
+    volumeHeader.onclick = () => {
+      isAscending = !isAscending;
+      allResultsVolume = sortResultsByVolume(allResultsVolume, isAscending);
+      updateTableContent(
         tbody,
         allResultsVolume,
         intervalsData,
-        indexObject,
-        loadCount,
-        userFavorites
+        userFavorites,
+        loadCount
       );
+    };
 
-      // 滾動載入資料
-      handleScroll(
-        tbody,
-        allResultsVolume,
-        intervalsData,
-        indexObject,
-        loadCount,
-        userFavorites
-      );
-
-      // 排序
-      const volumeHeader = document.getElementById("volume-header");
-      volumeHeader.onclick = () => {
-        isAscending = !isAscending;
-        allResultsVolume = sortResultsByVolume(allResultsVolume, isAscending);
-        tbody.innerHTML = "";
-        indexObject.currentIndex = 0;
-        loadMoreResults(
-          tbody,
-          allResultsVolume,
-          intervalsData,
-          indexObject,
-          loadCount,
-          userFavorites
-        );
-      };
-
-      // 如果有標的，更新 TradingView Widget
-      if (allResultsVolume.length > 0) {
-        const firstSymbol = allResultsVolume[0].symbol;
-        handleSymbolClick(firstSymbol, intervalsData);
-      }
-    })
-    .catch((error) => {
-      console.error("Error loading favorites:", error);
-    });
+    if (allResultsVolume.length > 0) {
+      const firstSymbol = allResultsVolume[0].symbol;
+      handleSymbolClick(firstSymbol, intervalsData);
+    }
+  } catch (error) {
+    console.error("Error in displayResults:", error);
+  } finally {
+    isDisplayResultsRunning = false;
+  }
 }
+
+function updateTableContent(
+  tbody,
+  allResultsVolume,
+  intervalsData,
+  userFavorites,
+  loadCount
+) {
+  // 清空表格內容
+  tbody.innerHTML = "";
+
+  // 重置 currentIndex
+  indexObject.currentIndex = 0;
+
+  // 載入初始數據
+  loadMoreResults(
+    tbody,
+    allResultsVolume,
+    intervalsData,
+    indexObject,
+    loadCount,
+    userFavorites
+  );
+}
+
+// 在頁面加載時執行一次
+function initializeScrollAndDrag() {
+  const tbody = document.getElementById("results-tbody");
+
+  // 滾動載入數據
+  if (typeof allResultsVolume !== "undefined") {
+    handleScroll(
+      tbody,
+      allResultsVolume,
+      intervalsData,
+      indexObject,
+      loadCount,
+      userFavorites
+    );
+  }
+  tbody.addEventListener("dragstart", handleDragStart, false);
+  tbody.addEventListener("dragover", handleDragOver, false);
+  tbody.addEventListener("drop", handleDrop, false);
+}
+
+document.addEventListener("DOMContentLoaded", initializeScrollAndDrag);
 
 // 檢查訂閱狀態
 async function checkSubscriptionStatus(currentNotificationMethod) {
@@ -455,18 +499,17 @@ function loadFavorites() {
         Authorization: token ? token : undefined,
       },
     })
-      .then((response) => {
+      .then(async (response) => {
         if (!response.ok) {
-          return response.json().then((errorResponse) => {
-            if (errorResponse.error === "jwt expired") {
-              window.location.href = "/";
-              reject(new Error("Token 已過期，請重新登入"));
-            } else if (errorResponse.error === "jwt malformed") {
-              resolve([]);
-            } else {
-              throw new Error(errorResponse.error || "未知錯誤");
-            }
-          });
+          const errorResponse = await response.json();
+          if (errorResponse.error === "jwt expired") {
+            window.location.href = "/";
+            reject(new Error("Token 已過期，請重新登入"));
+          } else if (errorResponse.error === "jwt malformed") {
+            resolve([]);
+          } else {
+            throw new Error(errorResponse.error || "未知錯誤");
+          }
         } else {
           // 如果回應正常，解析 JSON
           return response.json();
@@ -474,6 +517,7 @@ function loadFavorites() {
       })
       .then((data) => {
         resolve(data.favorites || []);
+        document.querySelectorAll("#favoritesList li").forEach(makeDraggable);
       })
       .catch((error) => {
         console.error(error);
@@ -483,92 +527,95 @@ function loadFavorites() {
 }
 
 // 更新追蹤列表
-function updateFavoritesModal() {
-  loadFavorites()
-    .then((favorites) => {
-      const favoritesList = document.getElementById("favoritesList");
-      favoritesList.innerHTML = "";
+async function updateFavoritesModal() {
+  try {
+    const favorites = await loadFavorites();
+    const favoritesList = document.getElementById("favoritesList");
+    if (!favoritesList) {
+      throw new Error("無法找到 favoritesList 元素");
+    }
 
-      if (favorites.length === 0) {
-        const li = document.createElement("li");
-        li.classList.add("list-group-item");
-        li.textContent = "尚未建立任何追蹤";
+    favoritesList.innerHTML = "";
+
+    if (favorites.length === 0) {
+      const li = document.createElement("li");
+      li.classList.add("list-group-item");
+      li.textContent = "尚未建立任何追蹤";
+      favoritesList.appendChild(li);
+    } else {
+      favorites.forEach((symbol) => {
+        if (!symbol) return;
+        const li = createFavoriteListItem(symbol);
         favoritesList.appendChild(li);
-      } else {
-        favorites.forEach((symbol) => {
-          if (!symbol) return;
-          const li = document.createElement("li");
-          li.classList.add(
-            "list-group-item",
-            "d-flex",
-            "justify-content-between",
-            "align-items-center"
-          );
-          li.setAttribute("data-id", symbol);
-          makeDraggable(li);
+      });
+    }
 
-          // 檢查是否為板塊
-          const isSection = symbol.startsWith("section:");
-          if (!isSection) {
-            // 非板塊，增加點擊事件
-            const symbolText = document.createElement("span");
-            symbolText.classList.add("clickable-item");
+    document.querySelectorAll("#favoritesList li").forEach(makeDraggable);
+  } catch (error) {
+    console.error("更新追蹤清單時發生錯誤:", error);
+  }
+}
 
-            symbolText.textContent = symbol;
-            symbolText.style.cursor = "pointer";
-            symbolText.onclick = () => {
-              // 點擊事件處理
-              const intervalsData = [
-                {
-                  time_interval:
-                    document.getElementById("time-interval-1").value,
-                  param_1: parseInt(document.getElementById("MA1-1").value),
-                  param_2: parseInt(document.getElementById("MA1-2").value),
-                  comparison_operator_1: document.getElementById(
-                    "comparison-operator-1-1"
-                  ).value,
-                  comparison_operator_2:
-                    document.getElementById("comparison-operator-1-2")?.value ||
-                    null,
-                  logical_operator:
-                    document.querySelector(
-                      ".toggle-element-1:not(.hidden) #logical-operator-1"
-                    )?.value || null,
-                  param_3:
-                    parseInt(document.getElementById("MA1-3")?.value) || null,
-                  param_4:
-                    parseInt(document.getElementById("MA1-4")?.value) || null,
-                },
-              ];
-              handleSymbolClick(symbol, intervalsData);
-              $("#favoritesModal").modal("hide");
-            };
-            li.appendChild(symbolText);
-            li.style.marginBottom = "10px";
-          } else {
-            li.classList.add("section-item");
+function createFavoriteListItem(symbol) {
+  const li = document.createElement("li");
+  li.classList.add(
+    "list-group-item",
+    "d-flex",
+    "justify-content-between",
+    "align-items-center"
+  );
+  li.setAttribute("data-id", symbol);
+  makeDraggable(li);
 
-            let sectionName = symbol.split(":")[1]; // 取標的名稱
-            li.textContent = `－－－
-            ${sectionName}－－－`;
-            li.style.fontWeight = "bold";
-            li.style.border = "3px double";
-            li.style.marginBottom = "10px";
-          }
+  // 檢查是否為板塊
+  const isSection = symbol.startsWith("section:");
+  if (!isSection) {
+    // 非板塊，增加點擊事件
+    const symbolText = document.createElement("span");
+    symbolText.classList.add("clickable-item");
+    symbolText.textContent = symbol;
+    symbolText.style.cursor = "pointer";
+    symbolText.onclick = () => {
+      // 點擊事件處理
+      const intervalsData = [
+        {
+          time_interval: document.getElementById("time-interval-1").value,
+          param_1: parseInt(document.getElementById("MA1-1").value),
+          param_2: parseInt(document.getElementById("MA1-2").value),
+          comparison_operator_1: document.getElementById(
+            "comparison-operator-1-1"
+          ).value,
+          comparison_operator_2:
+            document.getElementById("comparison-operator-1-2")?.value || null,
+          logical_operator:
+            document.querySelector(
+              ".toggle-element-1:not(.hidden) #logical-operator-1"
+            )?.value || null,
+          param_3: parseInt(document.getElementById("MA1-3")?.value) || null,
+          param_4: parseInt(document.getElementById("MA1-4")?.value) || null,
+        },
+      ];
+      handleSymbolClick(symbol, intervalsData);
+      $("#favoritesModal").modal("hide");
+    };
+    li.appendChild(symbolText);
+    li.style.marginBottom = "10px";
+  } else {
+    li.classList.add("section-item");
+    let sectionName = symbol.split(":")[1]; // 取標的名稱
+    li.textContent = `－－－${sectionName}－－－`;
+    li.style.fontWeight = "bold";
+    li.style.border = "3px double";
+    li.style.marginBottom = "10px";
+  }
 
-          const deleteButton = document.createElement("button");
-          deleteButton.classList.add("btn", "btn-outline-danger", "btn-sm");
-          deleteButton.textContent = "刪除";
-          deleteButton.onclick = () => removeFavorite(symbol, userId);
-          li.appendChild(deleteButton);
+  const deleteButton = document.createElement("button");
+  deleteButton.classList.add("btn", "btn-outline-danger", "btn-sm");
+  deleteButton.textContent = "刪除";
+  deleteButton.onclick = () => removeFavorite(symbol, userId);
+  li.appendChild(deleteButton);
 
-          favoritesList.appendChild(li);
-        });
-      }
-    })
-    .catch((error) => {
-      console.error("Error:", error);
-    });
+  return li;
 }
 
 //移除追蹤

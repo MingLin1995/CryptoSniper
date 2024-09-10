@@ -87,7 +87,47 @@ async function processForm() {
 
 document.addEventListener("DOMContentLoaded", () => {
   const favoritesButton = document.getElementById("favorites");
-  favoritesButton.addEventListener("click", updateFavoritesModal);
+  favoritesButton.addEventListener("click", (event) => {
+    event.preventDefault();
+    localStorage.setItem("openFavorites", "true");
+
+    const overlay = document.createElement("div");
+    overlay.style.position = "fixed";
+    overlay.style.top = "0";
+    overlay.style.left = "0";
+    overlay.style.width = "100%";
+    overlay.style.height = "100%";
+    overlay.style.backgroundColor = "#ffffff";
+    overlay.style.opacity = "0.7";
+    overlay.style.zIndex = "9999";
+    document.body.appendChild(overlay);
+
+    const loadingIndicator = document.createElement("div");
+    loadingIndicator.textContent = "正在載入追蹤清單...";
+    loadingIndicator.style.position = "fixed";
+    loadingIndicator.style.top = "50%";
+    loadingIndicator.style.left = "50%";
+    loadingIndicator.style.transform = "translate(-50%, -50%)";
+    loadingIndicator.style.zIndex = "10000";
+    loadingIndicator.style.color = "#000000";
+    loadingIndicator.style.fontSize = "20px";
+    document.body.appendChild(loadingIndicator);
+
+    setTimeout(() => {
+      window.location.reload();
+    }, 100);
+  });
+
+  // 檢查是否需要打開追蹤清單
+  if (localStorage.getItem("openFavorites") === "true") {
+    // 移除標記
+    localStorage.removeItem("openFavorites");
+
+    setTimeout(async () => {
+      $("#favoritesModal").modal("show");
+      await updateFavoritesModal();
+    }, 100);
+  }
 });
 
 document.addEventListener("DOMContentLoaded", function () {
