@@ -162,6 +162,15 @@ async function displayResults(allResultsVolume, intervalsData) {
       loadCount
     );
 
+    handleScroll(
+      tbody,
+      allResultsVolume,
+      intervalsData,
+      indexObject,
+      loadCount,
+      userFavorites
+    );
+
     updateFavoritesModal();
     document.querySelectorAll("#favoritesList li").forEach(makeDraggable);
 
