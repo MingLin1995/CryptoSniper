@@ -123,9 +123,9 @@ document.addEventListener("DOMContentLoaded", () => {
     // 移除標記
     localStorage.removeItem("openFavorites");
 
-    setTimeout(() => {
+    setTimeout(async () => {
       $("#favoritesModal").modal("show");
-      updateFavoritesModal();
+      await updateFavoritesModal();
     }, 100);
   }
 });

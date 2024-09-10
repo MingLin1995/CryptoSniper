@@ -527,30 +527,33 @@ function loadFavorites() {
 }
 
 // 更新追蹤列表
-function updateFavoritesModal() {
-  loadFavorites()
-    .then((favorites) => {
-      const favoritesList = document.getElementById("favoritesList");
-      favoritesList.innerHTML = "";
+async function updateFavoritesModal() {
+  try {
+    const favorites = await loadFavorites();
+    const favoritesList = document.getElementById("favoritesList");
+    if (!favoritesList) {
+      throw new Error("無法找到 favoritesList 元素");
+    }
 
-      if (favorites.length === 0) {
-        const li = document.createElement("li");
-        li.classList.add("list-group-item");
-        li.textContent = "尚未建立任何追蹤";
+    favoritesList.innerHTML = "";
+
+    if (favorites.length === 0) {
+      const li = document.createElement("li");
+      li.classList.add("list-group-item");
+      li.textContent = "尚未建立任何追蹤";
+      favoritesList.appendChild(li);
+    } else {
+      favorites.forEach((symbol) => {
+        if (!symbol) return;
+        const li = createFavoriteListItem(symbol);
         favoritesList.appendChild(li);
-      } else {
-        favorites.forEach((symbol) => {
-          if (!symbol) return;
-          const li = createFavoriteListItem(symbol);
-          favoritesList.appendChild(li);
-        });
-      }
+      });
+    }
 
-      document.querySelectorAll("#favoritesList li").forEach(makeDraggable);
-    })
-    .catch((error) => {
-      console.error("Error:", error);
-    });
+    document.querySelectorAll("#favoritesList li").forEach(makeDraggable);
+  } catch (error) {
+    console.error("更新追蹤清單時發生錯誤:", error);
+  }
 }
 
 function createFavoriteListItem(symbol) {
