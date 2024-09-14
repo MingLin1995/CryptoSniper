@@ -1,0 +1,8 @@
+# Crypto Sniper robots.txt
+# 允許所有搜索引擎爬蟲訪問網站內容
+
+User-agent: *
+Allow: /
+
+# Sitemap 位置
+Sitemap: https://crypto-sniper.minglin.vip/sitemap.xml
