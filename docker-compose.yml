@@ -39,4 +39,4 @@ volumes:
 networks:
   cryptosniper-network:
     external:
-      name: binance-redis-sync_cryptosniper-network
+      name: binance-sync-service_cryptosniper-network
