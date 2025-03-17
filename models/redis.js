@@ -3,8 +3,22 @@
 require("dotenv").config();
 const Redis = require("ioredis");
 const REDIS_HOST = process.env.REDIS_HOST;
-const REDIS_PORT = 6379;
-const redis = new Redis(REDIS_PORT, REDIS_HOST);
+const REDIS_PORT = process.env.REDIS_PORT;
+const REDIS_PASSWORD = process.env.REDIS_PASSWORD;
+
+const redis = new Redis({
+  port: REDIS_PORT,
+  host: REDIS_HOST,
+  password: REDIS_PASSWORD,
+});
+
+redis.set("key", "value", function (err, result) {
+  if (err) {
+    console.log("Redis connection error:", err);
+  } else {
+    console.log("Redis set result:", result);
+  }
+});
 
 const time_intervals = {
   "5m": 5,

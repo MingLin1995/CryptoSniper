@@ -69,8 +69,8 @@ app.use("/web-subscription", webSubscriptionRoutes);
 app.use("/line-notify-callback", lineNotifyRoutes);
 app.use("/telegram-updates", telegramBotRoutes);
 
-// 更新redis資料庫
-updateSymbolData.initialUpdate();
+// // 更新redis資料庫
+// updateSymbolData.initialUpdate();
 
 // 建立webSocket連線
 trackPrices();
