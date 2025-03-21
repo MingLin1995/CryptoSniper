@@ -16,24 +16,24 @@ const timeIntervals = {
   "1M": 24 * 60 * 60 * 1000,
 };
 
-async function initialUpdate() {
-  try {
-    setInterval(async () => {
-      await updateSymbolQuoteVolumeData();
-    }, 5 * 60 * 1000);
-    // 24hr Data
-    await updateSymbolQuoteVolumeData();
+// async function initialUpdate() {
+//   try {
+//     setInterval(async () => {
+//       await updateSymbolQuoteVolumeData();
+//     }, 5 * 60 * 1000);
+//     // 24hr Data
+//     await updateSymbolQuoteVolumeData();
 
-    // Klines Data
-    for (const [timeInterval, intervalMs] of Object.entries(timeIntervals)) {
-      setInterval(async () => {
-        await updateSymbolKlinesData(timeInterval);
-      }, intervalMs);
-      updateSymbolKlinesData(timeInterval);
-    }
-  } catch (error) {
-    console.error(`Initial update failed: ${error}`);
-  }
-}
+//     // Klines Data
+//     for (const [timeInterval, intervalMs] of Object.entries(timeIntervals)) {
+//       setInterval(async () => {
+//         await updateSymbolKlinesData(timeInterval);
+//       }, intervalMs);
+//       updateSymbolKlinesData(timeInterval);
+//     }
+//   } catch (error) {
+//     console.error(`Initial update failed: ${error}`);
+//   }
+// }
 
-module.exports = { initialUpdate };
+// module.exports = { initialUpdate };

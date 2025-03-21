@@ -1,4 +1,3 @@
-version: '3'
 services:
   app:
     build: .
@@ -6,10 +5,13 @@ services:
       - "8000:8000"
     depends_on:
       - mongodb
-      - redis
+      # - redis
     env_file:
       - ./.env
     restart: unless-stopped 
+    networks:
+      - cryptosniper-network
+
 
   mongodb:
     image: mongo
@@ -21,12 +23,20 @@ services:
     volumes:
       - mongodb_data:/data/db
     restart: unless-stopped
+    networks:
+      - cryptosniper-network
 
-  redis:
-    image: redis
-    ports:
-      - "6379:6379"
-    restart: unless-stopped
+  # redis:
+  #   image: redis
+  #   ports:
+  #     - "6379:6379"
+  #   restart: unless-stopped
+
     
 volumes:
   mongodb_data:
+
+networks:
+  cryptosniper-network:
+    external:
+      name: binance-sync-service_cryptosniper-network
